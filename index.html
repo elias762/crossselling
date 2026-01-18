@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salon Cross-Selling Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">✂</span>
+                    <span class="logo-text">SalonAssist</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active">
+                        <a href="#dashboard">
+                            <span class="nav-icon">📊</span>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#appointments">
+                            <span class="nav-icon">📅</span>
+                            <span class="nav-text">Appointments</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#clients">
+                            <span class="nav-icon">👥</span>
+                            <span class="nav-text">Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#services">
+                            <span class="nav-icon">💇</span>
+                            <span class="nav-text">Services</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#products">
+                            <span class="nav-icon">🧴</span>
+                            <span class="nav-text">Products</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#recommendations">
+                            <span class="nav-icon">💡</span>
+                            <span class="nav-text">Recommendations</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#analytics">
+                            <span class="nav-icon">📈</span>
+                            <span class="nav-text">Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#outreach">
+                            <span class="nav-icon">📧</span>
+                            <span class="nav-text">Outreach</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">MK</div>
+                    <div class="user-details">
+                        <span class="user-name">Maria Klein</span>
+                        <span class="user-role">Salon Manager</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page active">
+                <!-- Header -->
+                <header class="main-header">
+                    <div class="header-left">
+                        <h1>Salon Cross-Selling Assistant</h1>
+                        <p class="subline">Track services, suggest add-ons, boost revenue.</p>
+                    </div>
+                    <div class="header-right">
+                        <div class="search-box">
+                            <input type="text" placeholder="Search clients, services...">
+                        </div>
+                        <button class="btn-primary">+ New Appointment</button>
+                    </div>
+                </header>
+
+                <!-- KPI Cards -->
+                <section class="kpi-section">
+                <div class="kpi-card">
+                    <div class="kpi-icon blue">💰</div>
+                    <div class="kpi-content">
+                        <span class="kpi-value">78 €</span>
+                        <span class="kpi-label">Average Ticket Size</span>
+                    </div>
+                    <div class="kpi-trend positive">+12%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon green">🎯</div>
+                    <div class="kpi-content">
+                        <span class="kpi-value">34%</span>
+                        <span class="kpi-label">Cross-Sell Rate</span>
+                    </div>
+                    <div class="kpi-trend positive">+8%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon purple">🛍️</div>
+                    <div class="kpi-content">
+                        <span class="kpi-value">22%</span>
+                        <span class="kpi-label">Retail Share</span>
+                    </div>
+                    <div class="kpi-trend positive">+5%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon orange">✅</div>
+                    <div class="kpi-content">
+                        <span class="kpi-value">41</span>
+                        <span class="kpi-label">Recommendations Accepted</span>
+                    </div>
+                    <div class="kpi-trend positive">+15</div>
+                </div>
+            </section>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Today's Appointments -->
+                <section class="card appointments-card">
+                    <div class="card-header">
+                        <h2>Today's Appointments</h2>
+                        <a href="#" class="view-all">View All →</a>
+                    </div>
+                    <table class="appointments-table">
+                        <thead>
+                            <tr>
+                                <th>Client Name</th>
+                                <th>Services</th>
+                                <th>Stylist</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboardAppointmentsBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Top Cross-Sell Combos -->
+                <section class="card combos-card">
+                    <div class="card-header">
+                        <h2>Top Cross-Sell Combos</h2>
+                        <span class="badge">This Month</span>
+                    </div>
+                    <ul class="combo-list">
+                        <li class="combo-item">
+                            <div class="combo-rank">1</div>
+                            <div class="combo-details">
+                                <span class="combo-name">Beard Trim → Beard Oil</span>
+                                <span class="combo-stats">72 times sold</span>
+                            </div>
+                            <div class="combo-revenue">+18 € avg</div>
+                        </li>
+                        <li class="combo-item">
+                            <div class="combo-rank">2</div>
+                            <div class="combo-details">
+                                <span class="combo-name">Skin Fade → Matte Styling Clay</span>
+                                <span class="combo-stats">58 times sold</span>
+                            </div>
+                            <div class="combo-revenue">+24 € avg</div>
+                        </li>
+                        <li class="combo-item">
+                            <div class="combo-rank">3</div>
+                            <div class="combo-details">
+                                <span class="combo-name">Balayage → Olaplex Treatment</span>
+                                <span class="combo-stats">45 times sold</span>
+                            </div>
+                            <div class="combo-revenue">+42 € avg</div>
+                        </li>
+                        <li class="combo-item">
+                            <div class="combo-rank">4</div>
+                            <div class="combo-details">
+                                <span class="combo-name">Color → Deep Conditioning Mask</span>
+                                <span class="combo-stats">39 times sold</span>
+                            </div>
+                            <div class="combo-revenue">+28 € avg</div>
+                        </li>
+                        <li class="combo-item">
+                            <div class="combo-rank">5</div>
+                            <div class="combo-details">
+                                <span class="combo-name">Hot Towel Shave → Aftershave Balm</span>
+                                <span class="combo-stats">31 times sold</span>
+                            </div>
+                            <div class="combo-revenue">+15 € avg</div>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+            </div>
+
+            <!-- Appointments Page -->
+            <div id="appointments" class="page">
+                <header class="main-header">
+                    <div class="header-left">
+                        <h1>Appointments</h1>
+                        <p class="subline">Track services and sales per visit.</p>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn-primary" id="openAppointmentModal">+ New Appointment</button>
+                    </div>
+                </header>
+
+                <!-- Appointments List -->
+                <section class="card">
+                    <div class="card-header">
+                        <h2>Appointments List</h2>
+                        <span class="badge" id="appointmentCount">0 appointments</span>
+                    </div>
+                    <div class="table-container">
+                        <table class="appointments-table" id="appointmentsTable">
+                            <thead>
+                                <tr>
+                                    <th>Date & Time</th>
+                                    <th>Client</th>
+                                    <th>Stylist</th>
+                                    <th>Services</th>
+                                    <th>Products Sold</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointmentsTableBody">
+                                <tr class="empty-state-row">
+                                    <td colspan="6">
+                                        <div class="empty-state">
+                                            <span class="empty-icon">📅</span>
+                                            <p>No appointments yet. Click "+ New Appointment" to create one.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- New Appointment Modal -->
+            <div class="modal-overlay" id="appointmentModalOverlay">
+                <div class="modal-drawer">
+                    <div class="modal-header">
+                        <h2>New Appointment</h2>
+                        <button class="modal-close" id="closeAppointmentModal">&times;</button>
+                    </div>
+                    <form id="appointmentForm" class="modal-body">
+                        <div class="form-group">
+                            <label for="appointmentClient">Client</label>
+                            <select id="appointmentClient" required>
+                                <option value="">Select a client...</option>
+                                <option value="Client 001">Client 001</option>
+                                <option value="Client 002">Client 002</option>
+                                <option value="Client 003">Client 003</option>
+                                <option value="Client 004">Client 004</option>
+                                <option value="Client 005">Client 005</option>
+                                <option value="Client 006">Client 006</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="appointmentStylist">Stylist</label>
+                            <select id="appointmentStylist" required>
+                                <option value="">Select a stylist...</option>
+                                <!-- Populated dynamically from AppStore -->
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="appointmentDate">Date</label>
+                                <input type="date" id="appointmentDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentTime">Time</label>
+                                <input type="time" id="appointmentTime" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Services</label>
+                            <div class="checkbox-grid" id="servicesCheckboxes">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="services" value="Haircut">
+                                    <span>Haircut</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="services" value="Hair Color">
+                                    <span>Hair Color</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="services" value="Balayage">
+                                    <span>Balayage</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="services" value="Beard Trim">
+                                    <span>Beard Trim</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="services" value="Hot Towel Shave">
+                                    <span>Hot Towel Shave</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="services" value="Facial Treatment">
+                                    <span>Facial Treatment</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="services" value="Manicure">
+                                    <span>Manicure</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="services" value="Pedicure">
+                                    <span>Pedicure</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="services" value="Deep Conditioning">
+                                    <span>Deep Conditioning</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="services" value="Scalp Treatment">
+                                    <span>Scalp Treatment</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Products Sold</label>
+                            <div class="checkbox-grid" id="productsCheckboxes">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="products" value="Matte Styling Clay">
+                                    <span>Matte Styling Clay</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="products" value="Hair Serum">
+                                    <span>Hair Serum</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="products" value="Beard Oil">
+                                    <span>Beard Oil</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="products" value="Beard Balm">
+                                    <span>Beard Balm</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="products" value="Aftershave Balm">
+                                    <span>Aftershave Balm</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="products" value="Face Moisturizer">
+                                    <span>Face Moisturizer</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="products" value="Shampoo">
+                                    <span>Shampoo</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="products" value="Conditioner">
+                                    <span>Conditioner</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="products" value="Nail Polish">
+                                    <span>Nail Polish</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="products" value="Cuticle Oil">
+                                    <span>Cuticle Oil</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="appointmentNotes">Notes (optional)</label>
+                            <textarea id="appointmentNotes" placeholder="Add any notes about this appointment..." rows="3"></textarea>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" id="cancelAppointment">Cancel</button>
+                            <button type="submit" class="btn-primary">Create Appointment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Appointment Details Page -->
+            <div id="appointment-details" class="page">
+                <header class="main-header">
+                    <div class="header-left">
+                        <button class="btn-back" id="backToAppointments">
+                            <span>←</span> Back to Appointments
+                        </button>
+                        <h1>Appointment Details</h1>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn-secondary" id="markNoShow">Mark as No-show</button>
+                        <button class="btn-success" id="markCompleted">Mark as Completed</button>
+                    </div>
+                </header>
+
+                <div class="details-layout">
+                    <!-- Left: Appointment Info -->
+                    <div class="details-main">
+                        <section class="card details-card">
+                            <div class="card-header">
+                                <h2>Appointment Information</h2>
+                                <span class="status scheduled" id="detailsStatus">Scheduled</span>
+                            </div>
+                            <div class="details-content">
+                                <div class="details-grid">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Client</span>
+                                        <span class="detail-value" id="detailsClient">-</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Stylist</span>
+                                        <span class="detail-value" id="detailsStylist">-</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Date</span>
+                                        <span class="detail-value" id="detailsDate">-</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Time</span>
+                                        <span class="detail-value" id="detailsTime">-</span>
+                                    </div>
+                                </div>
+
+                                <div class="detail-section">
+                                    <span class="detail-label">Services</span>
+                                    <div class="tags-container" id="detailsServices">
+                                        <span class="service-tag">-</span>
+                                    </div>
+                                </div>
+
+                                <div class="detail-section">
+                                    <span class="detail-label">Products Sold</span>
+                                    <div class="tags-container" id="detailsProducts">
+                                        <span class="no-products">None</span>
+                                    </div>
+                                </div>
+
+                                <div class="detail-section">
+                                    <span class="detail-label">Notes</span>
+                                    <p class="detail-notes" id="detailsNotes">No notes added.</p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Right: Recommendations Panel -->
+                    <div class="details-sidebar">
+                        <section class="card recommendations-card">
+                            <div class="card-header">
+                                <h2>💡 Recommendations</h2>
+                            </div>
+                            <div class="recommendations-content" id="recommendationsContent">
+                                <!-- Suggested Add-on Services -->
+                                <div class="recommendations-group">
+                                    <h3>Suggested Add-on Services</h3>
+                                    <div class="recommendations-list" id="serviceRecommendations">
+                                        <p class="no-recommendations">No suggestions available.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Suggested Retail Products -->
+                                <div class="recommendations-group">
+                                    <h3>Suggested Retail Products</h3>
+                                    <div class="recommendations-list" id="productRecommendations">
+                                        <p class="no-recommendations">No suggestions available.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clients Page -->
+            <div id="clients" class="page">
+                <header class="main-header">
+                    <div class="header-left">
+                        <h1>Clients</h1>
+                        <p class="subline">Profiles, history, and preferences.</p>
+                    </div>
+                    <div class="header-right">
+                        <div class="search-box">
+                            <input type="text" id="clientSearch" placeholder="Search clients or tags...">
+                        </div>
+                    </div>
+                </header>
+
+                <section class="card">
+                    <div class="card-header">
+                        <h2>Client Directory</h2>
+                        <span class="badge" id="clientCount">12 clients</span>
+                    </div>
+                    <div class="table-container">
+                        <table class="clients-table" id="clientsTable">
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Tags</th>
+                                    <th>Last Visit</th>
+                                    <th>Total Visits</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientsTableBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Client Profile Page -->
+            <div id="client-profile" class="page">
+                <header class="main-header">
+                    <div class="header-left">
+                        <button class="btn-back" id="backToClients">
+                            <span>←</span> Back to Clients
+                        </button>
+                        <h1 id="profileClientName">Client Profile</h1>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn-primary" id="bookForClient">+ Book Appointment</button>
+                    </div>
+                </header>
+
+                <div class="profile-layout">
+                    <!-- Left: Profile Info -->
+                    <div class="profile-main">
+                        <!-- Profile Summary Card -->
+                        <section class="card profile-summary-card">
+                            <div class="card-header">
+                                <h2>Profile Summary</h2>
+                            </div>
+                            <div class="profile-summary-content">
+                                <div class="profile-avatar-large" id="profileAvatar">C1</div>
+                                <div class="profile-info">
+                                    <div class="profile-stat">
+                                        <span class="stat-label">Primary Interest</span>
+                                        <span class="stat-value" id="profileInterest">-</span>
+                                    </div>
+                                    <div class="profile-stat">
+                                        <span class="stat-label">Total Visits</span>
+                                        <span class="stat-value" id="profileTotalVisits">0</span>
+                                    </div>
+                                    <div class="profile-stat">
+                                        <span class="stat-label">Last Visit</span>
+                                        <span class="stat-value" id="profileLastVisit">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile-details">
+                                <div class="profile-detail-section">
+                                    <span class="detail-label">Preferences</span>
+                                    <p class="detail-text" id="profilePreferences">-</p>
+                                </div>
+                                <div class="profile-detail-section">
+                                    <span class="detail-label">Common Issues</span>
+                                    <p class="detail-text" id="profileIssues">-</p>
+                                </div>
+                                <div class="profile-detail-section">
+                                    <span class="detail-label">Tags</span>
+                                    <div class="tags-container" id="profileTags">-</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Appointment History -->
+                        <section class="card">
+                            <div class="card-header">
+                                <h2>Appointment History</h2>
+                                <span class="badge" id="historyCount">0 appointments</span>
+                            </div>
+                            <div class="table-container">
+                                <table class="appointments-table" id="clientHistoryTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Date & Time</th>
+                                            <th>Services</th>
+                                            <th>Products Sold</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="clientHistoryBody">
+                                        <!-- Populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Right: Insights -->
+                    <div class="profile-sidebar">
+                        <section class="card insights-card">
+                            <div class="card-header">
+                                <h2>📊 Client Insights</h2>
+                            </div>
+                            <div class="insights-content">
+                                <div class="insight-item">
+                                    <span class="insight-label">Avg. Ticket Size</span>
+                                    <span class="insight-value" id="insightAvgTicket">-</span>
+                                </div>
+                                <div class="insight-item">
+                                    <span class="insight-label">Most Booked Service</span>
+                                    <span class="insight-value" id="insightTopService">-</span>
+                                </div>
+                                <div class="insight-item">
+                                    <span class="insight-label">Products Purchased</span>
+                                    <span class="insight-value" id="insightProductCount">0</span>
+                                </div>
+                                <div class="insight-item">
+                                    <span class="insight-label">Cross-Sell Rate</span>
+                                    <span class="insight-value" id="insightCrossSell">-</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <div class="card-header">
+                                <h2>💡 Suggested Next</h2>
+                            </div>
+                            <div class="suggested-content" id="suggestedServices">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Page -->
+            <div id="services" class="page">
+                <header class="main-header">
+                    <div class="header-left">
+                        <h1>Services</h1>
+                        <p class="subline">Manage service offerings, pricing, and categories.</p>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn-primary" id="openServiceModal">+ Add Service</button>
+                    </div>
+                </header>
+
+                <section class="card">
+                    <div class="card-header">
+                        <h2>Service Catalog</h2>
+                        <span class="badge" id="serviceCount">12 services</span>
+                    </div>
+                    <div class="table-container">
+                        <table class="catalog-table" id="servicesTable">
+                            <thead>
+                                <tr>
+                                    <th>Service Name</th>
+                                    <th>Category</th>
+                                    <th>Duration</th>
+                                    <th>Price</th>
+                                    <th>Active</th>
+                                </tr>
+                            </thead>
+                            <tbody id="servicesTableBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Add Service Modal -->
+            <div class="modal-overlay" id="serviceModalOverlay">
+                <div class="modal-drawer">
+                    <div class="modal-header">
+                        <h2>Add New Service</h2>
+                        <button class="modal-close" id="closeServiceModal">&times;</button>
+                    </div>
+                    <form id="serviceForm" class="modal-body">
+                        <div class="form-group">
+                            <label for="serviceName">Service Name *</label>
+                            <input type="text" id="serviceName" placeholder="Enter service name..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="serviceCategory">Category</label>
+                            <select id="serviceCategory" required>
+                                <option value="Hair">Hair</option>
+                                <option value="Beard">Beard</option>
+                                <option value="Skin">Skin</option>
+                                <option value="Nails">Nails</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="serviceDuration">Duration (minutes)</label>
+                                <input type="number" id="serviceDuration" placeholder="30" min="5" step="5" value="30">
+                            </div>
+                            <div class="form-group">
+                                <label for="servicePrice">Price (EUR) *</label>
+                                <input type="number" id="servicePrice" placeholder="0.00" min="0" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-single">
+                                <input type="checkbox" id="serviceActive" checked>
+                                <span>Active (available for booking)</span>
+                            </label>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" id="cancelService">Cancel</button>
+                            <button type="submit" class="btn-primary">Add Service</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Products Page -->
+            <div id="products" class="page">
+                <header class="main-header">
+                    <div class="header-left">
+                        <h1>Products</h1>
+                        <p class="subline">Manage retail products and track what's recommended.</p>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn-primary" id="openProductModal">+ Add Product</button>
+                    </div>
+                </header>
+
+                <section class="card">
+                    <div class="card-header">
+                        <h2>Product Catalog</h2>
+                        <span class="badge" id="productCount">15 products</span>
+                    </div>
+                    <div class="table-container">
+                        <table class="catalog-table" id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Use Case</th>
+                                    <th>Active</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Add Product Modal -->
+            <div class="modal-overlay" id="productModalOverlay">
+                <div class="modal-drawer">
+                    <div class="modal-header">
+                        <h2>Add New Product</h2>
+                        <button class="modal-close" id="closeProductModal">&times;</button>
+                    </div>
+                    <form id="productForm" class="modal-body">
+                        <div class="form-group">
+                            <label for="productName">Product Name *</label>
+                            <input type="text" id="productName" placeholder="Enter product name..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productCategory">Category</label>
+                            <select id="productCategory" required>
+                                <option value="Hair">Hair</option>
+                                <option value="Beard">Beard</option>
+                                <option value="Skin">Skin</option>
+                                <option value="Nails">Nails</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productPrice">Price (EUR) *</label>
+                            <input type="number" id="productPrice" placeholder="0.00" min="0" step="0.01" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productUseCase">Use Case Tag</label>
+                            <select id="productUseCase">
+                                <option value="Hold">Hold</option>
+                                <option value="Hydration">Hydration</option>
+                                <option value="Repair">Repair</option>
+                                <option value="Anti-dandruff">Anti-dandruff</option>
+                                <option value="SPF">SPF</option>
+                                <option value="Custom">Custom...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="customUseCaseGroup" style="display: none;">
+                            <label for="productUseCaseCustom">Custom Use Case</label>
+                            <input type="text" id="productUseCaseCustom" placeholder="Enter custom use case...">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-single">
+                                <input type="checkbox" id="productActive" checked>
+                                <span>Active (available for sale)</span>
+                            </label>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" id="cancelProduct">Cancel</button>
+                            <button type="submit" class="btn-primary">Add Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Recommendations Page -->
+            <div id="recommendations" class="page">
+                <header class="main-header">
+                    <div class="header-left">
+                        <h1>Recommendations</h1>
+                        <p class="subline">Configure what to suggest for each service.</p>
+                    </div>
+                </header>
+
+                <!-- Tabs -->
+                <div class="rules-tabs">
+                    <button class="rules-tab active" data-tab="service-rules">Add-on Service Rules</button>
+                    <button class="rules-tab" data-tab="product-rules">Retail Product Rules</button>
+                </div>
+
+                <!-- Service Rules Section -->
+                <div class="rules-section active" id="service-rules">
+                    <div class="rules-header">
+                        <div class="rules-info">
+                            <h2>Add-on Service Rules</h2>
+                            <p>When a service is booked, suggest additional services to enhance the experience.</p>
+                        </div>
+                        <button class="btn-primary" id="addServiceRule">+ Add Rule</button>
+                    </div>
+                    <div class="rules-list" id="serviceRulesList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Product Rules Section -->
+                <div class="rules-section" id="product-rules">
+                    <div class="rules-header">
+                        <div class="rules-info">
+                            <h2>Retail Product Rules</h2>
+                            <p>When a service is booked, suggest retail products the client can take home.</p>
+                        </div>
+                        <button class="btn-primary" id="addProductRule">+ Add Rule</button>
+                    </div>
+                    <div class="rules-list" id="productRulesList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule Modal -->
+            <div class="modal-overlay" id="ruleModalOverlay">
+                <div class="modal-drawer">
+                    <div class="modal-header">
+                        <h2 id="ruleModalTitle">Add Rule</h2>
+                        <button class="modal-close" id="closeRuleModal">&times;</button>
+                    </div>
+                    <form id="ruleForm" class="modal-body">
+                        <input type="hidden" id="ruleId">
+                        <input type="hidden" id="ruleType">
+
+                        <div class="form-group">
+                            <label for="ruleTrigger">When this service is booked:</label>
+                            <select id="ruleTrigger" required>
+                                <option value="">Select a service...</option>
+                                <!-- Populated by JavaScript -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label id="ruleSuggestionsLabel">Suggest these items:</label>
+                            <div class="checkbox-grid" id="ruleSuggestionsGrid">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                            <p class="form-hint">Select at least one item to suggest.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ruleReason">Why suggest this? (shown to staff)</label>
+                            <input type="text" id="ruleReason" placeholder="e.g., Pairs well with this service..." maxlength="100">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-single">
+                                <input type="checkbox" id="ruleActive" checked>
+                                <span>Rule is active</span>
+                            </label>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" id="cancelRule">Cancel</button>
+                            <button type="submit" class="btn-primary" id="saveRuleBtn">Save Rule</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Analytics Page -->
+            <div id="analytics" class="page">
+                <header class="main-header">
+                    <div class="header-left">
+                        <h1>Analytics</h1>
+                        <p class="subline">Understand what drives revenue per visit.</p>
+                    </div>
+                    <div class="header-right">
+                        <span class="data-label">Data includes demo + live appointments</span>
+                    </div>
+                </header>
+
+                <!-- KPI Cards -->
+                <section class="analytics-kpi-section">
+                    <div class="analytics-kpi-card">
+                        <div class="kpi-icon">💰</div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="kpiTotalRevenue">€0</span>
+                            <span class="kpi-label">Total Revenue</span>
+                        </div>
+                    </div>
+                    <div class="analytics-kpi-card">
+                        <div class="kpi-icon">🎫</div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="kpiAvgTicket">€0</span>
+                            <span class="kpi-label">Avg. Ticket Size</span>
+                        </div>
+                    </div>
+                    <div class="analytics-kpi-card">
+                        <div class="kpi-icon">🛒</div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="kpiCrossSellRate">0%</span>
+                            <span class="kpi-label">Cross-Sell Rate</span>
+                        </div>
+                    </div>
+                    <div class="analytics-kpi-card">
+                        <div class="kpi-icon">✅</div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="kpiAcceptanceRate">0%</span>
+                            <span class="kpi-label">Rec. Acceptance</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Charts Row -->
+                <section class="analytics-charts-row">
+                    <!-- Revenue Split Chart -->
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h2>Revenue Split</h2>
+                            <span class="badge">Services vs Products</span>
+                        </div>
+                        <div class="chart-container" id="revenueSplitChart">
+                            <!-- Bar chart rendered by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Cross-Sell Over Time -->
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h2>Cross-Sell Trend</h2>
+                            <span class="badge">Last 14 Days</span>
+                        </div>
+                        <div class="chart-container" id="crossSellTrendChart">
+                            <!-- Line chart rendered by JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tables Row -->
+                <section class="analytics-tables-row">
+                    <!-- Top Cross-Sell Combos -->
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h2>Top Cross-Sell Combos</h2>
+                            <span class="badge" id="combosCount">0 combos</span>
+                        </div>
+                        <div class="table-container">
+                            <table class="analytics-table" id="crossSellCombosTable">
+                                <thead>
+                                    <tr>
+                                        <th>Combo</th>
+                                        <th>Count</th>
+                                        <th>Est. Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="crossSellCombosBody">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations Performance -->
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h2>Recommendations Performance</h2>
+                            <span class="badge" id="recsCount">0 items</span>
+                        </div>
+                        <div class="table-container">
+                            <table class="analytics-table" id="recsPerformanceTable">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Type</th>
+                                        <th>Shown</th>
+                                        <th>Accepted</th>
+                                        <th>Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recsPerformanceBody">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Outreach Page -->
+            <div id="outreach" class="page">
+                <header class="main-header">
+                    <div class="header-left">
+                        <h1>Email Outreach</h1>
+                        <p class="subline">Personalisierte E-Mail-Vorschläge für Ihre Kunden.</p>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn-secondary" id="openOutreachSettings">Einstellungen</button>
+                        <button class="btn-primary" id="generateSuggestions">Vorschläge generieren</button>
+                    </div>
+                </header>
+
+                <!-- KPI Cards -->
+                <section class="kpi-section outreach-kpi-section">
+                    <div class="kpi-card">
+                        <div class="kpi-icon blue">📬</div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="outreachPending">0</span>
+                            <span class="kpi-label">Ausstehend</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon green">📤</div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="outreachSentWeek">0</span>
+                            <span class="kpi-label">Diese Woche gesendet</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon purple">📊</div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="outreachSentMonth">0</span>
+                            <span class="kpi-label">Diesen Monat gesendet</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon orange">📈</div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="outreachResponseRate">0%</span>
+                            <span class="kpi-label">Response Rate</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Filter Tabs -->
+                <div class="outreach-tabs">
+                    <button class="outreach-tab active" data-filter="all">Alle</button>
+                    <button class="outreach-tab" data-filter="win_back">Win-back</button>
+                    <button class="outreach-tab" data-filter="appointment_reminder">Erinnerungen</button>
+                    <button class="outreach-tab" data-filter="product_recommendation">Produktempfehlungen</button>
+                    <button class="outreach-tab" data-filter="promotion">Promotions</button>
+                </div>
+
+                <!-- Suggestions List -->
+                <section class="outreach-suggestions" id="outreachSuggestionsList">
+                    <!-- Populated by JavaScript -->
+                    <div class="empty-state">
+                        <span class="empty-icon">📧</span>
+                        <p>Keine Vorschläge vorhanden. Klicken Sie auf "Vorschläge generieren" um E-Mail-Vorschläge zu erstellen.</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Email Preview Modal -->
+            <div class="modal-overlay" id="emailPreviewModalOverlay">
+                <div class="modal-drawer modal-drawer-wide">
+                    <div class="modal-header">
+                        <h2>E-Mail Vorschau</h2>
+                        <button class="modal-close" id="closeEmailPreviewModal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="email-preview">
+                            <div class="email-preview-header">
+                                <div class="email-meta">
+                                    <div class="email-meta-item">
+                                        <span class="email-meta-label">An:</span>
+                                        <span class="email-meta-value" id="emailPreviewTo">-</span>
+                                    </div>
+                                    <div class="email-meta-item">
+                                        <span class="email-meta-label">Betreff:</span>
+                                        <span class="email-meta-value" id="emailPreviewSubject">-</span>
+                                    </div>
+                                    <div class="email-meta-item">
+                                        <span class="email-meta-label">Typ:</span>
+                                        <span class="email-type-badge" id="emailPreviewType">-</span>
+                                    </div>
+                                    <div class="email-meta-item">
+                                        <span class="email-meta-label">Grund:</span>
+                                        <span class="email-meta-value" id="emailPreviewReason">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="email-preview-body" id="emailPreviewContent">
+                                <!-- Email content will be inserted here -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" id="dismissEmailSuggestion">Verwerfen</button>
+                            <button type="button" class="btn-primary" id="sendEmailSuggestion">Als gesendet markieren</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outreach Settings Modal -->
+            <div class="modal-overlay" id="outreachSettingsModalOverlay">
+                <div class="modal-drawer">
+                    <div class="modal-header">
+                        <h2>Outreach Einstellungen</h2>
+                        <button class="modal-close" id="closeOutreachSettingsModal">&times;</button>
+                    </div>
+                    <form id="outreachSettingsForm" class="modal-body">
+                        <div class="form-group">
+                            <label for="winBackThreshold">Win-back Schwellenwert (Tage)</label>
+                            <input type="number" id="winBackThreshold" min="7" max="365" value="30">
+                            <p class="form-hint">Kunden werden als "Win-back" markiert, wenn ihr letzter Besuch länger als diese Anzahl an Tagen zurückliegt.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reminderDays">Terminerinnerung (Tage vorher)</label>
+                            <input type="number" id="reminderDays" min="1" max="14" value="2">
+                            <p class="form-hint">E-Mail-Erinnerungen werden für Termine generiert, die in dieser Anzahl an Tagen stattfinden.</p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" id="cancelOutreachSettings">Abbrechen</button>
+                            <button type="submit" class="btn-primary">Speichern</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="api.js"></script>
+    <script src="store.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
