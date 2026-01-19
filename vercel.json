@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "assets/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    { "src": "/api/health", "dest": "/api/health.js" },
+    { "src": "/api/clients", "dest": "/api/clients.js" },
+    { "src": "/api/stylists", "dest": "/api/stylists.js" },
+    { "src": "/api/services", "dest": "/api/services.js" },
+    { "src": "/api/products", "dest": "/api/products.js" },
+    { "src": "/api/appointments", "dest": "/api/appointments.js" },
+    { "src": "/api/rules/services", "dest": "/api/rules/services.js" },
+    { "src": "/api/rules/products", "dest": "/api/rules/products.js" },
+    { "src": "/api/rules", "dest": "/api/rules.js" },
+    { "src": "/api/tracking", "dest": "/api/tracking.js" },
+    { "src": "/api/analytics", "dest": "/api/analytics.js" },
+    { "src": "/api/outreach", "dest": "/api/outreach.js" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

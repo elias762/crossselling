@@ -1,0 +1,12 @@
+{
+  "name": "crossselling-salon",
+  "version": "1.0.0",
+  "description": "EE Partners - Sistema Cross-Selling per Saloni",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "sql.js": "^1.10.0"
+  }
+}

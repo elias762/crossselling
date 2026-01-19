@@ -1,13 +1,13 @@
 // =====================================================
 // API LAYER - Real HTTP Calls to Backend
 // =====================================================
-// Connects to the Express backend at localhost:3001
+// Uses relative paths - works on Vercel and localhost
 // =====================================================
 
 const Api = (function() {
     'use strict';
 
-    const BASE_URL = 'http://localhost:3001/api';
+    const BASE_URL = '/api';
 
     // Helper for fetch with error handling
     async function request(endpoint, options = {}) {
