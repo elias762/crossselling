@@ -1,9 +1,9 @@
 // =====================================================
-// Salon Cross-Selling Assistant - Main Application
+// SalonAssist - Applicazione Principale
 // =====================================================
-// This file contains UI logic and event handlers.
-// Data is fetched via Api layer (api.js).
-// AppStore remains the source of truth.
+// Questo file contiene la logica UI e gli event handler.
+// I dati vengono recuperati tramite Api layer (api.js).
+// AppStore rimane la fonte di verità.
 // =====================================================
 
 // Track loading states
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 // LOADING HELPERS
 // =====================
 
-function showLoading(containerId, message = 'Loading...') {
+function showLoading(containerId, message = 'Caricamento...') {
     const container = document.getElementById(containerId);
     if (container) {
         container.innerHTML = `
@@ -71,7 +71,7 @@ function showLoading(containerId, message = 'Loading...') {
     }
 }
 
-function showLoadingDiv(containerId, message = 'Loading...') {
+function showLoadingDiv(containerId, message = 'Caricamento...') {
     const container = document.getElementById(containerId);
     if (container) {
         container.innerHTML = `
@@ -245,7 +245,7 @@ async function createAppointment() {
     const products = Array.from(productCheckboxes).map(cb => cb.value);
 
     if (services.length === 0) {
-        alert('Please select at least one service.');
+        alert('Seleziona almeno un servizio.');
         return;
     }
 
@@ -263,10 +263,10 @@ async function createAppointment() {
 
         await renderAppointmentsTable();
         closeModal();
-        showNotification('Appointment created successfully!');
+        showNotification('Appuntamento creato con successo!');
     } catch (error) {
         console.error('Error creating appointment:', error);
-        showNotification('Error creating appointment: ' + error.message);
+        showNotification('Errore nella creazione dell\'appuntamento: ' + error.message);
     }
 }
 
@@ -279,13 +279,13 @@ async function renderAppointmentsTable() {
     // Show loading on first load
     if (!isLoading.appointments) {
         isLoading.appointments = true;
-        showLoading('appointmentsTableBody', 'Loading appointments...');
+        showLoading('appointmentsTableBody', 'Caricamento appuntamenti...');
     }
 
     try {
         const appointments = await Api.getAppointments();
         const count = appointments.length;
-        countBadge.textContent = `${count} appointment${count !== 1 ? 's' : ''}`;
+        countBadge.textContent = `${count} appuntament${count !== 1 ? 'i' : 'o'}`;
 
         tbody.innerHTML = '';
 
@@ -294,8 +294,8 @@ async function renderAppointmentsTable() {
                 <tr class="empty-state-row">
                     <td colspan="6">
                         <div class="empty-state">
-                            <span class="empty-icon">📅</span>
-                            <p>No appointments yet. Click "+ New Appointment" to create one.</p>
+                            <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+                            <p>Nessun appuntamento. Clicca "+ Nuovo Appuntamento" per crearne uno.</p>
                         </div>
                     </td>
                 </tr>
@@ -317,7 +317,7 @@ async function renderAppointmentsTable() {
 
             const productTags = appointment.products.length > 0
                 ? appointment.products.map(p => `<span class="product-tag">${p}</span>`).join('')
-                : '<span class="no-products">None</span>';
+                : '<span class="no-products">Nessuno</span>';
 
             const statusClass = appointment.status.toLowerCase().replace(' ', '-');
 
@@ -352,8 +352,8 @@ async function renderAppointmentsTable() {
             <tr class="empty-state-row">
                 <td colspan="6">
                     <div class="empty-state error">
-                        <span class="empty-icon">⚠️</span>
-                        <p>Error loading appointments. Please try again.</p>
+                        <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9v4M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                        <p>Errore nel caricamento degli appuntamenti. Riprova.</p>
                     </div>
                 </td>
             </tr>
@@ -384,8 +384,8 @@ async function renderDashboardAppointments() {
                 <tr class="empty-state-row">
                     <td colspan="5">
                         <div class="empty-state">
-                            <span class="empty-icon">📅</span>
-                            <p>No appointments for today.</p>
+                            <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+                            <p>Nessun appuntamento per oggi.</p>
                         </div>
                     </td>
                 </tr>
@@ -423,8 +423,8 @@ async function renderDashboardAppointments() {
             <tr class="empty-state-row">
                 <td colspan="5">
                     <div class="empty-state error">
-                        <span class="empty-icon">⚠️</span>
-                        <p>Error loading appointments.</p>
+                        <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9v4M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                        <p>Errore nel caricamento degli appuntamenti.</p>
                     </div>
                 </td>
             </tr>
@@ -479,11 +479,11 @@ async function openAppointmentDetails(appointmentId) {
                 `<span class="product-tag">${p}</span>`
             ).join('');
         } else {
-            productsContainer.innerHTML = '<span class="no-products">None</span>';
+            productsContainer.innerHTML = '<span class="no-products">Nessuno</span>';
         }
 
         const notesElement = document.getElementById('detailsNotes');
-        notesElement.textContent = appointment.notes || 'No notes added.';
+        notesElement.textContent = appointment.notes || 'Nessuna nota aggiunta.';
 
         updateStatusDisplay(appointment.status);
         generateRecommendations(appointment);
@@ -502,7 +502,7 @@ async function openAppointmentDetails(appointmentId) {
         });
     } catch (error) {
         console.error('Error loading appointment details:', error);
-        showNotification('Error loading appointment details');
+        showNotification('Errore nel caricamento dei dettagli');
     }
 }
 
@@ -538,10 +538,10 @@ async function updateAppointmentStatus(newStatus) {
         updateStatusDisplay(newStatus);
         await renderAppointmentsTable();
 
-        showNotification(`Appointment marked as ${newStatus}`);
+        showNotification(`Appuntamento segnato come ${newStatus}`);
     } catch (error) {
         console.error('Error updating appointment:', error);
-        showNotification('Error updating appointment status');
+        showNotification('Errore nell\'aggiornamento dello stato');
     }
 }
 
@@ -574,7 +574,7 @@ function generateRecommendations(appointment) {
                     serviceReasonMap[suggestion] = [];
                 }
                 serviceReasonMap[suggestion].push({
-                    reason: rule.reason || `Pairs well with ${bookedService}`,
+                    reason: rule.reason || `Si abbina bene con ${bookedService}`,
                     trigger: bookedService
                 });
             });
@@ -593,7 +593,7 @@ function generateRecommendations(appointment) {
                     productReasonMap[suggestion] = [];
                 }
                 productReasonMap[suggestion].push({
-                    reason: rule.reason || `Recommended after ${bookedService}`,
+                    reason: rule.reason || `Consigliato dopo ${bookedService}`,
                     trigger: bookedService
                 });
             });
@@ -605,7 +605,7 @@ function generateRecommendations(appointment) {
         if (reasons.length === 1) {
             displayReason = reasons[0].reason;
         } else {
-            displayReason = `Suggested by ${reasons.length} rules`;
+            displayReason = `Suggerito da ${reasons.length} regole`;
         }
 
         svcRecs.push({
@@ -621,7 +621,7 @@ function generateRecommendations(appointment) {
         if (reasons.length === 1) {
             displayReason = reasons[0].reason;
         } else {
-            displayReason = `Suggested by ${reasons.length} rules`;
+            displayReason = `Suggerito da ${reasons.length} regole`;
         }
 
         prdRecs.push({
@@ -644,7 +644,7 @@ function renderRecommendations(containerId, recommendations, type) {
     if (!container) return;
 
     if (recommendations.length === 0) {
-        container.innerHTML = '<p class="no-recommendations">No suggestions available.</p>';
+        container.innerHTML = '<p class="no-recommendations">Nessun suggerimento disponibile.</p>';
         return;
     }
 
@@ -657,15 +657,15 @@ function renderRecommendations(containerId, recommendations, type) {
         <div class="recommendation-card" data-name="${rec.name}" data-type="${type}">
             <div class="rec-header">
                 <span class="rec-name">${rec.name}</span>
-                <span class="rec-category">${type === 'service' ? 'Add-on Service' : 'Retail Product'}</span>
+                <span class="rec-category">${type === 'service' ? 'Servizio Aggiuntivo' : 'Prodotto Retail'}</span>
             </div>
-            <p class="rec-reason">💡 ${rec.reason}</p>
+            <p class="rec-reason">${rec.reason}</p>
             <div class="rec-actions">
                 <button class="btn-add" onclick="addRecommendation('${rec.name}', '${type}')">
-                    + Add to appointment
+                    + Aggiungi all'appuntamento
                 </button>
                 <button class="btn-dismiss" onclick="dismissRecommendation('${rec.name}', '${type}')">
-                    Dismiss
+                    Ignora
                 </button>
             </div>
         </div>
@@ -688,10 +688,10 @@ async function addRecommendation(name, type) {
 
         await openAppointmentDetails(currentAppointmentId);
         await renderAppointmentsTable();
-        showNotification(`${name} added to appointment`);
+        showNotification(`${name} aggiunto all'appuntamento`);
     } catch (error) {
         console.error('Error adding recommendation:', error);
-        showNotification('Error adding to appointment');
+        showNotification('Errore nell\'aggiunta all\'appuntamento');
     }
 }
 
@@ -710,7 +710,7 @@ async function dismissRecommendation(name, type) {
             generateRecommendations(appointment);
         }
 
-        showNotification(`${name} dismissed`);
+        showNotification(`${name} ignorato`);
     } catch (error) {
         console.error('Error dismissing recommendation:', error);
     }
@@ -734,7 +734,7 @@ async function renderClientsTable(filteredClients = null) {
 
     try {
         const clients = filteredClients || await Api.getClients();
-        countBadge.textContent = `${clients.length} client${clients.length !== 1 ? 's' : ''}`;
+        countBadge.textContent = `${clients.length} client${clients.length !== 1 ? 'i' : 'e'}`;
 
         tbody.innerHTML = '';
 
@@ -743,8 +743,8 @@ async function renderClientsTable(filteredClients = null) {
                 <tr class="empty-state-row">
                     <td colspan="4">
                         <div class="empty-state">
-                            <span class="empty-icon">👥</span>
-                            <p>No clients found matching your search.</p>
+                            <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                            <p>Nessun cliente trovato per la tua ricerca.</p>
                         </div>
                     </td>
                 </tr>
@@ -908,7 +908,7 @@ async function openClientProfile(clientId) {
         });
     } catch (error) {
         console.error('Error loading client profile:', error);
-        showNotification('Error loading client profile');
+        showNotification('Errore nel caricamento del profilo cliente');
     }
 }
 
@@ -918,7 +918,7 @@ function renderClientHistory(appointments) {
 
     if (!tbody) return;
 
-    countBadge.textContent = `${appointments.length} appointment${appointments.length !== 1 ? 's' : ''}`;
+    countBadge.textContent = `${appointments.length} appuntament${appointments.length !== 1 ? 'i' : 'o'}`;
 
     tbody.innerHTML = '';
 
@@ -927,8 +927,8 @@ function renderClientHistory(appointments) {
             <tr class="empty-state-row">
                 <td colspan="4">
                     <div class="empty-state">
-                        <span class="empty-icon">📅</span>
-                        <p>No appointment history yet.</p>
+                        <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+                        <p>Nessuno storico appuntamenti.</p>
                     </div>
                 </td>
             </tr>
@@ -947,7 +947,7 @@ function renderClientHistory(appointments) {
 
         const productTags = apt.products.length > 0
             ? apt.products.map(p => `<span class="product-tag">${p}</span>`).join('')
-            : '<span class="no-products">None</span>';
+            : '<span class="no-products">Nessuno</span>';
 
         const statusClass = apt.status.toLowerCase().replace(' ', '-');
 
@@ -999,26 +999,26 @@ function renderSuggestedServices(client) {
     const suggestions = [];
 
     if (client.issues.toLowerCase().includes('dry scalp')) {
-        suggestions.push({ name: 'Scalp Treatment', reason: 'Addresses dry scalp issues' });
+        suggestions.push({ name: 'Trattamento Cuoio Capelluto', reason: 'Per il cuoio capelluto secco' });
     }
     if (client.issues.toLowerCase().includes('dandruff')) {
-        suggestions.push({ name: 'Scalp Treatment', reason: 'Helps with dandruff' });
+        suggestions.push({ name: 'Trattamento Cuoio Capelluto', reason: 'Aiuta con la forfora' });
     }
     if (client.issues.toLowerCase().includes('damaged') || client.issues.toLowerCase().includes('bleach')) {
-        suggestions.push({ name: 'Deep Conditioning', reason: 'Repairs damaged hair' });
+        suggestions.push({ name: 'Trattamento Profondo', reason: 'Ripara i capelli danneggiati' });
     }
     if (client.tags.includes('Beard Care') && !client.tags.includes('Skincare')) {
-        suggestions.push({ name: 'Facial Treatment', reason: 'Complement beard grooming with skincare' });
+        suggestions.push({ name: 'Trattamento Viso', reason: 'Completa la cura della barba con skincare' });
     }
     if (client.tags.includes('Hair Color')) {
-        suggestions.push({ name: 'Olaplex Treatment', reason: 'Protect color-treated hair' });
+        suggestions.push({ name: 'Trattamento Olaplex', reason: 'Protegge i capelli colorati' });
     }
     if (client.tags.includes('Nails')) {
-        suggestions.push({ name: 'Pedicure', reason: 'Complete nail care package' });
+        suggestions.push({ name: 'Pedicure', reason: 'Pacchetto completo cura unghie' });
     }
 
     if (suggestions.length === 0) {
-        suggestions.push({ name: 'Deep Conditioning', reason: 'Maintains healthy hair' });
+        suggestions.push({ name: 'Trattamento Profondo', reason: 'Mantiene i capelli sani' });
     }
 
     container.innerHTML = suggestions.slice(0, 3).map(s => `
@@ -1036,15 +1036,12 @@ function renderSuggestedServices(client) {
 function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
+    return date.toLocaleDateString('it-IT', options);
 }
 
 function formatTime(timeString) {
     const [hours, minutes] = timeString.split(':');
-    const hour = parseInt(hours);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes} ${ampm}`;
+    return `${hours}:${minutes}`;
 }
 
 function getInitials(name) {
@@ -1087,13 +1084,13 @@ async function renderServicesTable() {
 
     if (!isLoading.services) {
         isLoading.services = true;
-        showLoading('servicesTableBody', 'Loading services...');
+        showLoading('servicesTableBody', 'Caricamento servizi...');
     }
 
     try {
         const services = await Api.getServices();
         const count = services.length;
-        countBadge.textContent = `${count} service${count !== 1 ? 's' : ''}`;
+        countBadge.textContent = `${count} serviz${count !== 1 ? 'i' : 'io'}`;
 
         tbody.innerHTML = '';
 
@@ -1102,8 +1099,8 @@ async function renderServicesTable() {
                 <tr class="empty-state-row">
                     <td colspan="5">
                         <div class="empty-state">
-                            <span class="empty-icon">💇</span>
-                            <p>No services yet. Click "+ Add Service" to create one.</p>
+                            <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7h-9M14 17H5M17 17a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM7 7a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg></span>
+                            <p>Nessun servizio. Clicca "+ Aggiungi Servizio" per crearne uno.</p>
                         </div>
                     </td>
                 </tr>
@@ -1141,8 +1138,8 @@ async function renderServicesTable() {
             <tr class="empty-state-row">
                 <td colspan="5">
                     <div class="empty-state error">
-                        <span class="empty-icon">⚠️</span>
-                        <p>Error loading services.</p>
+                        <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9v4M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                        <p>Errore nel caricamento dei servizi.</p>
                     </div>
                 </td>
             </tr>
@@ -1197,7 +1194,7 @@ async function addService() {
     const active = document.getElementById('serviceActive').checked;
 
     if (!name || isNaN(price)) {
-        alert('Please fill in required fields (Name and Price).');
+        alert('Compila i campi obbligatori (Nome e Prezzo).');
         return;
     }
 
@@ -1216,10 +1213,10 @@ async function addService() {
         document.getElementById('serviceModalOverlay').classList.remove('active');
         document.body.style.overflow = '';
 
-        showNotification(`Service "${name}" added successfully!`);
+        showNotification(`Servizio "${name}" aggiunto con successo!`);
     } catch (error) {
         console.error('Error creating service:', error);
-        showNotification('Error creating service: ' + error.message);
+        showNotification('Errore nella creazione del servizio: ' + error.message);
     }
 }
 
@@ -1228,11 +1225,11 @@ async function toggleServiceActive(serviceId, isActive) {
         const service = await Api.toggleServiceActive(serviceId, isActive);
         if (service) {
             updateAppointmentFormSelections();
-            showNotification(`${service.name} ${isActive ? 'activated' : 'deactivated'}`);
+            showNotification(`${service.name} ${isActive ? 'attivato' : 'disattivato'}`);
         }
     } catch (error) {
         console.error('Error toggling service:', error);
-        showNotification('Error updating service');
+        showNotification('Errore nell\'aggiornamento del servizio');
         await renderServicesTable(); // Revert UI
     }
 }
@@ -1254,13 +1251,13 @@ async function renderProductsTable() {
 
     if (!isLoading.products) {
         isLoading.products = true;
-        showLoading('productsTableBody', 'Loading products...');
+        showLoading('productsTableBody', 'Caricamento prodotti...');
     }
 
     try {
         const products = await Api.getProducts();
         const count = products.length;
-        countBadge.textContent = `${count} product${count !== 1 ? 's' : ''}`;
+        countBadge.textContent = `${count} prodott${count !== 1 ? 'i' : 'o'}`;
 
         tbody.innerHTML = '';
 
@@ -1269,8 +1266,8 @@ async function renderProductsTable() {
                 <tr class="empty-state-row">
                     <td colspan="5">
                         <div class="empty-state">
-                            <span class="empty-icon">🧴</span>
-                            <p>No products yet. Click "+ Add Product" to create one.</p>
+                            <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5ZM6 9h.01"/><path d="M22 5h-7l-6.29 6.29"/></svg></span>
+                            <p>Nessun prodotto. Clicca "+ Aggiungi Prodotto" per crearne uno.</p>
                         </div>
                     </td>
                 </tr>
@@ -1311,8 +1308,8 @@ async function renderProductsTable() {
             <tr class="empty-state-row">
                 <td colspan="5">
                     <div class="empty-state error">
-                        <span class="empty-icon">⚠️</span>
-                        <p>Error loading products.</p>
+                        <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9v4M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                        <p>Errore nel caricamento dei prodotti.</p>
                     </div>
                 </td>
             </tr>
@@ -1379,7 +1376,7 @@ async function addProduct() {
     const active = document.getElementById('productActive').checked;
 
     if (!name || isNaN(price)) {
-        alert('Please fill in required fields (Name and Price).');
+        alert('Compila i campi obbligatori (Nome e Prezzo).');
         return;
     }
 
@@ -1404,10 +1401,10 @@ async function addProduct() {
         document.getElementById('productModalOverlay').classList.remove('active');
         document.body.style.overflow = '';
 
-        showNotification(`Product "${name}" added successfully!`);
+        showNotification(`Prodotto "${name}" aggiunto con successo!`);
     } catch (error) {
         console.error('Error creating product:', error);
-        showNotification('Error creating product: ' + error.message);
+        showNotification('Errore nella creazione del prodotto: ' + error.message);
     }
 }
 
@@ -1416,11 +1413,11 @@ async function toggleProductActive(productId, isActive) {
         const product = await Api.toggleProductActive(productId, isActive);
         if (product) {
             updateAppointmentFormSelections();
-            showNotification(`${product.name} ${isActive ? 'activated' : 'deactivated'}`);
+            showNotification(`${product.name} ${isActive ? 'attivato' : 'disattivato'}`);
         }
     } catch (error) {
         console.error('Error toggling product:', error);
-        showNotification('Error updating product');
+        showNotification('Errore nell\'aggiornamento del prodotto');
         await renderProductsTable(); // Revert UI
     }
 }
@@ -1494,7 +1491,7 @@ function updateStylistsDropdown() {
 
     const stylists = AppStore.getActivestylists();
 
-    select.innerHTML = '<option value="">Select a stylist...</option>' +
+    select.innerHTML = '<option value="">Seleziona uno stilista...</option>' +
         stylists.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
 }
 
@@ -1537,7 +1534,7 @@ async function renderServiceRules() {
 
     if (!isLoading.rules) {
         isLoading.rules = true;
-        showLoadingDiv('serviceRulesList', 'Loading rules...');
+        showLoadingDiv('serviceRulesList', 'Caricamento regole...');
     }
 
     try {
@@ -1546,8 +1543,8 @@ async function renderServiceRules() {
         if (serviceRules.length === 0) {
             container.innerHTML = `
                 <div class="empty-rules">
-                    <span class="empty-icon">💡</span>
-                    <p>No service rules yet. Click "+ Add Rule" to create one.</p>
+                    <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></span>
+                    <p>Nessuna regola servizi. Clicca "+ Aggiungi Regola" per crearne una.</p>
                 </div>
             `;
             return;
@@ -1557,20 +1554,19 @@ async function renderServiceRules() {
             <div class="rule-card ${rule.active ? '' : 'inactive'}" data-rule-id="${rule.id}" data-rule-type="service">
                 <div class="rule-content">
                     <div class="rule-trigger">
-                        <span class="rule-label">When:</span>
+                        <span class="rule-label">Quando:</span>
                         <span class="rule-service">${rule.trigger}</span>
                     </div>
                     <div class="rule-arrow">→</div>
                     <div class="rule-suggestions">
-                        <span class="rule-label">Suggest:</span>
+                        <span class="rule-label">Suggerisci:</span>
                         <div class="rule-items">
                             ${rule.suggestions.map(s => `<span class="rule-item service-item">${s}</span>`).join('')}
                         </div>
                     </div>
                 </div>
                 <div class="rule-reason">
-                    <span class="reason-icon">💡</span>
-                    <span>${rule.reason || 'No reason specified'}</span>
+                    <span>${rule.reason || 'Nessuna motivazione specificata'}</span>
                 </div>
                 <div class="rule-actions">
                     <label class="toggle-switch">
@@ -1578,11 +1574,11 @@ async function renderServiceRules() {
                                onchange="toggleRuleActive(${rule.id}, 'service', this.checked)">
                         <span class="toggle-slider"></span>
                     </label>
-                    <button class="btn-icon" onclick="editRule(${rule.id}, 'service')" title="Edit">
-                        <span>✏️</span>
+                    <button class="btn-icon" onclick="editRule(${rule.id}, 'service')" title="Modifica">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                     </button>
-                    <button class="btn-icon btn-delete" onclick="deleteRule(${rule.id}, 'service')" title="Delete">
-                        <span>🗑️</span>
+                    <button class="btn-icon btn-delete" onclick="deleteRule(${rule.id}, 'service')" title="Elimina">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                     </button>
                 </div>
             </div>
@@ -1591,8 +1587,8 @@ async function renderServiceRules() {
         console.error('Error loading service rules:', error);
         container.innerHTML = `
             <div class="empty-rules error">
-                <span class="empty-icon">⚠️</span>
-                <p>Error loading rules.</p>
+                <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9v4M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                <p>Errore nel caricamento delle regole.</p>
             </div>
         `;
     }
@@ -1608,8 +1604,8 @@ async function renderProductRules() {
         if (productRules.length === 0) {
             container.innerHTML = `
                 <div class="empty-rules">
-                    <span class="empty-icon">🧴</span>
-                    <p>No product rules yet. Click "+ Add Rule" to create one.</p>
+                    <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5ZM6 9h.01"/><path d="M22 5h-7l-6.29 6.29"/></svg></span>
+                    <p>Nessuna regola prodotti. Clicca "+ Aggiungi Regola" per crearne una.</p>
                 </div>
             `;
             return;
@@ -1619,20 +1615,19 @@ async function renderProductRules() {
             <div class="rule-card ${rule.active ? '' : 'inactive'}" data-rule-id="${rule.id}" data-rule-type="product">
                 <div class="rule-content">
                     <div class="rule-trigger">
-                        <span class="rule-label">When:</span>
+                        <span class="rule-label">Quando:</span>
                         <span class="rule-service">${rule.trigger}</span>
                     </div>
                     <div class="rule-arrow">→</div>
                     <div class="rule-suggestions">
-                        <span class="rule-label">Suggest:</span>
+                        <span class="rule-label">Suggerisci:</span>
                         <div class="rule-items">
                             ${rule.suggestions.map(s => `<span class="rule-item product-item">${s}</span>`).join('')}
                         </div>
                     </div>
                 </div>
                 <div class="rule-reason">
-                    <span class="reason-icon">💡</span>
-                    <span>${rule.reason || 'No reason specified'}</span>
+                    <span>${rule.reason || 'Nessuna motivazione specificata'}</span>
                 </div>
                 <div class="rule-actions">
                     <label class="toggle-switch">
@@ -1640,11 +1635,11 @@ async function renderProductRules() {
                                onchange="toggleRuleActive(${rule.id}, 'product', this.checked)">
                         <span class="toggle-slider"></span>
                     </label>
-                    <button class="btn-icon" onclick="editRule(${rule.id}, 'product')" title="Edit">
-                        <span>✏️</span>
+                    <button class="btn-icon" onclick="editRule(${rule.id}, 'product')" title="Modifica">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                     </button>
-                    <button class="btn-icon btn-delete" onclick="deleteRule(${rule.id}, 'product')" title="Delete">
-                        <span>🗑️</span>
+                    <button class="btn-icon btn-delete" onclick="deleteRule(${rule.id}, 'product')" title="Elimina">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                     </button>
                 </div>
             </div>
@@ -1653,8 +1648,8 @@ async function renderProductRules() {
         console.error('Error loading product rules:', error);
         container.innerHTML = `
             <div class="empty-rules error">
-                <span class="empty-icon">⚠️</span>
-                <p>Error loading rules.</p>
+                <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9v4M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                <p>Errore nel caricamento delle regole.</p>
             </div>
         `;
     }
@@ -1692,8 +1687,8 @@ function openRuleModal(type, ruleId = null) {
     const typeInput = document.getElementById('ruleType');
     const idInput = document.getElementById('ruleId');
     const triggerSelect = document.getElementById('ruleTrigger');
-    const suggestionsGrid = document.getElementById('ruleSuggestionsGrid');
-    const suggestionsLabel = document.getElementById('ruleSuggestionsLabel');
+    const servicesGrid = document.getElementById('ruleSuggestionsServices');
+    const productsGrid = document.getElementById('ruleSuggestionsProducts');
     const reasonInput = document.getElementById('ruleReason');
     const activeCheckbox = document.getElementById('ruleActive');
     const saveBtn = document.getElementById('saveRuleBtn');
@@ -1703,50 +1698,58 @@ function openRuleModal(type, ruleId = null) {
 
     typeInput.value = type;
 
-    triggerSelect.innerHTML = '<option value="">Select a service...</option>' +
+    // Popola il trigger con i servizi attivi
+    triggerSelect.innerHTML = '<option value="">Seleziona un servizio...</option>' +
         activeServices.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
 
-    if (type === 'service') {
-        suggestionsLabel.textContent = 'Suggest these services:';
-        suggestionsGrid.innerHTML = activeServices.map(s => `
-            <label class="checkbox-item">
-                <input type="checkbox" name="suggestions" value="${s.name}">
-                <span>${s.name}</span>
-            </label>
-        `).join('');
-    } else {
-        suggestionsLabel.textContent = 'Suggest these products:';
-        suggestionsGrid.innerHTML = activeProducts.map(p => `
-            <label class="checkbox-item">
-                <input type="checkbox" name="suggestions" value="${p.name}">
-                <span>${p.name}</span>
-            </label>
-        `).join('');
-    }
+    // Popola sempre entrambe le liste di suggerimenti
+    servicesGrid.innerHTML = activeServices.map(s => `
+        <label class="checkbox-item">
+            <input type="checkbox" name="serviceSuggestions" value="${s.name}">
+            <span>${s.name}</span>
+        </label>
+    `).join('');
+
+    productsGrid.innerHTML = activeProducts.map(p => `
+        <label class="checkbox-item">
+            <input type="checkbox" name="productSuggestions" value="${p.name}">
+            <span>${p.name}</span>
+        </label>
+    `).join('');
 
     if (ruleId) {
-        const rule = type === 'service'
-            ? AppStore.getServiceRule(ruleId)
-            : AppStore.getProductRule(ruleId);
+        // Carica i dati della regola esistente
+        const serviceRule = AppStore.getServiceRule(ruleId);
+        const productRule = AppStore.getProductRule(ruleId);
+        const rule = type === 'service' ? serviceRule : productRule;
 
         if (rule) {
-            titleEl.textContent = 'Edit Rule';
-            saveBtn.textContent = 'Update Rule';
+            titleEl.textContent = 'Modifica Regola';
+            saveBtn.textContent = 'Aggiorna Regola';
             idInput.value = rule.id;
             triggerSelect.value = rule.trigger;
             reasonInput.value = rule.reason || '';
             activeCheckbox.checked = rule.active;
 
-            rule.suggestions.forEach(suggestion => {
-                const checkbox = suggestionsGrid.querySelector(`input[value="${suggestion}"]`);
-                if (checkbox) checkbox.checked = true;
-            });
+            // Seleziona i suggerimenti appropriati
+            if (type === 'service' && serviceRule) {
+                serviceRule.suggestions.forEach(suggestion => {
+                    const checkbox = servicesGrid.querySelector(`input[value="${suggestion}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+            if (type === 'product' && productRule) {
+                productRule.suggestions.forEach(suggestion => {
+                    const checkbox = productsGrid.querySelector(`input[value="${suggestion}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
 
             AppStore.setCurrentEditingRule({ id: ruleId, type });
         }
     } else {
-        titleEl.textContent = type === 'service' ? 'Add Service Rule' : 'Add Product Rule';
-        saveBtn.textContent = 'Save Rule';
+        titleEl.textContent = 'Aggiungi Regola';
+        saveBtn.textContent = 'Salva Regola';
         idInput.value = '';
         triggerSelect.value = '';
         reasonInput.value = '';
@@ -1773,49 +1776,51 @@ async function saveRule() {
     const reason = document.getElementById('ruleReason').value.trim();
     const active = document.getElementById('ruleActive').checked;
 
-    const suggestionCheckboxes = document.querySelectorAll('#ruleSuggestionsGrid input[name="suggestions"]:checked');
-    const suggestions = Array.from(suggestionCheckboxes).map(cb => cb.value);
+    // Leggi i suggerimenti da entrambe le sezioni
+    const serviceCheckboxes = document.querySelectorAll('#ruleSuggestionsServices input[name="serviceSuggestions"]:checked');
+    const productCheckboxes = document.querySelectorAll('#ruleSuggestionsProducts input[name="productSuggestions"]:checked');
+    const serviceSuggestions = Array.from(serviceCheckboxes).map(cb => cb.value);
+    const productSuggestions = Array.from(productCheckboxes).map(cb => cb.value);
 
     if (!trigger) {
-        alert('Please select a trigger service.');
+        alert('Seleziona un servizio di attivazione.');
         return;
     }
 
-    if (suggestions.length === 0) {
-        alert('Please select at least one suggestion.');
+    if (serviceSuggestions.length === 0 && productSuggestions.length === 0) {
+        alert('Seleziona almeno un servizio o prodotto da suggerire.');
         return;
     }
 
     try {
         if (idInput) {
-            // Update existing rule
-            if (type === 'service') {
-                await Api.updateServiceRule(parseInt(idInput), { trigger, suggestions, reason, active });
-            } else {
-                await Api.updateProductRule(parseInt(idInput), { trigger, suggestions, reason, active });
+            // Aggiorna regola esistente
+            if (type === 'service' && serviceSuggestions.length > 0) {
+                await Api.updateServiceRule(parseInt(idInput), { trigger, suggestions: serviceSuggestions, reason, active });
             }
-            showNotification('Rule updated successfully!');
+            if (type === 'product' && productSuggestions.length > 0) {
+                await Api.updateProductRule(parseInt(idInput), { trigger, suggestions: productSuggestions, reason, active });
+            }
+            showNotification('Regola aggiornata con successo!');
         } else {
-            // Create new rule
-            if (type === 'service') {
-                await Api.createServiceRule({ trigger, suggestions, reason, active });
-            } else {
-                await Api.createProductRule({ trigger, suggestions, reason, active });
+            // Crea nuove regole per servizi e/o prodotti
+            if (serviceSuggestions.length > 0) {
+                await Api.createServiceRule({ trigger, suggestions: serviceSuggestions, reason, active });
             }
-            showNotification('Rule created successfully!');
+            if (productSuggestions.length > 0) {
+                await Api.createProductRule({ trigger, suggestions: productSuggestions, reason, active });
+            }
+            showNotification('Regola creata con successo!');
         }
 
-        // Re-render and close
-        if (type === 'service') {
-            await renderServiceRules();
-        } else {
-            await renderProductRules();
-        }
+        // Re-render entrambe le liste e chiudi
+        await renderServiceRules();
+        await renderProductRules();
 
         closeRuleModal();
     } catch (error) {
         console.error('Error saving rule:', error);
-        showNotification('Error saving rule: ' + error.message);
+        showNotification('Errore nel salvataggio della regola: ' + error.message);
     }
 }
 
@@ -1824,7 +1829,7 @@ function editRule(ruleId, type) {
 }
 
 async function deleteRule(ruleId, type) {
-    if (!confirm('Are you sure you want to delete this rule?')) return;
+    if (!confirm('Sei sicuro di voler eliminare questa regola?')) return;
 
     try {
         if (type === 'service') {
@@ -1835,10 +1840,10 @@ async function deleteRule(ruleId, type) {
             await renderProductRules();
         }
 
-        showNotification('Rule deleted');
+        showNotification('Regola eliminata');
     } catch (error) {
         console.error('Error deleting rule:', error);
-        showNotification('Error deleting rule');
+        showNotification('Errore nell\'eliminazione della regola');
     }
 }
 
@@ -1849,10 +1854,10 @@ async function toggleRuleActive(ruleId, type, isActive) {
         } else {
             await Api.toggleProductRuleActive(ruleId, isActive);
         }
-        showNotification(`Rule ${isActive ? 'activated' : 'deactivated'}`);
+        showNotification(`Regola ${isActive ? 'attivata' : 'disattivata'}`);
     } catch (error) {
         console.error('Error toggling rule:', error);
-        showNotification('Error updating rule');
+        showNotification('Errore nell\'aggiornamento della regola');
         // Revert UI
         if (type === 'service') {
             await renderServiceRules();
@@ -1974,12 +1979,12 @@ function renderRevenueSplitChart(allAppointments, services, products) {
             <div class="split-legend">
                 <div class="legend-item">
                     <span class="legend-color services"></span>
-                    <span class="legend-label">Services</span>
+                    <span class="legend-label">Servizi</span>
                     <span class="legend-value">€${serviceRevenue.toLocaleString()} (${servicePercent}%)</span>
                 </div>
                 <div class="legend-item">
                     <span class="legend-color products"></span>
-                    <span class="legend-label">Products</span>
+                    <span class="legend-label">Prodotti</span>
                     <span class="legend-value">€${productRevenue.toLocaleString()} (${productPercent}%)</span>
                 </div>
             </div>
@@ -1998,7 +2003,7 @@ function renderCrossSellTrendChart(allAppointments) {
         date.setDate(date.getDate() - i);
         days.push({
             date: date.toISOString().split('T')[0],
-            label: date.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' })
+            label: date.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric' })
         });
     }
 
@@ -2018,7 +2023,7 @@ function renderCrossSellTrendChart(allAppointments) {
         <div class="trend-chart">
             <div class="trend-bars">
                 ${dailyData.map(d => `
-                    <div class="trend-bar-wrapper" title="${d.label}: ${d.count} cross-sells">
+                    <div class="trend-bar-wrapper" title="${d.label}: ${d.count} cross-sell">
                         <div class="trend-bar" style="height: ${maxCount > 0 ? (d.count / maxCount) * 100 : 0}%">
                             <span class="trend-value">${d.count}</span>
                         </div>
@@ -2091,15 +2096,15 @@ function renderCrossSellCombosTable(allAppointments, services, products) {
         .sort((a, b) => b[1].count - a[1].count)
         .slice(0, 8);
 
-    countBadge.textContent = `${sortedCombos.length} combos`;
+    countBadge.textContent = `${sortedCombos.length} combo`;
 
     if (sortedCombos.length === 0) {
         tbody.innerHTML = `
             <tr class="empty-state-row">
                 <td colspan="3">
                     <div class="empty-state">
-                        <span class="empty-icon">📊</span>
-                        <p>No cross-sell data yet.</p>
+                        <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg></span>
+                        <p>Nessun dato cross-sell disponibile.</p>
                     </div>
                 </td>
             </tr>
@@ -2119,7 +2124,7 @@ function renderCrossSellCombosTable(allAppointments, services, products) {
                 <span class="combo-count">${data.count}</span>
             </td>
             <td>
-                <span class="combo-revenue">€${data.revenue.toLocaleString()}</span>
+                <span class="combo-revenue">€${data.revenue.toLocaleString('it-IT')}</span>
             </td>
         </tr>
     `).join('');
@@ -2135,15 +2140,15 @@ function renderRecsPerformanceTable(tracking) {
         .sort((a, b) => b[1].shown - a[1].shown)
         .slice(0, 10);
 
-    countBadge.textContent = `${sortedRecs.length} items`;
+    countBadge.textContent = `${sortedRecs.length} elementi`;
 
     if (sortedRecs.length === 0) {
         tbody.innerHTML = `
             <tr class="empty-state-row">
                 <td colspan="5">
                     <div class="empty-state">
-                        <span class="empty-icon">💡</span>
-                        <p>No recommendation data yet.</p>
+                        <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></span>
+                        <p>Nessun dato sulle raccomandazioni disponibile.</p>
                     </div>
                 </td>
             </tr>
@@ -2271,7 +2276,7 @@ async function loadOutreachSuggestions() {
         container.innerHTML = `
             <div class="loading-state">
                 <span class="loading-spinner"></span>
-                <span>Loading suggestions...</span>
+                <span>Caricamento suggerimenti...</span>
             </div>
         `;
     }
@@ -2286,8 +2291,8 @@ async function loadOutreachSuggestions() {
         console.error('Error loading outreach suggestions:', error);
         container.innerHTML = `
             <div class="empty-state error">
-                <span class="empty-icon">⚠️</span>
-                <p>Fehler beim Laden der Vorschläge.</p>
+                <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9v4M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                <p>Errore nel caricamento dei suggerimenti.</p>
             </div>
         `;
     }
@@ -2307,8 +2312,8 @@ function renderOutreachSuggestions() {
     if (suggestions.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
-                <span class="empty-icon">📧</span>
-                <p>Keine Vorschläge vorhanden. Klicken Sie auf "Vorschläge generieren" um E-Mail-Vorschläge zu erstellen.</p>
+                <span class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg></span>
+                <p>Nessun suggerimento disponibile. Clicca "Genera Suggerimenti" per creare suggerimenti email.</p>
             </div>
         `;
         return;
@@ -2317,9 +2322,9 @@ function renderOutreachSuggestions() {
     container.innerHTML = suggestions.map(suggestion => {
         const typeLabels = {
             'win_back': 'Win-back',
-            'appointment_reminder': 'Erinnerung',
-            'product_recommendation': 'Produktempfehlung',
-            'promotion': 'Promotion'
+            'appointment_reminder': 'Promemoria',
+            'product_recommendation': 'Raccomandazione Prodotto',
+            'promotion': 'Promozione'
         };
 
         const excerpt = suggestion.content
@@ -2343,8 +2348,8 @@ function renderOutreachSuggestions() {
                     <div class="suggestion-excerpt">${excerpt}</div>
                 </div>
                 <div class="suggestion-actions">
-                    <button class="btn-preview" onclick="openEmailPreview(${suggestion.id})">Vorschau & Senden</button>
-                    <button class="btn-dismiss-suggestion" onclick="quickDismissSuggestion(${suggestion.id})">Verwerfen</button>
+                    <button class="btn-preview" onclick="openEmailPreview(${suggestion.id})">Anteprima e Invia</button>
+                    <button class="btn-dismiss-suggestion" onclick="quickDismissSuggestion(${suggestion.id})">Ignora</button>
                 </div>
             </div>
         `;
@@ -2354,18 +2359,18 @@ function renderOutreachSuggestions() {
 async function generateSuggestions() {
     const btn = document.getElementById('generateSuggestions');
     const originalText = btn.textContent;
-    btn.textContent = 'Generiere...';
+    btn.textContent = 'Generando...';
     btn.disabled = true;
 
     try {
         const result = await Api.generateOutreachSuggestions();
 
-        showNotification(result.message || `${result.generated} Vorschläge generiert`);
+        showNotification(result.message || `${result.generated} suggerimenti generati`);
 
         await loadOutreachData();
     } catch (error) {
         console.error('Error generating suggestions:', error);
-        showNotification('Fehler beim Generieren der Vorschläge');
+        showNotification('Errore nella generazione dei suggerimenti');
     } finally {
         btn.textContent = originalText;
         btn.disabled = false;
@@ -2380,9 +2385,9 @@ async function openEmailPreview(suggestionId) {
 
         const typeLabels = {
             'win_back': 'Win-back',
-            'appointment_reminder': 'Erinnerung',
-            'product_recommendation': 'Produktempfehlung',
-            'promotion': 'Promotion'
+            'appointment_reminder': 'Promemoria',
+            'product_recommendation': 'Raccomandazione Prodotto',
+            'promotion': 'Promozione'
         };
 
         document.getElementById('emailPreviewTo').textContent = suggestion.clientName;
@@ -2400,7 +2405,7 @@ async function openEmailPreview(suggestionId) {
         document.body.style.overflow = 'hidden';
     } catch (error) {
         console.error('Error loading suggestion:', error);
-        showNotification('Fehler beim Laden des Vorschlags');
+        showNotification('Errore nel caricamento del suggerimento');
     }
 }
 
@@ -2417,13 +2422,13 @@ async function sendCurrentSuggestion() {
     try {
         await Api.sendOutreachSuggestion(outreachState.currentSuggestionId);
 
-        showNotification('E-Mail als gesendet markiert');
+        showNotification('Email segnata come inviata');
         closeEmailPreviewModal();
 
         await loadOutreachData();
     } catch (error) {
         console.error('Error sending suggestion:', error);
-        showNotification('Fehler beim Markieren als gesendet');
+        showNotification('Errore nel segnare come inviata');
     }
 }
 
@@ -2433,13 +2438,13 @@ async function dismissCurrentSuggestion() {
     try {
         await Api.dismissOutreachSuggestion(outreachState.currentSuggestionId);
 
-        showNotification('Vorschlag verworfen');
+        showNotification('Suggerimento ignorato');
         closeEmailPreviewModal();
 
         await loadOutreachData();
     } catch (error) {
         console.error('Error dismissing suggestion:', error);
-        showNotification('Fehler beim Verwerfen');
+        showNotification('Errore nell\'ignorare il suggerimento');
     }
 }
 
@@ -2447,12 +2452,12 @@ async function quickDismissSuggestion(suggestionId) {
     try {
         await Api.dismissOutreachSuggestion(suggestionId);
 
-        showNotification('Vorschlag verworfen');
+        showNotification('Suggerimento ignorato');
 
         await loadOutreachData();
     } catch (error) {
         console.error('Error dismissing suggestion:', error);
-        showNotification('Fehler beim Verwerfen');
+        showNotification('Errore nell\'ignorare il suggerimento');
     }
 }
 
@@ -2468,7 +2473,7 @@ async function openOutreachSettingsModal() {
         document.body.style.overflow = 'hidden';
     } catch (error) {
         console.error('Error loading settings:', error);
-        showNotification('Fehler beim Laden der Einstellungen');
+        showNotification('Errore nel caricamento delle impostazioni');
     }
 }
 
@@ -2488,10 +2493,10 @@ async function saveOutreachSettings() {
             reminderDaysBefore
         });
 
-        showNotification('Einstellungen gespeichert');
+        showNotification('Impostazioni salvate');
         closeOutreachSettingsModal();
     } catch (error) {
         console.error('Error saving settings:', error);
-        showNotification('Fehler beim Speichern der Einstellungen');
+        showNotification('Errore nel salvataggio delle impostazioni');
     }
 }

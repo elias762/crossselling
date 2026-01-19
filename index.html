@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salon Cross-Selling Assistant</title>
+    <title>SalonAssist - Gestione Cross-Selling</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
@@ -13,68 +13,67 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <span class="logo-icon">✂</span>
-                    <span class="logo-text">SalonAssist</span>
+                    <img src="assets/logo.png" alt="EE Partners" class="logo-image">
                 </div>
             </div>
             <nav class="sidebar-nav">
                 <ul>
                     <li class="nav-item active">
                         <a href="#dashboard">
-                            <span class="nav-icon">📊</span>
+                            <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
                             <span class="nav-text">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#appointments">
-                            <span class="nav-icon">📅</span>
-                            <span class="nav-text">Appointments</span>
+                            <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                            <span class="nav-text">Appuntamenti</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#clients">
-                            <span class="nav-icon">👥</span>
-                            <span class="nav-text">Clients</span>
+                            <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                            <span class="nav-text">Clienti</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#services">
-                            <span class="nav-icon">💇</span>
-                            <span class="nav-text">Services</span>
+                            <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+                            <span class="nav-text">Servizi</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#products">
-                            <span class="nav-icon">🧴</span>
-                            <span class="nav-text">Products</span>
+                            <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+                            <span class="nav-text">Prodotti</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#recommendations">
-                            <span class="nav-icon">💡</span>
-                            <span class="nav-text">Recommendations</span>
+                            <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
+                            <span class="nav-text">Raccomandazioni</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#analytics">
-                            <span class="nav-icon">📈</span>
-                            <span class="nav-text">Analytics</span>
+                            <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                            <span class="nav-text">Statistiche</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#outreach">
-                            <span class="nav-icon">📧</span>
-                            <span class="nav-text">Outreach</span>
+                            <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+                            <span class="nav-text">Comunicazioni</span>
                         </a>
                     </li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
                 <div class="user-info">
-                    <div class="user-avatar">MK</div>
+                    <div class="user-avatar">MR</div>
                     <div class="user-details">
-                        <span class="user-name">Maria Klein</span>
-                        <span class="user-role">Salon Manager</span>
+                        <span class="user-name">Maria Rossi</span>
+                        <span class="user-role">Responsabile Salone</span>
                     </div>
                 </div>
             </div>
@@ -87,48 +86,56 @@
                 <!-- Header -->
                 <header class="main-header">
                     <div class="header-left">
-                        <h1>Salon Cross-Selling Assistant</h1>
-                        <p class="subline">Track services, suggest add-ons, boost revenue.</p>
+                        <h1>Dashboard</h1>
+                        <p class="subline">Panoramica delle performance del salone</p>
                     </div>
                     <div class="header-right">
                         <div class="search-box">
-                            <input type="text" placeholder="Search clients, services...">
+                            <input type="text" placeholder="Cerca clienti, servizi...">
                         </div>
-                        <button class="btn-primary">+ New Appointment</button>
+                        <button class="btn-primary">Nuovo Appuntamento</button>
                     </div>
                 </header>
 
                 <!-- KPI Cards -->
                 <section class="kpi-section">
                 <div class="kpi-card">
-                    <div class="kpi-icon blue">💰</div>
+                    <div class="kpi-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
                     <div class="kpi-content">
                         <span class="kpi-value">78 €</span>
-                        <span class="kpi-label">Average Ticket Size</span>
+                        <span class="kpi-label">Scontrino Medio</span>
                     </div>
                     <div class="kpi-trend positive">+12%</div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-icon green">🎯</div>
+                    <div class="kpi-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
                     <div class="kpi-content">
                         <span class="kpi-value">34%</span>
-                        <span class="kpi-label">Cross-Sell Rate</span>
+                        <span class="kpi-label">Tasso Cross-Sell</span>
                     </div>
                     <div class="kpi-trend positive">+8%</div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-icon purple">🛍️</div>
+                    <div class="kpi-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    </div>
                     <div class="kpi-content">
                         <span class="kpi-value">22%</span>
-                        <span class="kpi-label">Retail Share</span>
+                        <span class="kpi-label">Quota Retail</span>
                     </div>
                     <div class="kpi-trend positive">+5%</div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-icon orange">✅</div>
+                    <div class="kpi-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
                     <div class="kpi-content">
                         <span class="kpi-value">41</span>
-                        <span class="kpi-label">Recommendations Accepted</span>
+                        <span class="kpi-label">Suggerimenti Accettati</span>
                     </div>
                     <div class="kpi-trend positive">+15</div>
                 </div>
@@ -139,17 +146,17 @@
                 <!-- Today's Appointments -->
                 <section class="card appointments-card">
                     <div class="card-header">
-                        <h2>Today's Appointments</h2>
-                        <a href="#" class="view-all">View All →</a>
+                        <h2>Appuntamenti di Oggi</h2>
+                        <a href="#appointments" class="view-all">Vedi tutti</a>
                     </div>
                     <table class="appointments-table">
                         <thead>
                             <tr>
-                                <th>Client Name</th>
-                                <th>Services</th>
-                                <th>Stylist</th>
-                                <th>Time</th>
-                                <th>Status</th>
+                                <th>Cliente</th>
+                                <th>Servizi</th>
+                                <th>Operatore</th>
+                                <th>Orario</th>
+                                <th>Stato</th>
                             </tr>
                         </thead>
                         <tbody id="dashboardAppointmentsBody">
@@ -161,49 +168,49 @@
                 <!-- Top Cross-Sell Combos -->
                 <section class="card combos-card">
                     <div class="card-header">
-                        <h2>Top Cross-Sell Combos</h2>
-                        <span class="badge">This Month</span>
+                        <h2>Migliori Abbinamenti</h2>
+                        <span class="badge">Questo Mese</span>
                     </div>
                     <ul class="combo-list">
                         <li class="combo-item">
                             <div class="combo-rank">1</div>
                             <div class="combo-details">
-                                <span class="combo-name">Beard Trim → Beard Oil</span>
-                                <span class="combo-stats">72 times sold</span>
+                                <span class="combo-name">Taglio Barba + Olio Barba</span>
+                                <span class="combo-stats">72 vendite</span>
                             </div>
-                            <div class="combo-revenue">+18 € avg</div>
+                            <div class="combo-revenue">+18 € media</div>
                         </li>
                         <li class="combo-item">
                             <div class="combo-rank">2</div>
                             <div class="combo-details">
-                                <span class="combo-name">Skin Fade → Matte Styling Clay</span>
-                                <span class="combo-stats">58 times sold</span>
+                                <span class="combo-name">Taglio Capelli + Cera Opaca</span>
+                                <span class="combo-stats">58 vendite</span>
                             </div>
-                            <div class="combo-revenue">+24 € avg</div>
+                            <div class="combo-revenue">+24 € media</div>
                         </li>
                         <li class="combo-item">
                             <div class="combo-rank">3</div>
                             <div class="combo-details">
-                                <span class="combo-name">Balayage → Olaplex Treatment</span>
-                                <span class="combo-stats">45 times sold</span>
+                                <span class="combo-name">Balayage + Trattamento Olaplex</span>
+                                <span class="combo-stats">45 vendite</span>
                             </div>
-                            <div class="combo-revenue">+42 € avg</div>
+                            <div class="combo-revenue">+42 € media</div>
                         </li>
                         <li class="combo-item">
                             <div class="combo-rank">4</div>
                             <div class="combo-details">
-                                <span class="combo-name">Color → Deep Conditioning Mask</span>
-                                <span class="combo-stats">39 times sold</span>
+                                <span class="combo-name">Colore + Maschera Idratante</span>
+                                <span class="combo-stats">39 vendite</span>
                             </div>
-                            <div class="combo-revenue">+28 € avg</div>
+                            <div class="combo-revenue">+28 € media</div>
                         </li>
                         <li class="combo-item">
                             <div class="combo-rank">5</div>
                             <div class="combo-details">
-                                <span class="combo-name">Hot Towel Shave → Aftershave Balm</span>
-                                <span class="combo-stats">31 times sold</span>
+                                <span class="combo-name">Rasatura + Balsamo Dopobarba</span>
+                                <span class="combo-stats">31 vendite</span>
                             </div>
-                            <div class="combo-revenue">+15 € avg</div>
+                            <div class="combo-revenue">+15 € media</div>
                         </li>
                     </ul>
                 </section>
@@ -214,38 +221,38 @@
             <div id="appointments" class="page">
                 <header class="main-header">
                     <div class="header-left">
-                        <h1>Appointments</h1>
-                        <p class="subline">Track services and sales per visit.</p>
+                        <h1>Appuntamenti</h1>
+                        <p class="subline">Gestisci servizi e vendite per ogni visita</p>
                     </div>
                     <div class="header-right">
-                        <button class="btn-primary" id="openAppointmentModal">+ New Appointment</button>
+                        <button class="btn-primary" id="openAppointmentModal">Nuovo Appuntamento</button>
                     </div>
                 </header>
 
                 <!-- Appointments List -->
                 <section class="card">
                     <div class="card-header">
-                        <h2>Appointments List</h2>
-                        <span class="badge" id="appointmentCount">0 appointments</span>
+                        <h2>Elenco Appuntamenti</h2>
+                        <span class="badge" id="appointmentCount">0 appuntamenti</span>
                     </div>
                     <div class="table-container">
                         <table class="appointments-table" id="appointmentsTable">
                             <thead>
                                 <tr>
-                                    <th>Date & Time</th>
-                                    <th>Client</th>
-                                    <th>Stylist</th>
-                                    <th>Services</th>
-                                    <th>Products Sold</th>
-                                    <th>Status</th>
+                                    <th>Data e Ora</th>
+                                    <th>Cliente</th>
+                                    <th>Operatore</th>
+                                    <th>Servizi</th>
+                                    <th>Prodotti Venduti</th>
+                                    <th>Stato</th>
                                 </tr>
                             </thead>
                             <tbody id="appointmentsTableBody">
                                 <tr class="empty-state-row">
                                     <td colspan="6">
                                         <div class="empty-state">
-                                            <span class="empty-icon">📅</span>
-                                            <p>No appointments yet. Click "+ New Appointment" to create one.</p>
+                                            <span class="empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                                            <p>Nessun appuntamento. Clicca "Nuovo Appuntamento" per crearne uno.</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -259,142 +266,57 @@
             <div class="modal-overlay" id="appointmentModalOverlay">
                 <div class="modal-drawer">
                     <div class="modal-header">
-                        <h2>New Appointment</h2>
+                        <h2>Nuovo Appuntamento</h2>
                         <button class="modal-close" id="closeAppointmentModal">&times;</button>
                     </div>
                     <form id="appointmentForm" class="modal-body">
                         <div class="form-group">
-                            <label for="appointmentClient">Client</label>
+                            <label for="appointmentClient">Cliente</label>
                             <select id="appointmentClient" required>
-                                <option value="">Select a client...</option>
-                                <option value="Client 001">Client 001</option>
-                                <option value="Client 002">Client 002</option>
-                                <option value="Client 003">Client 003</option>
-                                <option value="Client 004">Client 004</option>
-                                <option value="Client 005">Client 005</option>
-                                <option value="Client 006">Client 006</option>
+                                <option value="">Seleziona un cliente...</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="appointmentStylist">Stylist</label>
+                            <label for="appointmentStylist">Operatore</label>
                             <select id="appointmentStylist" required>
-                                <option value="">Select a stylist...</option>
-                                <!-- Populated dynamically from AppStore -->
+                                <option value="">Seleziona un operatore...</option>
                             </select>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="appointmentDate">Date</label>
+                                <label for="appointmentDate">Data</label>
                                 <input type="date" id="appointmentDate" required>
                             </div>
                             <div class="form-group">
-                                <label for="appointmentTime">Time</label>
+                                <label for="appointmentTime">Ora</label>
                                 <input type="time" id="appointmentTime" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label>Services</label>
+                            <label>Servizi</label>
                             <div class="checkbox-grid" id="servicesCheckboxes">
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="services" value="Haircut">
-                                    <span>Haircut</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="services" value="Hair Color">
-                                    <span>Hair Color</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="services" value="Balayage">
-                                    <span>Balayage</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="services" value="Beard Trim">
-                                    <span>Beard Trim</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="services" value="Hot Towel Shave">
-                                    <span>Hot Towel Shave</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="services" value="Facial Treatment">
-                                    <span>Facial Treatment</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="services" value="Manicure">
-                                    <span>Manicure</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="services" value="Pedicure">
-                                    <span>Pedicure</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="services" value="Deep Conditioning">
-                                    <span>Deep Conditioning</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="services" value="Scalp Treatment">
-                                    <span>Scalp Treatment</span>
-                                </label>
+                                <!-- Populated dynamically -->
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label>Products Sold</label>
+                            <label>Prodotti Venduti</label>
                             <div class="checkbox-grid" id="productsCheckboxes">
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="products" value="Matte Styling Clay">
-                                    <span>Matte Styling Clay</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="products" value="Hair Serum">
-                                    <span>Hair Serum</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="products" value="Beard Oil">
-                                    <span>Beard Oil</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="products" value="Beard Balm">
-                                    <span>Beard Balm</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="products" value="Aftershave Balm">
-                                    <span>Aftershave Balm</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="products" value="Face Moisturizer">
-                                    <span>Face Moisturizer</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="products" value="Shampoo">
-                                    <span>Shampoo</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="products" value="Conditioner">
-                                    <span>Conditioner</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="products" value="Nail Polish">
-                                    <span>Nail Polish</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="products" value="Cuticle Oil">
-                                    <span>Cuticle Oil</span>
-                                </label>
+                                <!-- Populated dynamically -->
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="appointmentNotes">Notes (optional)</label>
-                            <textarea id="appointmentNotes" placeholder="Add any notes about this appointment..." rows="3"></textarea>
+                            <label for="appointmentNotes">Note (opzionale)</label>
+                            <textarea id="appointmentNotes" placeholder="Aggiungi note per questo appuntamento..." rows="3"></textarea>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn-secondary" id="cancelAppointment">Cancel</button>
-                            <button type="submit" class="btn-primary">Create Appointment</button>
+                            <button type="button" class="btn-secondary" id="cancelAppointment">Annulla</button>
+                            <button type="submit" class="btn-primary">Crea Appuntamento</button>
                         </div>
                     </form>
                 </div>
@@ -405,13 +327,13 @@
                 <header class="main-header">
                     <div class="header-left">
                         <button class="btn-back" id="backToAppointments">
-                            <span>←</span> Back to Appointments
+                            <span>&larr;</span> Torna agli Appuntamenti
                         </button>
-                        <h1>Appointment Details</h1>
+                        <h1>Dettagli Appuntamento</h1>
                     </div>
                     <div class="header-right">
-                        <button class="btn-secondary" id="markNoShow">Mark as No-show</button>
-                        <button class="btn-success" id="markCompleted">Mark as Completed</button>
+                        <button class="btn-secondary" id="markNoShow">Segna Non Presentato</button>
+                        <button class="btn-success" id="markCompleted">Segna Completato</button>
                     </div>
                 </header>
 
@@ -420,46 +342,46 @@
                     <div class="details-main">
                         <section class="card details-card">
                             <div class="card-header">
-                                <h2>Appointment Information</h2>
-                                <span class="status scheduled" id="detailsStatus">Scheduled</span>
+                                <h2>Informazioni Appuntamento</h2>
+                                <span class="status scheduled" id="detailsStatus">Programmato</span>
                             </div>
                             <div class="details-content">
                                 <div class="details-grid">
                                     <div class="detail-item">
-                                        <span class="detail-label">Client</span>
+                                        <span class="detail-label">Cliente</span>
                                         <span class="detail-value" id="detailsClient">-</span>
                                     </div>
                                     <div class="detail-item">
-                                        <span class="detail-label">Stylist</span>
+                                        <span class="detail-label">Operatore</span>
                                         <span class="detail-value" id="detailsStylist">-</span>
                                     </div>
                                     <div class="detail-item">
-                                        <span class="detail-label">Date</span>
+                                        <span class="detail-label">Data</span>
                                         <span class="detail-value" id="detailsDate">-</span>
                                     </div>
                                     <div class="detail-item">
-                                        <span class="detail-label">Time</span>
+                                        <span class="detail-label">Ora</span>
                                         <span class="detail-value" id="detailsTime">-</span>
                                     </div>
                                 </div>
 
                                 <div class="detail-section">
-                                    <span class="detail-label">Services</span>
+                                    <span class="detail-label">Servizi</span>
                                     <div class="tags-container" id="detailsServices">
                                         <span class="service-tag">-</span>
                                     </div>
                                 </div>
 
                                 <div class="detail-section">
-                                    <span class="detail-label">Products Sold</span>
+                                    <span class="detail-label">Prodotti Venduti</span>
                                     <div class="tags-container" id="detailsProducts">
-                                        <span class="no-products">None</span>
+                                        <span class="no-products">Nessuno</span>
                                     </div>
                                 </div>
 
                                 <div class="detail-section">
-                                    <span class="detail-label">Notes</span>
-                                    <p class="detail-notes" id="detailsNotes">No notes added.</p>
+                                    <span class="detail-label">Note</span>
+                                    <p class="detail-notes" id="detailsNotes">Nessuna nota aggiunta.</p>
                                 </div>
                             </div>
                         </section>
@@ -469,22 +391,22 @@
                     <div class="details-sidebar">
                         <section class="card recommendations-card">
                             <div class="card-header">
-                                <h2>💡 Recommendations</h2>
+                                <h2>Suggerimenti</h2>
                             </div>
                             <div class="recommendations-content" id="recommendationsContent">
                                 <!-- Suggested Add-on Services -->
                                 <div class="recommendations-group">
-                                    <h3>Suggested Add-on Services</h3>
+                                    <h3>Servizi Aggiuntivi Consigliati</h3>
                                     <div class="recommendations-list" id="serviceRecommendations">
-                                        <p class="no-recommendations">No suggestions available.</p>
+                                        <p class="no-recommendations">Nessun suggerimento disponibile.</p>
                                     </div>
                                 </div>
 
                                 <!-- Suggested Retail Products -->
                                 <div class="recommendations-group">
-                                    <h3>Suggested Retail Products</h3>
+                                    <h3>Prodotti Consigliati</h3>
                                     <div class="recommendations-list" id="productRecommendations">
-                                        <p class="no-recommendations">No suggestions available.</p>
+                                        <p class="no-recommendations">Nessun suggerimento disponibile.</p>
                                     </div>
                                 </div>
                             </div>
@@ -497,29 +419,29 @@
             <div id="clients" class="page">
                 <header class="main-header">
                     <div class="header-left">
-                        <h1>Clients</h1>
-                        <p class="subline">Profiles, history, and preferences.</p>
+                        <h1>Clienti</h1>
+                        <p class="subline">Profili, storico e preferenze</p>
                     </div>
                     <div class="header-right">
                         <div class="search-box">
-                            <input type="text" id="clientSearch" placeholder="Search clients or tags...">
+                            <input type="text" id="clientSearch" placeholder="Cerca clienti o tag...">
                         </div>
                     </div>
                 </header>
 
                 <section class="card">
                     <div class="card-header">
-                        <h2>Client Directory</h2>
-                        <span class="badge" id="clientCount">12 clients</span>
+                        <h2>Elenco Clienti</h2>
+                        <span class="badge" id="clientCount">12 clienti</span>
                     </div>
                     <div class="table-container">
                         <table class="clients-table" id="clientsTable">
                             <thead>
                                 <tr>
-                                    <th>Client</th>
-                                    <th>Tags</th>
-                                    <th>Last Visit</th>
-                                    <th>Total Visits</th>
+                                    <th>Cliente</th>
+                                    <th>Categorie</th>
+                                    <th>Ultima Visita</th>
+                                    <th>Visite Totali</th>
                                 </tr>
                             </thead>
                             <tbody id="clientsTableBody">
@@ -535,12 +457,12 @@
                 <header class="main-header">
                     <div class="header-left">
                         <button class="btn-back" id="backToClients">
-                            <span>←</span> Back to Clients
+                            <span>&larr;</span> Torna ai Clienti
                         </button>
-                        <h1 id="profileClientName">Client Profile</h1>
+                        <h1 id="profileClientName">Profilo Cliente</h1>
                     </div>
                     <div class="header-right">
-                        <button class="btn-primary" id="bookForClient">+ Book Appointment</button>
+                        <button class="btn-primary" id="bookForClient">Prenota Appuntamento</button>
                     </div>
                 </header>
 
@@ -550,36 +472,36 @@
                         <!-- Profile Summary Card -->
                         <section class="card profile-summary-card">
                             <div class="card-header">
-                                <h2>Profile Summary</h2>
+                                <h2>Riepilogo Profilo</h2>
                             </div>
                             <div class="profile-summary-content">
                                 <div class="profile-avatar-large" id="profileAvatar">C1</div>
                                 <div class="profile-info">
                                     <div class="profile-stat">
-                                        <span class="stat-label">Primary Interest</span>
+                                        <span class="stat-label">Interesse Principale</span>
                                         <span class="stat-value" id="profileInterest">-</span>
                                     </div>
                                     <div class="profile-stat">
-                                        <span class="stat-label">Total Visits</span>
+                                        <span class="stat-label">Visite Totali</span>
                                         <span class="stat-value" id="profileTotalVisits">0</span>
                                     </div>
                                     <div class="profile-stat">
-                                        <span class="stat-label">Last Visit</span>
+                                        <span class="stat-label">Ultima Visita</span>
                                         <span class="stat-value" id="profileLastVisit">-</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="profile-details">
                                 <div class="profile-detail-section">
-                                    <span class="detail-label">Preferences</span>
+                                    <span class="detail-label">Preferenze</span>
                                     <p class="detail-text" id="profilePreferences">-</p>
                                 </div>
                                 <div class="profile-detail-section">
-                                    <span class="detail-label">Common Issues</span>
+                                    <span class="detail-label">Problematiche Comuni</span>
                                     <p class="detail-text" id="profileIssues">-</p>
                                 </div>
                                 <div class="profile-detail-section">
-                                    <span class="detail-label">Tags</span>
+                                    <span class="detail-label">Categorie</span>
                                     <div class="tags-container" id="profileTags">-</div>
                                 </div>
                             </div>
@@ -588,17 +510,17 @@
                         <!-- Appointment History -->
                         <section class="card">
                             <div class="card-header">
-                                <h2>Appointment History</h2>
-                                <span class="badge" id="historyCount">0 appointments</span>
+                                <h2>Storico Appuntamenti</h2>
+                                <span class="badge" id="historyCount">0 appuntamenti</span>
                             </div>
                             <div class="table-container">
                                 <table class="appointments-table" id="clientHistoryTable">
                                     <thead>
                                         <tr>
-                                            <th>Date & Time</th>
-                                            <th>Services</th>
-                                            <th>Products Sold</th>
-                                            <th>Status</th>
+                                            <th>Data e Ora</th>
+                                            <th>Servizi</th>
+                                            <th>Prodotti Venduti</th>
+                                            <th>Stato</th>
                                         </tr>
                                     </thead>
                                     <tbody id="clientHistoryBody">
@@ -613,23 +535,23 @@
                     <div class="profile-sidebar">
                         <section class="card insights-card">
                             <div class="card-header">
-                                <h2>📊 Client Insights</h2>
+                                <h2>Analisi Cliente</h2>
                             </div>
                             <div class="insights-content">
                                 <div class="insight-item">
-                                    <span class="insight-label">Avg. Ticket Size</span>
+                                    <span class="insight-label">Scontrino Medio</span>
                                     <span class="insight-value" id="insightAvgTicket">-</span>
                                 </div>
                                 <div class="insight-item">
-                                    <span class="insight-label">Most Booked Service</span>
+                                    <span class="insight-label">Servizio Preferito</span>
                                     <span class="insight-value" id="insightTopService">-</span>
                                 </div>
                                 <div class="insight-item">
-                                    <span class="insight-label">Products Purchased</span>
+                                    <span class="insight-label">Prodotti Acquistati</span>
                                     <span class="insight-value" id="insightProductCount">0</span>
                                 </div>
                                 <div class="insight-item">
-                                    <span class="insight-label">Cross-Sell Rate</span>
+                                    <span class="insight-label">Tasso Cross-Sell</span>
                                     <span class="insight-value" id="insightCrossSell">-</span>
                                 </div>
                             </div>
@@ -637,7 +559,7 @@
 
                         <section class="card">
                             <div class="card-header">
-                                <h2>💡 Suggested Next</h2>
+                                <h2>Prossimi Suggerimenti</h2>
                             </div>
                             <div class="suggested-content" id="suggestedServices">
                                 <!-- Populated by JavaScript -->
@@ -651,28 +573,28 @@
             <div id="services" class="page">
                 <header class="main-header">
                     <div class="header-left">
-                        <h1>Services</h1>
-                        <p class="subline">Manage service offerings, pricing, and categories.</p>
+                        <h1>Servizi</h1>
+                        <p class="subline">Gestisci servizi, prezzi e categorie</p>
                     </div>
                     <div class="header-right">
-                        <button class="btn-primary" id="openServiceModal">+ Add Service</button>
+                        <button class="btn-primary" id="openServiceModal">Aggiungi Servizio</button>
                     </div>
                 </header>
 
                 <section class="card">
                     <div class="card-header">
-                        <h2>Service Catalog</h2>
-                        <span class="badge" id="serviceCount">12 services</span>
+                        <h2>Catalogo Servizi</h2>
+                        <span class="badge" id="serviceCount">12 servizi</span>
                     </div>
                     <div class="table-container">
                         <table class="catalog-table" id="servicesTable">
                             <thead>
                                 <tr>
-                                    <th>Service Name</th>
-                                    <th>Category</th>
-                                    <th>Duration</th>
-                                    <th>Price</th>
-                                    <th>Active</th>
+                                    <th>Nome Servizio</th>
+                                    <th>Categoria</th>
+                                    <th>Durata</th>
+                                    <th>Prezzo</th>
+                                    <th>Attivo</th>
                                 </tr>
                             </thead>
                             <tbody id="servicesTableBody">
@@ -687,32 +609,32 @@
             <div class="modal-overlay" id="serviceModalOverlay">
                 <div class="modal-drawer">
                     <div class="modal-header">
-                        <h2>Add New Service</h2>
+                        <h2>Aggiungi Nuovo Servizio</h2>
                         <button class="modal-close" id="closeServiceModal">&times;</button>
                     </div>
                     <form id="serviceForm" class="modal-body">
                         <div class="form-group">
-                            <label for="serviceName">Service Name *</label>
-                            <input type="text" id="serviceName" placeholder="Enter service name..." required>
+                            <label for="serviceName">Nome Servizio *</label>
+                            <input type="text" id="serviceName" placeholder="Inserisci nome servizio..." required>
                         </div>
 
                         <div class="form-group">
-                            <label for="serviceCategory">Category</label>
+                            <label for="serviceCategory">Categoria</label>
                             <select id="serviceCategory" required>
-                                <option value="Hair">Hair</option>
-                                <option value="Beard">Beard</option>
-                                <option value="Skin">Skin</option>
-                                <option value="Nails">Nails</option>
+                                <option value="Hair">Capelli</option>
+                                <option value="Beard">Barba</option>
+                                <option value="Skin">Pelle</option>
+                                <option value="Nails">Unghie</option>
                             </select>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="serviceDuration">Duration (minutes)</label>
+                                <label for="serviceDuration">Durata (minuti)</label>
                                 <input type="number" id="serviceDuration" placeholder="30" min="5" step="5" value="30">
                             </div>
                             <div class="form-group">
-                                <label for="servicePrice">Price (EUR) *</label>
+                                <label for="servicePrice">Prezzo (EUR) *</label>
                                 <input type="number" id="servicePrice" placeholder="0.00" min="0" step="0.01" required>
                             </div>
                         </div>
@@ -720,13 +642,13 @@
                         <div class="form-group">
                             <label class="checkbox-single">
                                 <input type="checkbox" id="serviceActive" checked>
-                                <span>Active (available for booking)</span>
+                                <span>Attivo (disponibile per prenotazione)</span>
                             </label>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn-secondary" id="cancelService">Cancel</button>
-                            <button type="submit" class="btn-primary">Add Service</button>
+                            <button type="button" class="btn-secondary" id="cancelService">Annulla</button>
+                            <button type="submit" class="btn-primary">Aggiungi Servizio</button>
                         </div>
                     </form>
                 </div>
@@ -736,28 +658,28 @@
             <div id="products" class="page">
                 <header class="main-header">
                     <div class="header-left">
-                        <h1>Products</h1>
-                        <p class="subline">Manage retail products and track what's recommended.</p>
+                        <h1>Prodotti</h1>
+                        <p class="subline">Gestisci prodotti retail e monitora i consigliati</p>
                     </div>
                     <div class="header-right">
-                        <button class="btn-primary" id="openProductModal">+ Add Product</button>
+                        <button class="btn-primary" id="openProductModal">Aggiungi Prodotto</button>
                     </div>
                 </header>
 
                 <section class="card">
                     <div class="card-header">
-                        <h2>Product Catalog</h2>
-                        <span class="badge" id="productCount">15 products</span>
+                        <h2>Catalogo Prodotti</h2>
+                        <span class="badge" id="productCount">15 prodotti</span>
                     </div>
                     <div class="table-container">
                         <table class="catalog-table" id="productsTable">
                             <thead>
                                 <tr>
-                                    <th>Product Name</th>
-                                    <th>Category</th>
-                                    <th>Price</th>
-                                    <th>Use Case</th>
-                                    <th>Active</th>
+                                    <th>Nome Prodotto</th>
+                                    <th>Categoria</th>
+                                    <th>Prezzo</th>
+                                    <th>Utilizzo</th>
+                                    <th>Attivo</th>
                                 </tr>
                             </thead>
                             <tbody id="productsTableBody">
@@ -772,57 +694,57 @@
             <div class="modal-overlay" id="productModalOverlay">
                 <div class="modal-drawer">
                     <div class="modal-header">
-                        <h2>Add New Product</h2>
+                        <h2>Aggiungi Nuovo Prodotto</h2>
                         <button class="modal-close" id="closeProductModal">&times;</button>
                     </div>
                     <form id="productForm" class="modal-body">
                         <div class="form-group">
-                            <label for="productName">Product Name *</label>
-                            <input type="text" id="productName" placeholder="Enter product name..." required>
+                            <label for="productName">Nome Prodotto *</label>
+                            <input type="text" id="productName" placeholder="Inserisci nome prodotto..." required>
                         </div>
 
                         <div class="form-group">
-                            <label for="productCategory">Category</label>
+                            <label for="productCategory">Categoria</label>
                             <select id="productCategory" required>
-                                <option value="Hair">Hair</option>
-                                <option value="Beard">Beard</option>
-                                <option value="Skin">Skin</option>
-                                <option value="Nails">Nails</option>
+                                <option value="Hair">Capelli</option>
+                                <option value="Beard">Barba</option>
+                                <option value="Skin">Pelle</option>
+                                <option value="Nails">Unghie</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="productPrice">Price (EUR) *</label>
+                            <label for="productPrice">Prezzo (EUR) *</label>
                             <input type="number" id="productPrice" placeholder="0.00" min="0" step="0.01" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="productUseCase">Use Case Tag</label>
+                            <label for="productUseCase">Tipo di Utilizzo</label>
                             <select id="productUseCase">
-                                <option value="Hold">Hold</option>
-                                <option value="Hydration">Hydration</option>
-                                <option value="Repair">Repair</option>
-                                <option value="Anti-dandruff">Anti-dandruff</option>
-                                <option value="SPF">SPF</option>
-                                <option value="Custom">Custom...</option>
+                                <option value="Hold">Tenuta</option>
+                                <option value="Hydration">Idratazione</option>
+                                <option value="Repair">Riparazione</option>
+                                <option value="Anti-dandruff">Antiforfora</option>
+                                <option value="SPF">Protezione Solare</option>
+                                <option value="Custom">Personalizzato...</option>
                             </select>
                         </div>
 
                         <div class="form-group" id="customUseCaseGroup" style="display: none;">
-                            <label for="productUseCaseCustom">Custom Use Case</label>
-                            <input type="text" id="productUseCaseCustom" placeholder="Enter custom use case...">
+                            <label for="productUseCaseCustom">Utilizzo Personalizzato</label>
+                            <input type="text" id="productUseCaseCustom" placeholder="Inserisci tipo di utilizzo...">
                         </div>
 
                         <div class="form-group">
                             <label class="checkbox-single">
                                 <input type="checkbox" id="productActive" checked>
-                                <span>Active (available for sale)</span>
+                                <span>Attivo (disponibile per la vendita)</span>
                             </label>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn-secondary" id="cancelProduct">Cancel</button>
-                            <button type="submit" class="btn-primary">Add Product</button>
+                            <button type="button" class="btn-secondary" id="cancelProduct">Annulla</button>
+                            <button type="submit" class="btn-primary">Aggiungi Prodotto</button>
                         </div>
                     </form>
                 </div>
@@ -832,25 +754,25 @@
             <div id="recommendations" class="page">
                 <header class="main-header">
                     <div class="header-left">
-                        <h1>Recommendations</h1>
-                        <p class="subline">Configure what to suggest for each service.</p>
+                        <h1>Raccomandazioni</h1>
+                        <p class="subline">Configura i suggerimenti per ogni servizio</p>
                     </div>
                 </header>
 
                 <!-- Tabs -->
                 <div class="rules-tabs">
-                    <button class="rules-tab active" data-tab="service-rules">Add-on Service Rules</button>
-                    <button class="rules-tab" data-tab="product-rules">Retail Product Rules</button>
+                    <button class="rules-tab active" data-tab="service-rules">Regole Servizi Aggiuntivi</button>
+                    <button class="rules-tab" data-tab="product-rules">Regole Prodotti Retail</button>
                 </div>
 
                 <!-- Service Rules Section -->
                 <div class="rules-section active" id="service-rules">
                     <div class="rules-header">
                         <div class="rules-info">
-                            <h2>Add-on Service Rules</h2>
-                            <p>When a service is booked, suggest additional services to enhance the experience.</p>
+                            <h2>Regole Servizi Aggiuntivi</h2>
+                            <p>Quando un servizio viene prenotato, suggerisci servizi aggiuntivi per migliorare l'esperienza.</p>
                         </div>
-                        <button class="btn-primary" id="addServiceRule">+ Add Rule</button>
+                        <button class="btn-primary" id="addServiceRule">Aggiungi Regola</button>
                     </div>
                     <div class="rules-list" id="serviceRulesList">
                         <!-- Populated by JavaScript -->
@@ -861,10 +783,10 @@
                 <div class="rules-section" id="product-rules">
                     <div class="rules-header">
                         <div class="rules-info">
-                            <h2>Retail Product Rules</h2>
-                            <p>When a service is booked, suggest retail products the client can take home.</p>
+                            <h2>Regole Prodotti Retail</h2>
+                            <p>Quando un servizio viene prenotato, suggerisci prodotti retail che il cliente può portare a casa.</p>
                         </div>
-                        <button class="btn-primary" id="addProductRule">+ Add Rule</button>
+                        <button class="btn-primary" id="addProductRule">Aggiungi Regola</button>
                     </div>
                     <div class="rules-list" id="productRulesList">
                         <!-- Populated by JavaScript -->
@@ -876,7 +798,7 @@
             <div class="modal-overlay" id="ruleModalOverlay">
                 <div class="modal-drawer">
                     <div class="modal-header">
-                        <h2 id="ruleModalTitle">Add Rule</h2>
+                        <h2 id="ruleModalTitle">Aggiungi Regola</h2>
                         <button class="modal-close" id="closeRuleModal">&times;</button>
                     </div>
                     <form id="ruleForm" class="modal-body">
@@ -884,36 +806,43 @@
                         <input type="hidden" id="ruleType">
 
                         <div class="form-group">
-                            <label for="ruleTrigger">When this service is booked:</label>
+                            <label for="ruleTrigger">Quando questo servizio viene prenotato:</label>
                             <select id="ruleTrigger" required>
-                                <option value="">Select a service...</option>
+                                <option value="">Seleziona un servizio...</option>
                                 <!-- Populated by JavaScript -->
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label id="ruleSuggestionsLabel">Suggest these items:</label>
-                            <div class="checkbox-grid" id="ruleSuggestionsGrid">
+                            <label>Servizi da suggerire:</label>
+                            <div class="checkbox-grid" id="ruleSuggestionsServices">
                                 <!-- Populated by JavaScript -->
                             </div>
-                            <p class="form-hint">Select at least one item to suggest.</p>
                         </div>
 
                         <div class="form-group">
-                            <label for="ruleReason">Why suggest this? (shown to staff)</label>
-                            <input type="text" id="ruleReason" placeholder="e.g., Pairs well with this service..." maxlength="100">
+                            <label>Prodotti da suggerire:</label>
+                            <div class="checkbox-grid" id="ruleSuggestionsProducts">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                            <p class="form-hint">Seleziona almeno un servizio o prodotto da suggerire.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ruleReason">Perché suggerirlo? (mostrato allo staff)</label>
+                            <input type="text" id="ruleReason" placeholder="es. Si abbina bene con questo servizio..." maxlength="100">
                         </div>
 
                         <div class="form-group">
                             <label class="checkbox-single">
                                 <input type="checkbox" id="ruleActive" checked>
-                                <span>Rule is active</span>
+                                <span>Regola attiva</span>
                             </label>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn-secondary" id="cancelRule">Cancel</button>
-                            <button type="submit" class="btn-primary" id="saveRuleBtn">Save Rule</button>
+                            <button type="button" class="btn-secondary" id="cancelRule">Annulla</button>
+                            <button type="submit" class="btn-primary" id="saveRuleBtn">Salva Regola</button>
                         </div>
                     </form>
                 </div>
@@ -923,42 +852,50 @@
             <div id="analytics" class="page">
                 <header class="main-header">
                     <div class="header-left">
-                        <h1>Analytics</h1>
-                        <p class="subline">Understand what drives revenue per visit.</p>
+                        <h1>Statistiche</h1>
+                        <p class="subline">Analizza cosa genera fatturato per ogni visita</p>
                     </div>
                     <div class="header-right">
-                        <span class="data-label">Data includes demo + live appointments</span>
+                        <span class="data-label">I dati includono appuntamenti demo e reali</span>
                     </div>
                 </header>
 
                 <!-- KPI Cards -->
                 <section class="analytics-kpi-section">
                     <div class="analytics-kpi-card">
-                        <div class="kpi-icon">💰</div>
+                        <div class="kpi-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
                         <div class="kpi-content">
                             <span class="kpi-value" id="kpiTotalRevenue">€0</span>
-                            <span class="kpi-label">Total Revenue</span>
+                            <span class="kpi-label">Fatturato Totale</span>
                         </div>
                     </div>
                     <div class="analytics-kpi-card">
-                        <div class="kpi-icon">🎫</div>
+                        <div class="kpi-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                        </div>
                         <div class="kpi-content">
                             <span class="kpi-value" id="kpiAvgTicket">€0</span>
-                            <span class="kpi-label">Avg. Ticket Size</span>
+                            <span class="kpi-label">Scontrino Medio</span>
                         </div>
                     </div>
                     <div class="analytics-kpi-card">
-                        <div class="kpi-icon">🛒</div>
+                        <div class="kpi-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                        </div>
                         <div class="kpi-content">
                             <span class="kpi-value" id="kpiCrossSellRate">0%</span>
-                            <span class="kpi-label">Cross-Sell Rate</span>
+                            <span class="kpi-label">Tasso Cross-Sell</span>
                         </div>
                     </div>
                     <div class="analytics-kpi-card">
-                        <div class="kpi-icon">✅</div>
+                        <div class="kpi-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
                         <div class="kpi-content">
                             <span class="kpi-value" id="kpiAcceptanceRate">0%</span>
-                            <span class="kpi-label">Rec. Acceptance</span>
+                            <span class="kpi-label">Tasso Accettazione</span>
                         </div>
                     </div>
                 </section>
@@ -968,8 +905,8 @@
                     <!-- Revenue Split Chart -->
                     <div class="analytics-card">
                         <div class="card-header">
-                            <h2>Revenue Split</h2>
-                            <span class="badge">Services vs Products</span>
+                            <h2>Ripartizione Fatturato</h2>
+                            <span class="badge">Servizi vs Prodotti</span>
                         </div>
                         <div class="chart-container" id="revenueSplitChart">
                             <!-- Bar chart rendered by JS -->
@@ -979,8 +916,8 @@
                     <!-- Cross-Sell Over Time -->
                     <div class="analytics-card">
                         <div class="card-header">
-                            <h2>Cross-Sell Trend</h2>
-                            <span class="badge">Last 14 Days</span>
+                            <h2>Trend Cross-Sell</h2>
+                            <span class="badge">Ultimi 14 Giorni</span>
                         </div>
                         <div class="chart-container" id="crossSellTrendChart">
                             <!-- Line chart rendered by JS -->
@@ -993,16 +930,16 @@
                     <!-- Top Cross-Sell Combos -->
                     <div class="analytics-card">
                         <div class="card-header">
-                            <h2>Top Cross-Sell Combos</h2>
-                            <span class="badge" id="combosCount">0 combos</span>
+                            <h2>Migliori Abbinamenti Cross-Sell</h2>
+                            <span class="badge" id="combosCount">0 abbinamenti</span>
                         </div>
                         <div class="table-container">
                             <table class="analytics-table" id="crossSellCombosTable">
                                 <thead>
                                     <tr>
-                                        <th>Combo</th>
-                                        <th>Count</th>
-                                        <th>Est. Revenue</th>
+                                        <th>Abbinamento</th>
+                                        <th>Conteggio</th>
+                                        <th>Fatturato Stimato</th>
                                     </tr>
                                 </thead>
                                 <tbody id="crossSellCombosBody">
@@ -1015,18 +952,18 @@
                     <!-- Recommendations Performance -->
                     <div class="analytics-card">
                         <div class="card-header">
-                            <h2>Recommendations Performance</h2>
-                            <span class="badge" id="recsCount">0 items</span>
+                            <h2>Performance Suggerimenti</h2>
+                            <span class="badge" id="recsCount">0 elementi</span>
                         </div>
                         <div class="table-container">
                             <table class="analytics-table" id="recsPerformanceTable">
                                 <thead>
                                     <tr>
-                                        <th>Item</th>
-                                        <th>Type</th>
-                                        <th>Shown</th>
-                                        <th>Accepted</th>
-                                        <th>Rate</th>
+                                        <th>Elemento</th>
+                                        <th>Tipo</th>
+                                        <th>Mostrato</th>
+                                        <th>Accettato</th>
+                                        <th>Tasso</th>
                                     </tr>
                                 </thead>
                                 <tbody id="recsPerformanceBody">
@@ -1042,62 +979,70 @@
             <div id="outreach" class="page">
                 <header class="main-header">
                     <div class="header-left">
-                        <h1>Email Outreach</h1>
-                        <p class="subline">Personalisierte E-Mail-Vorschläge für Ihre Kunden.</p>
+                        <h1>Comunicazioni Email</h1>
+                        <p class="subline">Suggerimenti email personalizzati per i tuoi clienti</p>
                     </div>
                     <div class="header-right">
-                        <button class="btn-secondary" id="openOutreachSettings">Einstellungen</button>
-                        <button class="btn-primary" id="generateSuggestions">Vorschläge generieren</button>
+                        <button class="btn-secondary" id="openOutreachSettings">Impostazioni</button>
+                        <button class="btn-primary" id="generateSuggestions">Genera Suggerimenti</button>
                     </div>
                 </header>
 
                 <!-- KPI Cards -->
                 <section class="kpi-section outreach-kpi-section">
                     <div class="kpi-card">
-                        <div class="kpi-icon blue">📬</div>
+                        <div class="kpi-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </div>
                         <div class="kpi-content">
                             <span class="kpi-value" id="outreachPending">0</span>
-                            <span class="kpi-label">Ausstehend</span>
+                            <span class="kpi-label">In Attesa</span>
                         </div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-icon green">📤</div>
+                        <div class="kpi-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        </div>
                         <div class="kpi-content">
                             <span class="kpi-value" id="outreachSentWeek">0</span>
-                            <span class="kpi-label">Diese Woche gesendet</span>
+                            <span class="kpi-label">Inviate Questa Settimana</span>
                         </div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-icon purple">📊</div>
+                        <div class="kpi-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        </div>
                         <div class="kpi-content">
                             <span class="kpi-value" id="outreachSentMonth">0</span>
-                            <span class="kpi-label">Diesen Monat gesendet</span>
+                            <span class="kpi-label">Inviate Questo Mese</span>
                         </div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-icon orange">📈</div>
+                        <div class="kpi-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                        </div>
                         <div class="kpi-content">
                             <span class="kpi-value" id="outreachResponseRate">0%</span>
-                            <span class="kpi-label">Response Rate</span>
+                            <span class="kpi-label">Tasso di Risposta</span>
                         </div>
                     </div>
                 </section>
 
                 <!-- Filter Tabs -->
                 <div class="outreach-tabs">
-                    <button class="outreach-tab active" data-filter="all">Alle</button>
-                    <button class="outreach-tab" data-filter="win_back">Win-back</button>
-                    <button class="outreach-tab" data-filter="appointment_reminder">Erinnerungen</button>
-                    <button class="outreach-tab" data-filter="product_recommendation">Produktempfehlungen</button>
-                    <button class="outreach-tab" data-filter="promotion">Promotions</button>
+                    <button class="outreach-tab active" data-filter="all">Tutte</button>
+                    <button class="outreach-tab" data-filter="win_back">Recupero Clienti</button>
+                    <button class="outreach-tab" data-filter="appointment_reminder">Promemoria</button>
+                    <button class="outreach-tab" data-filter="product_recommendation">Suggerimenti Prodotti</button>
+                    <button class="outreach-tab" data-filter="promotion">Promozioni</button>
                 </div>
 
                 <!-- Suggestions List -->
                 <section class="outreach-suggestions" id="outreachSuggestionsList">
                     <!-- Populated by JavaScript -->
                     <div class="empty-state">
-                        <span class="empty-icon">📧</span>
-                        <p>Keine Vorschläge vorhanden. Klicken Sie auf "Vorschläge generieren" um E-Mail-Vorschläge zu erstellen.</p>
+                        <span class="empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+                        <p>Nessun suggerimento presente. Clicca "Genera Suggerimenti" per creare suggerimenti email.</p>
                     </div>
                 </section>
             </div>
@@ -1106,7 +1051,7 @@
             <div class="modal-overlay" id="emailPreviewModalOverlay">
                 <div class="modal-drawer modal-drawer-wide">
                     <div class="modal-header">
-                        <h2>E-Mail Vorschau</h2>
+                        <h2>Anteprima Email</h2>
                         <button class="modal-close" id="closeEmailPreviewModal">&times;</button>
                     </div>
                     <div class="modal-body">
@@ -1114,19 +1059,19 @@
                             <div class="email-preview-header">
                                 <div class="email-meta">
                                     <div class="email-meta-item">
-                                        <span class="email-meta-label">An:</span>
+                                        <span class="email-meta-label">A:</span>
                                         <span class="email-meta-value" id="emailPreviewTo">-</span>
                                     </div>
                                     <div class="email-meta-item">
-                                        <span class="email-meta-label">Betreff:</span>
+                                        <span class="email-meta-label">Oggetto:</span>
                                         <span class="email-meta-value" id="emailPreviewSubject">-</span>
                                     </div>
                                     <div class="email-meta-item">
-                                        <span class="email-meta-label">Typ:</span>
+                                        <span class="email-meta-label">Tipo:</span>
                                         <span class="email-type-badge" id="emailPreviewType">-</span>
                                     </div>
                                     <div class="email-meta-item">
-                                        <span class="email-meta-label">Grund:</span>
+                                        <span class="email-meta-label">Motivo:</span>
                                         <span class="email-meta-value" id="emailPreviewReason">-</span>
                                     </div>
                                 </div>
@@ -1136,8 +1081,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn-secondary" id="dismissEmailSuggestion">Verwerfen</button>
-                            <button type="button" class="btn-primary" id="sendEmailSuggestion">Als gesendet markieren</button>
+                            <button type="button" class="btn-secondary" id="dismissEmailSuggestion">Scarta</button>
+                            <button type="button" class="btn-primary" id="sendEmailSuggestion">Segna come Inviata</button>
                         </div>
                     </div>
                 </div>
@@ -1147,25 +1092,25 @@
             <div class="modal-overlay" id="outreachSettingsModalOverlay">
                 <div class="modal-drawer">
                     <div class="modal-header">
-                        <h2>Outreach Einstellungen</h2>
+                        <h2>Impostazioni Comunicazioni</h2>
                         <button class="modal-close" id="closeOutreachSettingsModal">&times;</button>
                     </div>
                     <form id="outreachSettingsForm" class="modal-body">
                         <div class="form-group">
-                            <label for="winBackThreshold">Win-back Schwellenwert (Tage)</label>
+                            <label for="winBackThreshold">Soglia Recupero Clienti (giorni)</label>
                             <input type="number" id="winBackThreshold" min="7" max="365" value="30">
-                            <p class="form-hint">Kunden werden als "Win-back" markiert, wenn ihr letzter Besuch länger als diese Anzahl an Tagen zurückliegt.</p>
+                            <p class="form-hint">I clienti vengono segnalati per il recupero se l'ultima visita risale a più di questo numero di giorni fa.</p>
                         </div>
 
                         <div class="form-group">
-                            <label for="reminderDays">Terminerinnerung (Tage vorher)</label>
+                            <label for="reminderDays">Promemoria Appuntamento (giorni prima)</label>
                             <input type="number" id="reminderDays" min="1" max="14" value="2">
-                            <p class="form-hint">E-Mail-Erinnerungen werden für Termine generiert, die in dieser Anzahl an Tagen stattfinden.</p>
+                            <p class="form-hint">I promemoria email vengono generati per gli appuntamenti programmati tra questo numero di giorni.</p>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn-secondary" id="cancelOutreachSettings">Abbrechen</button>
-                            <button type="submit" class="btn-primary">Speichern</button>
+                            <button type="button" class="btn-secondary" id="cancelOutreachSettings">Annulla</button>
+                            <button type="submit" class="btn-primary">Salva</button>
                         </div>
                     </form>
                 </div>

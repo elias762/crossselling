@@ -73,8 +73,9 @@ function prepare(sql) {
     return {
         run: (...params) => {
             database.run(sql, params);
+            const lastId = database.exec("SELECT last_insert_rowid()")[0]?.values[0]?.[0] || 0;
             saveDb();
-            return { lastInsertRowid: database.exec("SELECT last_insert_rowid()")[0]?.values[0]?.[0] || 0 };
+            return { lastInsertRowid: lastId };
         },
         get: (...params) => {
             const stmt = database.prepare(sql);

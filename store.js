@@ -1,55 +1,55 @@
 // =====================================================
-// APP DATA STORE - Centralized State Management
+// APP DATA STORE - Gestione Stato Centralizzata
 // =====================================================
-// All data lives here. Components subscribe to changes.
-// Actions are the only way to modify state.
-// Data is loaded from backend API on initialization.
+// Tutti i dati risiedono qui. I componenti sottoscrivono ai cambiamenti.
+// Le azioni sono l'unico modo per modificare lo stato.
+// I dati vengono caricati dall'API backend all'inizializzazione.
 // =====================================================
 
 const AppStore = (function() {
     'use strict';
 
     // =====================
-    // PRIVATE STATE
+    // STATO PRIVATO
     // =====================
 
     let state = {
-        // Clients
+        // Clienti
         clients: [],
         clientHistory: {},
 
-        // Stylists
+        // Stilisti
         stylists: [],
 
-        // Catalogs
+        // Cataloghi
         services: [],
         products: [],
 
-        // Appointments
+        // Appuntamenti
         appointments: [],
         dismissedRecommendations: {}, // { appointmentId: { services: [], products: [] } }
 
-        // Recommendation Rules
+        // Regole Raccomandazioni
         serviceRules: [],
         productRules: [],
 
-        // Analytics Tracking
+        // Tracciamento Analytics
         recommendationTracking: {}, // { itemName: { shown, accepted, dismissed, type } }
 
         // Outreach
         outreachSuggestions: [],
 
-        // UI State (not persisted)
+        // Stato UI (non persistente)
         currentAppointmentId: null,
         currentClientId: null,
         currentEditingRule: null,
 
-        // Loading state
+        // Stato caricamento
         initialized: false,
         loading: false
     };
 
-    // Subscribers for reactivity
+    // Sottoscrittori per reattività
     const subscribers = {
         clients: [],
         stylists: [],
@@ -64,7 +64,7 @@ const AppStore = (function() {
     };
 
     // =====================
-    // PRIVATE HELPERS
+    // HELPER PRIVATI
     // =====================
 
     function notify(channel) {
@@ -89,7 +89,7 @@ const AppStore = (function() {
     }
 
     // =====================
-    // PUBLIC API: GETTERS
+    // API PUBBLICA: GETTERS
     // =====================
 
     const api = {
@@ -189,10 +189,10 @@ const AppStore = (function() {
         },
 
         // =====================
-        // PUBLIC API: ACTIONS
+        // API PUBBLICA: AZIONI
         // =====================
 
-        // --- Appointments ---
+        // --- Appuntamenti ---
         addAppointment: (appointment) => {
             const newAppointment = {
                 id: generateId(),
@@ -247,7 +247,7 @@ const AppStore = (function() {
             }
         },
 
-        // --- Services ---
+        // --- Servizi ---
         addService: (service) => {
             const newService = {
                 id: Date.now(),
@@ -284,7 +284,7 @@ const AppStore = (function() {
             notify('services');
         },
 
-        // --- Products ---
+        // --- Prodotti ---
         addProduct: (product) => {
             const newProduct = {
                 id: Date.now(),
@@ -321,7 +321,7 @@ const AppStore = (function() {
             notify('products');
         },
 
-        // --- Service Rules ---
+        // --- Regole Servizi ---
         addServiceRule: (rule) => {
             const newId = Math.max(0, ...state.serviceRules.map(r => r.id)) + 1;
             const newRule = {
@@ -359,7 +359,7 @@ const AppStore = (function() {
             notify('serviceRules');
         },
 
-        // --- Product Rules ---
+        // --- Regole Prodotti ---
         addProductRule: (rule) => {
             const newId = Math.max(0, ...state.productRules.map(r => r.id)) + 1;
             const newRule = {
@@ -397,7 +397,7 @@ const AppStore = (function() {
             notify('productRules');
         },
 
-        // --- Recommendation Tracking ---
+        // --- Tracciamento Raccomandazioni ---
         trackRecommendationShown: (itemName, type) => {
             if (!state.recommendationTracking[itemName]) {
                 state.recommendationTracking[itemName] = { shown: 0, accepted: 0, dismissed: 0, type };
@@ -422,7 +422,7 @@ const AppStore = (function() {
             notify('recommendationTracking');
         },
 
-        // --- UI State ---
+        // --- Stato UI ---
         setCurrentAppointmentId: (id) => {
             state.currentAppointmentId = id;
             notify('ui');
@@ -438,7 +438,7 @@ const AppStore = (function() {
             notify('ui');
         },
 
-        // --- Stylists ---
+        // --- Stilisti ---
         addStylist: (stylist) => {
             const newStylist = {
                 id: generateId(),
@@ -470,7 +470,7 @@ const AppStore = (function() {
             return null;
         },
 
-        // --- State Setters (for API data) ---
+        // --- Setters di Stato (per dati API) ---
         setClients: (clients) => {
             state.clients = clients;
             notify('clients');
@@ -532,7 +532,7 @@ const AppStore = (function() {
         },
 
         // =====================
-        // SUBSCRIPTION SYSTEM
+        // SISTEMA SOTTOSCRIZIONI
         // =====================
 
         subscribe: (channel, callback) => {
@@ -551,7 +551,7 @@ const AppStore = (function() {
         },
 
         // =====================
-        // INITIALIZATION
+        // INIZIALIZZAZIONE
         // =====================
 
         init: async () => {
@@ -560,7 +560,7 @@ const AppStore = (function() {
             }
 
             state.loading = true;
-            console.log('AppStore initializing from API...');
+            console.log('AppStore in inizializzazione da API...');
 
             try {
                 // Load all data from API in parallel
@@ -618,10 +618,10 @@ const AppStore = (function() {
                 // Notify all channels
                 Object.keys(subscribers).forEach(channel => notify(channel));
 
-                console.log('AppStore initialized with API data');
+                console.log('AppStore inizializzato con dati API');
             } catch (error) {
                 state.loading = false;
-                console.error('Failed to initialize AppStore from API:', error);
+                console.error('Inizializzazione AppStore da API fallita:', error);
                 throw error;
             }
         }

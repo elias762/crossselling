@@ -1,24 +1,24 @@
 // =====================================================
-// DATABASE SEEDER - Populates demo data
+// DATABASE SEEDER - Popola i dati demo
 // =====================================================
 
 const { initDb, initializeSchema, closeDb, prepare, saveDb } = require('./database');
 
 async function seed() {
-    console.log('Starting database seed...');
+    console.log('Avvio seed database...');
 
-    // Initialize schema (drops and recreates tables)
+    // Inizializza schema (elimina e ricrea le tabelle)
     await initializeSchema();
 
     // =====================================================
-    // STYLISTS
+    // STILISTI
     // =====================================================
 
     const stylists = [
-        { id: 'stylist-001', name: 'Marco V.', specialties: ['Hair', 'Beard'], active: 1 },
-        { id: 'stylist-002', name: 'Lucia R.', specialties: ['Hair', 'Color'], active: 1 },
-        { id: 'stylist-003', name: 'Andrea M.', specialties: ['Nails', 'Skin'], active: 1 },
-        { id: 'stylist-004', name: 'Giulia B.', specialties: ['Hair', 'Skin'], active: 1 }
+        { id: 'stylist-001', name: 'Marco V.', specialties: ['Capelli', 'Barba'], active: 1 },
+        { id: 'stylist-002', name: 'Lucia R.', specialties: ['Capelli', 'Colore'], active: 1 },
+        { id: 'stylist-003', name: 'Andrea M.', specialties: ['Unghie', 'Viso'], active: 1 },
+        { id: 'stylist-004', name: 'Giulia B.', specialties: ['Capelli', 'Viso'], active: 1 }
     ];
 
     for (const stylist of stylists) {
@@ -27,72 +27,72 @@ async function seed() {
             prepare('INSERT INTO stylist_specialties (stylist_id, specialty) VALUES (?, ?)').run(stylist.id, specialty);
         }
     }
-    console.log('Stylists seeded');
+    console.log('Stilisti inseriti');
 
     // =====================================================
-    // CLIENTS
+    // CLIENTI
     // =====================================================
 
     const clients = [
         {
-            id: 'client-001', name: 'Marco Rossi', tags: ['Hair Styling', 'Beard Care'],
-            primaryInterest: 'Hair & Beard', preferences: 'Prefers matte finish products. Likes quick appointments.',
-            issues: 'Dry scalp in winter', lastVisit: '2026-01-10', totalVisits: 12
+            id: 'client-001', name: 'Marco Rossi', tags: ['Styling Capelli', 'Cura Barba'],
+            primaryInterest: 'Capelli e Barba', preferences: 'Preferisce prodotti opachi. Appuntamenti rapidi.',
+            issues: 'Cuoio capelluto secco in inverno', lastVisit: '2026-01-10', totalVisits: 12
         },
         {
-            id: 'client-002', name: 'Giulia Bianchi', tags: ['Skincare', 'Hair Styling'],
-            primaryInterest: 'Skincare', preferences: 'Sensitive skin. Prefers fragrance-free products.',
-            issues: 'Redness-prone skin', lastVisit: '2026-01-15', totalVisits: 8
+            id: 'client-002', name: 'Giulia Bianchi', tags: ['Skincare', 'Styling Capelli'],
+            primaryInterest: 'Skincare', preferences: 'Pelle sensibile. Preferisce prodotti senza profumo.',
+            issues: 'Pelle soggetta a rossori', lastVisit: '2026-01-15', totalVisits: 8
         },
         {
-            id: 'client-003', name: 'Francesca Marino', tags: ['Nails', 'Skincare'],
-            primaryInterest: 'Nails', preferences: 'Gel polish only. Likes neutral colors.',
-            issues: 'Brittle nails', lastVisit: '2026-01-12', totalVisits: 15
+            id: 'client-003', name: 'Francesca Marino', tags: ['Unghie', 'Skincare'],
+            primaryInterest: 'Unghie', preferences: 'Solo smalto gel. Preferisce colori neutri.',
+            issues: 'Unghie fragili', lastVisit: '2026-01-12', totalVisits: 15
         },
         {
-            id: 'client-004', name: 'Sofia Conti', tags: ['Hair Styling', 'Hair Color'],
-            primaryInterest: 'Hair Color', preferences: 'Balayage specialist. Books long appointments.',
-            issues: 'Color fading quickly', lastVisit: '2026-01-08', totalVisits: 6
+            id: 'client-004', name: 'Sofia Conti', tags: ['Styling Capelli', 'Colore Capelli'],
+            primaryInterest: 'Colore Capelli', preferences: 'Specialista balayage. Prenota appuntamenti lunghi.',
+            issues: 'Colore che sbiadisce rapidamente', lastVisit: '2026-01-08', totalVisits: 6
         },
         {
-            id: 'client-005', name: 'Alessandro Ferrari', tags: ['Beard Care'],
-            primaryInterest: 'Beard', preferences: 'Full beard maintenance. Prefers natural oils.',
-            issues: 'Patchy growth on left side', lastVisit: '2026-01-14', totalVisits: 20
+            id: 'client-005', name: 'Alessandro Ferrari', tags: ['Cura Barba'],
+            primaryInterest: 'Barba', preferences: 'Manutenzione barba completa. Preferisce oli naturali.',
+            issues: 'Crescita irregolare sul lato sinistro', lastVisit: '2026-01-14', totalVisits: 20
         },
         {
-            id: 'client-006', name: 'Luca Romano', tags: ['Hair Styling', 'Scalp Care'],
-            primaryInterest: 'Hair', preferences: 'Short appointments. Minimal styling.',
-            issues: 'Dandruff, oily scalp', lastVisit: '2026-01-05', totalVisits: 9
+            id: 'client-006', name: 'Luca Romano', tags: ['Styling Capelli', 'Cura Cuoio Capelluto'],
+            primaryInterest: 'Capelli', preferences: 'Appuntamenti brevi. Styling minimale.',
+            issues: 'Forfora, cuoio capelluto grasso', lastVisit: '2026-01-05', totalVisits: 9
         },
         {
-            id: 'client-007', name: 'Isabella Ricci', tags: ['Skincare', 'Nails'],
-            primaryInterest: 'Full Grooming', preferences: 'Monthly spa package. Premium products only.',
-            issues: 'None noted', lastVisit: '2026-01-11', totalVisits: 24
+            id: 'client-007', name: 'Isabella Ricci', tags: ['Skincare', 'Unghie'],
+            primaryInterest: 'Grooming Completo', preferences: 'Pacchetto spa mensile. Solo prodotti premium.',
+            issues: 'Nessuna nota', lastVisit: '2026-01-11', totalVisits: 24
         },
         {
-            id: 'client-008', name: 'Giuseppe Greco', tags: ['Hair Styling'],
-            primaryInterest: 'Hair', preferences: 'Classic cuts only. No products.',
-            issues: 'Thinning hair', lastVisit: '2025-12-28', totalVisits: 4
+            id: 'client-008', name: 'Giuseppe Greco', tags: ['Styling Capelli'],
+            primaryInterest: 'Capelli', preferences: 'Solo tagli classici. Nessun prodotto.',
+            issues: 'Capelli diradati', lastVisit: '2025-12-28', totalVisits: 4
         },
         {
-            id: 'client-009', name: 'Antonio Colombo', tags: ['Beard Care', 'Skincare'],
-            primaryInterest: 'Beard & Skin', preferences: 'Hot towel shave enthusiast. Likes grooming rituals.',
-            issues: 'Ingrown hairs', lastVisit: '2026-01-13', totalVisits: 11
+            id: 'client-009', name: 'Antonio Colombo', tags: ['Cura Barba', 'Skincare'],
+            primaryInterest: 'Barba e Viso', preferences: 'Appassionato di rasatura con asciugamano caldo. Ama i rituali di grooming.',
+            issues: 'Peli incarniti', lastVisit: '2026-01-13', totalVisits: 11
         },
         {
-            id: 'client-010', name: 'Valentina Esposito', tags: ['Hair Color', 'Hair Styling'],
-            primaryInterest: 'Hair Color', preferences: 'Bold colors. Instagram-ready styles.',
-            issues: 'Damaged ends from bleaching', lastVisit: '2026-01-09', totalVisits: 7
+            id: 'client-010', name: 'Valentina Esposito', tags: ['Colore Capelli', 'Styling Capelli'],
+            primaryInterest: 'Colore Capelli', preferences: 'Colori audaci. Stili pronti per Instagram.',
+            issues: 'Punte danneggiate dalla decolorazione', lastVisit: '2026-01-09', totalVisits: 7
         },
         {
-            id: 'client-011', name: 'Chiara Moretti', tags: ['Nails'],
-            primaryInterest: 'Nails', preferences: 'Bi-weekly manicures. Loves nail art.',
-            issues: 'Cuticle dryness', lastVisit: '2026-01-16', totalVisits: 18
+            id: 'client-011', name: 'Chiara Moretti', tags: ['Unghie'],
+            primaryInterest: 'Unghie', preferences: 'Manicure bisettimanale. Adora la nail art.',
+            issues: 'Cuticole secche', lastVisit: '2026-01-16', totalVisits: 18
         },
         {
-            id: 'client-012', name: 'Roberto Fontana', tags: ['Hair Styling', 'Beard Care', 'Skincare'],
-            primaryInterest: 'Full Grooming', preferences: 'VIP client. Prefers private room. Tip generously.',
-            issues: 'Sensitive skin, dry scalp', lastVisit: '2026-01-07', totalVisits: 32
+            id: 'client-012', name: 'Roberto Fontana', tags: ['Styling Capelli', 'Cura Barba', 'Skincare'],
+            primaryInterest: 'Grooming Completo', preferences: 'Cliente VIP. Preferisce stanza privata. Mance generose.',
+            issues: 'Pelle sensibile, cuoio capelluto secco', lastVisit: '2026-01-07', totalVisits: 32
         }
     ];
 
@@ -105,25 +105,25 @@ async function seed() {
             prepare('INSERT INTO client_tags (client_id, tag) VALUES (?, ?)').run(client.id, tag);
         }
     }
-    console.log('Clients seeded');
+    console.log('Clienti inseriti');
 
     // =====================================================
-    // SERVICES
+    // SERVIZI
     // =====================================================
 
     const services = [
-        { name: 'Haircut', category: 'Hair', duration: 30, price: 35, active: 1 },
-        { name: 'Hair Color', category: 'Hair', duration: 90, price: 85, active: 1 },
-        { name: 'Balayage', category: 'Hair', duration: 120, price: 150, active: 1 },
-        { name: 'Deep Conditioning', category: 'Hair', duration: 30, price: 40, active: 1 },
-        { name: 'Scalp Treatment', category: 'Hair', duration: 45, price: 55, active: 1 },
-        { name: 'Beard Trim', category: 'Beard', duration: 20, price: 20, active: 1 },
-        { name: 'Hot Towel Shave', category: 'Beard', duration: 30, price: 35, active: 1 },
-        { name: 'Facial Treatment', category: 'Skin', duration: 60, price: 75, active: 1 },
-        { name: 'Manicure', category: 'Nails', duration: 45, price: 30, active: 1 },
-        { name: 'Pedicure', category: 'Nails', duration: 60, price: 45, active: 1 },
-        { name: 'Olaplex Treatment', category: 'Hair', duration: 45, price: 65, active: 1 },
-        { name: 'Keratin Treatment', category: 'Hair', duration: 150, price: 200, active: 0 }
+        { name: 'Taglio Capelli', category: 'Capelli', duration: 30, price: 35, active: 1 },
+        { name: 'Colore Capelli', category: 'Capelli', duration: 90, price: 85, active: 1 },
+        { name: 'Balayage', category: 'Capelli', duration: 120, price: 150, active: 1 },
+        { name: 'Trattamento Profondo', category: 'Capelli', duration: 30, price: 40, active: 1 },
+        { name: 'Trattamento Cuoio Capelluto', category: 'Capelli', duration: 45, price: 55, active: 1 },
+        { name: 'Regolazione Barba', category: 'Barba', duration: 20, price: 20, active: 1 },
+        { name: 'Rasatura Asciugamano Caldo', category: 'Barba', duration: 30, price: 35, active: 1 },
+        { name: 'Trattamento Viso', category: 'Viso', duration: 60, price: 75, active: 1 },
+        { name: 'Manicure', category: 'Unghie', duration: 45, price: 30, active: 1 },
+        { name: 'Pedicure', category: 'Unghie', duration: 60, price: 45, active: 1 },
+        { name: 'Trattamento Olaplex', category: 'Capelli', duration: 45, price: 65, active: 1 },
+        { name: 'Trattamento Cheratina', category: 'Capelli', duration: 150, price: 200, active: 0 }
     ];
 
     for (const service of services) {
@@ -132,28 +132,28 @@ async function seed() {
             VALUES (?, ?, ?, ?, ?)
         `).run(service.name, service.category, service.duration, service.price, service.active);
     }
-    console.log('Services seeded');
+    console.log('Servizi inseriti');
 
     // =====================================================
-    // PRODUCTS
+    // PRODOTTI
     // =====================================================
 
     const products = [
-        { name: 'Matte Styling Clay', category: 'Hair', price: 24, useCase: 'Hold', active: 1 },
-        { name: 'Sea Salt Spray', category: 'Hair', price: 18, useCase: 'Hold', active: 1 },
-        { name: 'Hair Serum', category: 'Hair', price: 28, useCase: 'Repair', active: 1 },
-        { name: 'Color Protect Shampoo', category: 'Hair', price: 22, useCase: 'Repair', active: 1 },
-        { name: 'Color Protect Conditioner', category: 'Hair', price: 22, useCase: 'Repair', active: 1 },
-        { name: 'Anti-Dandruff Shampoo', category: 'Hair', price: 19, useCase: 'Anti-dandruff', active: 1 },
-        { name: 'Scalp Serum', category: 'Hair', price: 32, useCase: 'Anti-dandruff', active: 1 },
-        { name: 'Volumizing Mousse', category: 'Hair', price: 20, useCase: 'Hold', active: 1 },
-        { name: 'Beard Oil', category: 'Beard', price: 18, useCase: 'Hydration', active: 1 },
-        { name: 'Beard Balm', category: 'Beard', price: 20, useCase: 'Hold', active: 1 },
-        { name: 'Aftershave Balm', category: 'Beard', price: 15, useCase: 'Hydration', active: 1 },
-        { name: 'Face Moisturizer', category: 'Skin', price: 35, useCase: 'Hydration', active: 1 },
-        { name: 'Moisturizer SPF', category: 'Skin', price: 38, useCase: 'SPF', active: 1 },
-        { name: 'Cuticle Oil', category: 'Nails', price: 12, useCase: 'Hydration', active: 1 },
-        { name: 'Nail Strengthener', category: 'Nails', price: 16, useCase: 'Repair', active: 1 }
+        { name: 'Argilla Opaca Styling', category: 'Capelli', price: 24, useCase: 'Tenuta', active: 1 },
+        { name: 'Spray Sale Marino', category: 'Capelli', price: 18, useCase: 'Tenuta', active: 1 },
+        { name: 'Siero Capelli', category: 'Capelli', price: 28, useCase: 'Riparazione', active: 1 },
+        { name: 'Shampoo Protezione Colore', category: 'Capelli', price: 22, useCase: 'Riparazione', active: 1 },
+        { name: 'Balsamo Protezione Colore', category: 'Capelli', price: 22, useCase: 'Riparazione', active: 1 },
+        { name: 'Shampoo Antiforfora', category: 'Capelli', price: 19, useCase: 'Antiforfora', active: 1 },
+        { name: 'Siero Cuoio Capelluto', category: 'Capelli', price: 32, useCase: 'Antiforfora', active: 1 },
+        { name: 'Mousse Volumizzante', category: 'Capelli', price: 20, useCase: 'Tenuta', active: 1 },
+        { name: 'Olio da Barba', category: 'Barba', price: 18, useCase: 'Idratazione', active: 1 },
+        { name: 'Balsamo da Barba', category: 'Barba', price: 20, useCase: 'Tenuta', active: 1 },
+        { name: 'Balsamo Dopobarba', category: 'Barba', price: 15, useCase: 'Idratazione', active: 1 },
+        { name: 'Crema Idratante Viso', category: 'Viso', price: 35, useCase: 'Idratazione', active: 1 },
+        { name: 'Crema SPF', category: 'Viso', price: 38, useCase: 'Protezione', active: 1 },
+        { name: 'Olio Cuticole', category: 'Unghie', price: 12, useCase: 'Idratazione', active: 1 },
+        { name: 'Rinforzante Unghie', category: 'Unghie', price: 16, useCase: 'Riparazione', active: 1 }
     ];
 
     for (const product of products) {
@@ -162,19 +162,19 @@ async function seed() {
             VALUES (?, ?, ?, ?, ?)
         `).run(product.name, product.category, product.price, product.useCase, product.active);
     }
-    console.log('Products seeded');
+    console.log('Prodotti inseriti');
 
     // =====================================================
-    // SERVICE RULES
+    // REGOLE SERVIZI
     // =====================================================
 
     const serviceRules = [
-        { trigger: 'Haircut', suggestions: ['Deep Conditioning', 'Scalp Treatment'], reason: 'Restores moisture and promotes healthy growth', active: 1 },
-        { trigger: 'Beard Trim', suggestions: ['Hot Towel Shave'], reason: 'Complete grooming experience', active: 1 },
-        { trigger: 'Hair Color', suggestions: ['Deep Conditioning', 'Olaplex Treatment'], reason: 'Protects and repairs colored hair', active: 1 },
-        { trigger: 'Balayage', suggestions: ['Olaplex Treatment'], reason: 'Essential for balayage care', active: 1 },
-        { trigger: 'Manicure', suggestions: ['Pedicure'], reason: 'Full nail care package', active: 1 },
-        { trigger: 'Facial Treatment', suggestions: ['Scalp Treatment'], reason: 'Complete head-to-face grooming', active: 1 }
+        { trigger: 'Taglio Capelli', suggestions: ['Trattamento Profondo', 'Trattamento Cuoio Capelluto'], reason: 'Ripristina idratazione e favorisce la crescita sana', active: 1 },
+        { trigger: 'Regolazione Barba', suggestions: ['Rasatura Asciugamano Caldo'], reason: 'Esperienza grooming completa', active: 1 },
+        { trigger: 'Colore Capelli', suggestions: ['Trattamento Profondo', 'Trattamento Olaplex'], reason: 'Protegge e ripara i capelli colorati', active: 1 },
+        { trigger: 'Balayage', suggestions: ['Trattamento Olaplex'], reason: 'Essenziale per la cura del balayage', active: 1 },
+        { trigger: 'Manicure', suggestions: ['Pedicure'], reason: 'Pacchetto cura unghie completo', active: 1 },
+        { trigger: 'Trattamento Viso', suggestions: ['Trattamento Cuoio Capelluto'], reason: 'Grooming completo testa-viso', active: 1 }
     ];
 
     for (const rule of serviceRules) {
@@ -184,23 +184,23 @@ async function seed() {
             prepare('INSERT INTO service_rule_suggestions (rule_id, suggested_service) VALUES (?, ?)').run(ruleId, suggestion);
         }
     }
-    console.log('Service rules seeded');
+    console.log('Regole servizi inserite');
 
     // =====================================================
-    // PRODUCT RULES
+    // REGOLE PRODOTTI
     // =====================================================
 
     const productRules = [
-        { trigger: 'Beard Trim', suggestions: ['Beard Oil', 'Beard Balm'], reason: 'Keeps beard soft and styled after trim', active: 1 },
-        { trigger: 'Haircut', suggestions: ['Matte Styling Clay', 'Sea Salt Spray'], reason: 'Perfect for styling fresh cuts', active: 1 },
-        { trigger: 'Scalp Treatment', suggestions: ['Anti-Dandruff Shampoo', 'Scalp Serum'], reason: 'Extends treatment benefits at home', active: 1 },
-        { trigger: 'Hair Color', suggestions: ['Color Protect Shampoo', 'Color Protect Conditioner'], reason: 'Preserves color vibrancy', active: 1 },
-        { trigger: 'Balayage', suggestions: ['Color Protect Shampoo', 'Hair Serum'], reason: 'Protects highlights and adds shine', active: 1 },
-        { trigger: 'Facial Treatment', suggestions: ['Face Moisturizer', 'Moisturizer SPF'], reason: 'Maintains facial results', active: 1 },
-        { trigger: 'Deep Conditioning', suggestions: ['Hair Serum'], reason: 'Adds extra nourishment at home', active: 1 },
-        { trigger: 'Hot Towel Shave', suggestions: ['Aftershave Balm', 'Face Moisturizer'], reason: 'Soothes and hydrates after shave', active: 1 },
-        { trigger: 'Manicure', suggestions: ['Cuticle Oil', 'Nail Strengthener'], reason: 'Maintains nail health between visits', active: 1 },
-        { trigger: 'Pedicure', suggestions: ['Cuticle Oil'], reason: 'Keeps toenails healthy', active: 1 }
+        { trigger: 'Regolazione Barba', suggestions: ['Olio da Barba', 'Balsamo da Barba'], reason: 'Mantiene la barba morbida e in forma dopo la regolazione', active: 1 },
+        { trigger: 'Taglio Capelli', suggestions: ['Argilla Opaca Styling', 'Spray Sale Marino'], reason: 'Perfetti per lo styling del taglio fresco', active: 1 },
+        { trigger: 'Trattamento Cuoio Capelluto', suggestions: ['Shampoo Antiforfora', 'Siero Cuoio Capelluto'], reason: 'Prolunga i benefici del trattamento a casa', active: 1 },
+        { trigger: 'Colore Capelli', suggestions: ['Shampoo Protezione Colore', 'Balsamo Protezione Colore'], reason: 'Preserva la vivacità del colore', active: 1 },
+        { trigger: 'Balayage', suggestions: ['Shampoo Protezione Colore', 'Siero Capelli'], reason: 'Protegge le schiariture e aggiunge lucentezza', active: 1 },
+        { trigger: 'Trattamento Viso', suggestions: ['Crema Idratante Viso', 'Crema SPF'], reason: 'Mantiene i risultati del trattamento', active: 1 },
+        { trigger: 'Trattamento Profondo', suggestions: ['Siero Capelli'], reason: 'Aggiunge nutrimento extra a casa', active: 1 },
+        { trigger: 'Rasatura Asciugamano Caldo', suggestions: ['Balsamo Dopobarba', 'Crema Idratante Viso'], reason: 'Lenisce e idrata dopo la rasatura', active: 1 },
+        { trigger: 'Manicure', suggestions: ['Olio Cuticole', 'Rinforzante Unghie'], reason: 'Mantiene la salute delle unghie tra le visite', active: 1 },
+        { trigger: 'Pedicure', suggestions: ['Olio Cuticole'], reason: 'Mantiene le unghie dei piedi sane', active: 1 }
     ];
 
     for (const rule of productRules) {
@@ -210,25 +210,25 @@ async function seed() {
             prepare('INSERT INTO product_rule_suggestions (rule_id, suggested_product) VALUES (?, ?)').run(ruleId, suggestion);
         }
     }
-    console.log('Product rules seeded');
+    console.log('Regole prodotti inserite');
 
     // =====================================================
-    // RECOMMENDATION TRACKING
+    // TRACCIAMENTO RACCOMANDAZIONI
     // =====================================================
 
     const tracking = [
-        { itemName: 'Beard Oil', type: 'product', shown: 45, accepted: 28, dismissed: 8 },
-        { itemName: 'Beard Balm', type: 'product', shown: 38, accepted: 15, dismissed: 12 },
-        { itemName: 'Matte Styling Clay', type: 'product', shown: 52, accepted: 31, dismissed: 10 },
-        { itemName: 'Sea Salt Spray', type: 'product', shown: 35, accepted: 12, dismissed: 15 },
-        { itemName: 'Color Protect Shampoo', type: 'product', shown: 28, accepted: 18, dismissed: 5 },
-        { itemName: 'Face Moisturizer', type: 'product', shown: 22, accepted: 14, dismissed: 4 },
-        { itemName: 'Aftershave Balm', type: 'product', shown: 30, accepted: 22, dismissed: 3 },
-        { itemName: 'Cuticle Oil', type: 'product', shown: 25, accepted: 16, dismissed: 6 },
-        { itemName: 'Deep Conditioning', type: 'service', shown: 40, accepted: 18, dismissed: 12 },
-        { itemName: 'Hot Towel Shave', type: 'service', shown: 32, accepted: 20, dismissed: 7 },
-        { itemName: 'Scalp Treatment', type: 'service', shown: 28, accepted: 10, dismissed: 10 },
-        { itemName: 'Olaplex Treatment', type: 'service', shown: 18, accepted: 8, dismissed: 5 },
+        { itemName: 'Olio da Barba', type: 'product', shown: 45, accepted: 28, dismissed: 8 },
+        { itemName: 'Balsamo da Barba', type: 'product', shown: 38, accepted: 15, dismissed: 12 },
+        { itemName: 'Argilla Opaca Styling', type: 'product', shown: 52, accepted: 31, dismissed: 10 },
+        { itemName: 'Spray Sale Marino', type: 'product', shown: 35, accepted: 12, dismissed: 15 },
+        { itemName: 'Shampoo Protezione Colore', type: 'product', shown: 28, accepted: 18, dismissed: 5 },
+        { itemName: 'Crema Idratante Viso', type: 'product', shown: 22, accepted: 14, dismissed: 4 },
+        { itemName: 'Balsamo Dopobarba', type: 'product', shown: 30, accepted: 22, dismissed: 3 },
+        { itemName: 'Olio Cuticole', type: 'product', shown: 25, accepted: 16, dismissed: 6 },
+        { itemName: 'Trattamento Profondo', type: 'service', shown: 40, accepted: 18, dismissed: 12 },
+        { itemName: 'Rasatura Asciugamano Caldo', type: 'service', shown: 32, accepted: 20, dismissed: 7 },
+        { itemName: 'Trattamento Cuoio Capelluto', type: 'service', shown: 28, accepted: 10, dismissed: 10 },
+        { itemName: 'Trattamento Olaplex', type: 'service', shown: 18, accepted: 8, dismissed: 5 },
         { itemName: 'Pedicure', type: 'service', shown: 20, accepted: 12, dismissed: 4 }
     ];
 
@@ -238,106 +238,106 @@ async function seed() {
             VALUES (?, ?, ?, ?, ?)
         `).run(item.itemName, item.type, item.shown, item.accepted, item.dismissed);
     }
-    console.log('Recommendation tracking seeded');
+    console.log('Tracciamento raccomandazioni inserito');
 
     // =====================================================
-    // CLIENT HISTORY
+    // STORICO CLIENTI
     // =====================================================
 
     const clientHistory = {
         'client-001': [
-            { date: '2026-01-10', time: '10:00', services: ['Haircut', 'Beard Trim'], products: ['Matte Styling Clay'], status: 'Completed' },
-            { date: '2025-12-27', time: '11:30', services: ['Haircut'], products: ['Beard Oil'], status: 'Completed' },
-            { date: '2025-12-13', time: '09:00', services: ['Beard Trim', 'Hot Towel Shave'], products: ['Aftershave Balm'], status: 'Completed' },
-            { date: '2025-11-29', time: '14:00', services: ['Haircut', 'Scalp Treatment'], products: [], status: 'Completed' },
-            { date: '2025-11-15', time: '10:30', services: ['Haircut', 'Beard Trim'], products: ['Beard Balm', 'Matte Styling Clay'], status: 'Completed' },
-            { date: '2025-11-01', time: '15:00', services: ['Beard Trim'], products: ['Beard Oil'], status: 'Completed' }
+            { date: '2026-01-10', time: '10:00', services: ['Taglio Capelli', 'Regolazione Barba'], products: ['Argilla Opaca Styling'], status: 'Completato' },
+            { date: '2025-12-27', time: '11:30', services: ['Taglio Capelli'], products: ['Olio da Barba'], status: 'Completato' },
+            { date: '2025-12-13', time: '09:00', services: ['Regolazione Barba', 'Rasatura Asciugamano Caldo'], products: ['Balsamo Dopobarba'], status: 'Completato' },
+            { date: '2025-11-29', time: '14:00', services: ['Taglio Capelli', 'Trattamento Cuoio Capelluto'], products: [], status: 'Completato' },
+            { date: '2025-11-15', time: '10:30', services: ['Taglio Capelli', 'Regolazione Barba'], products: ['Balsamo da Barba', 'Argilla Opaca Styling'], status: 'Completato' },
+            { date: '2025-11-01', time: '15:00', services: ['Regolazione Barba'], products: ['Olio da Barba'], status: 'Completato' }
         ],
         'client-002': [
-            { date: '2026-01-15', time: '13:00', services: ['Facial Treatment'], products: ['Gentle Cleanser', 'Face Moisturizer'], status: 'Completed' },
-            { date: '2025-12-30', time: '11:00', services: ['Haircut', 'Facial Treatment'], products: ['Moisturizer SPF'], status: 'Completed' },
-            { date: '2025-12-15', time: '14:30', services: ['Facial Treatment'], products: ['Hydrating Cleanser'], status: 'Completed' },
-            { date: '2025-12-01', time: '10:00', services: ['Haircut'], products: [], status: 'Completed' },
-            { date: '2025-11-17', time: '15:00', services: ['Facial Treatment', 'Scalp Treatment'], products: ['Scalp Serum'], status: 'Completed' },
-            { date: '2025-11-03', time: '09:30', services: ['Haircut', 'Facial Treatment'], products: ['Gentle Cleanser'], status: 'Completed' }
+            { date: '2026-01-15', time: '13:00', services: ['Trattamento Viso'], products: ['Crema Idratante Viso'], status: 'Completato' },
+            { date: '2025-12-30', time: '11:00', services: ['Taglio Capelli', 'Trattamento Viso'], products: ['Crema SPF'], status: 'Completato' },
+            { date: '2025-12-15', time: '14:30', services: ['Trattamento Viso'], products: [], status: 'Completato' },
+            { date: '2025-12-01', time: '10:00', services: ['Taglio Capelli'], products: [], status: 'Completato' },
+            { date: '2025-11-17', time: '15:00', services: ['Trattamento Viso', 'Trattamento Cuoio Capelluto'], products: ['Siero Cuoio Capelluto'], status: 'Completato' },
+            { date: '2025-11-03', time: '09:30', services: ['Taglio Capelli', 'Trattamento Viso'], products: [], status: 'Completato' }
         ],
         'client-003': [
-            { date: '2026-01-12', time: '11:00', services: ['Manicure', 'Pedicure'], products: ['Cuticle Oil'], status: 'Completed' },
-            { date: '2025-12-29', time: '14:00', services: ['Manicure'], products: ['Nail Strengthener'], status: 'Completed' },
-            { date: '2025-12-15', time: '10:30', services: ['Manicure', 'Pedicure'], products: ['Cuticle Oil', 'Foot Cream'], status: 'Completed' },
-            { date: '2025-12-01', time: '13:00', services: ['Manicure'], products: [], status: 'Completed' },
-            { date: '2025-11-17', time: '11:00', services: ['Manicure', 'Facial Treatment'], products: ['Face Moisturizer'], status: 'Completed' },
-            { date: '2025-11-03', time: '15:30', services: ['Pedicure'], products: ['Cuticle Oil'], status: 'Completed' }
+            { date: '2026-01-12', time: '11:00', services: ['Manicure', 'Pedicure'], products: ['Olio Cuticole'], status: 'Completato' },
+            { date: '2025-12-29', time: '14:00', services: ['Manicure'], products: ['Rinforzante Unghie'], status: 'Completato' },
+            { date: '2025-12-15', time: '10:30', services: ['Manicure', 'Pedicure'], products: ['Olio Cuticole'], status: 'Completato' },
+            { date: '2025-12-01', time: '13:00', services: ['Manicure'], products: [], status: 'Completato' },
+            { date: '2025-11-17', time: '11:00', services: ['Manicure', 'Trattamento Viso'], products: ['Crema Idratante Viso'], status: 'Completato' },
+            { date: '2025-11-03', time: '15:30', services: ['Pedicure'], products: ['Olio Cuticole'], status: 'Completato' }
         ],
         'client-004': [
-            { date: '2026-01-08', time: '09:00', services: ['Balayage', 'Deep Conditioning'], products: ['Color Protect Shampoo'], status: 'Completed' },
-            { date: '2025-12-11', time: '10:00', services: ['Hair Color', 'Haircut'], products: ['Color Protect Conditioner'], status: 'Completed' },
-            { date: '2025-11-13', time: '09:30', services: ['Balayage'], products: ['Hair Serum', 'Color Protect Shampoo'], status: 'Completed' },
-            { date: '2025-10-16', time: '11:00', services: ['Hair Color', 'Deep Conditioning'], products: [], status: 'Completed' },
-            { date: '2025-09-18', time: '10:00', services: ['Balayage', 'Haircut'], products: ['Color Protect Shampoo'], status: 'Completed' },
-            { date: '2025-08-21', time: '09:00', services: ['Hair Color'], products: ['Hair Serum'], status: 'Completed' }
+            { date: '2026-01-08', time: '09:00', services: ['Balayage', 'Trattamento Profondo'], products: ['Shampoo Protezione Colore'], status: 'Completato' },
+            { date: '2025-12-11', time: '10:00', services: ['Colore Capelli', 'Taglio Capelli'], products: ['Balsamo Protezione Colore'], status: 'Completato' },
+            { date: '2025-11-13', time: '09:30', services: ['Balayage'], products: ['Siero Capelli', 'Shampoo Protezione Colore'], status: 'Completato' },
+            { date: '2025-10-16', time: '11:00', services: ['Colore Capelli', 'Trattamento Profondo'], products: [], status: 'Completato' },
+            { date: '2025-09-18', time: '10:00', services: ['Balayage', 'Taglio Capelli'], products: ['Shampoo Protezione Colore'], status: 'Completato' },
+            { date: '2025-08-21', time: '09:00', services: ['Colore Capelli'], products: ['Siero Capelli'], status: 'Completato' }
         ],
         'client-005': [
-            { date: '2026-01-14', time: '12:00', services: ['Beard Trim'], products: ['Beard Oil'], status: 'Completed' },
-            { date: '2026-01-07', time: '12:00', services: ['Beard Trim', 'Hot Towel Shave'], products: ['Beard Balm', 'Aftershave Balm'], status: 'Completed' },
-            { date: '2025-12-31', time: '11:30', services: ['Beard Trim'], products: [], status: 'Completed' },
-            { date: '2025-12-24', time: '10:00', services: ['Beard Trim', 'Haircut'], products: ['Beard Oil', 'Matte Styling Clay'], status: 'Completed' },
-            { date: '2025-12-17', time: '12:30', services: ['Beard Trim'], products: ['Beard Oil'], status: 'Completed' },
-            { date: '2025-12-10', time: '11:00', services: ['Beard Trim', 'Hot Towel Shave'], products: ['Aftershave Balm'], status: 'Completed' }
+            { date: '2026-01-14', time: '12:00', services: ['Regolazione Barba'], products: ['Olio da Barba'], status: 'Completato' },
+            { date: '2026-01-07', time: '12:00', services: ['Regolazione Barba', 'Rasatura Asciugamano Caldo'], products: ['Balsamo da Barba', 'Balsamo Dopobarba'], status: 'Completato' },
+            { date: '2025-12-31', time: '11:30', services: ['Regolazione Barba'], products: [], status: 'Completato' },
+            { date: '2025-12-24', time: '10:00', services: ['Regolazione Barba', 'Taglio Capelli'], products: ['Olio da Barba', 'Argilla Opaca Styling'], status: 'Completato' },
+            { date: '2025-12-17', time: '12:30', services: ['Regolazione Barba'], products: ['Olio da Barba'], status: 'Completato' },
+            { date: '2025-12-10', time: '11:00', services: ['Regolazione Barba', 'Rasatura Asciugamano Caldo'], products: ['Balsamo Dopobarba'], status: 'Completato' }
         ],
         'client-006': [
-            { date: '2026-01-05', time: '16:00', services: ['Haircut', 'Scalp Treatment'], products: ['Anti-Dandruff Shampoo'], status: 'Completed' },
-            { date: '2025-12-22', time: '15:30', services: ['Haircut'], products: [], status: 'Completed' },
-            { date: '2025-12-08', time: '14:00', services: ['Scalp Treatment'], products: ['Scalp Serum', 'Clarifying Shampoo'], status: 'Completed' },
-            { date: '2025-11-24', time: '16:30', services: ['Haircut', 'Scalp Treatment'], products: ['Anti-Dandruff Shampoo'], status: 'Completed' },
-            { date: '2025-11-10', time: '15:00', services: ['Haircut'], products: [], status: 'Completed' },
-            { date: '2025-10-27', time: '14:30', services: ['Scalp Treatment'], products: ['Scalp Serum'], status: 'Completed' }
+            { date: '2026-01-05', time: '16:00', services: ['Taglio Capelli', 'Trattamento Cuoio Capelluto'], products: ['Shampoo Antiforfora'], status: 'Completato' },
+            { date: '2025-12-22', time: '15:30', services: ['Taglio Capelli'], products: [], status: 'Completato' },
+            { date: '2025-12-08', time: '14:00', services: ['Trattamento Cuoio Capelluto'], products: ['Siero Cuoio Capelluto'], status: 'Completato' },
+            { date: '2025-11-24', time: '16:30', services: ['Taglio Capelli', 'Trattamento Cuoio Capelluto'], products: ['Shampoo Antiforfora'], status: 'Completato' },
+            { date: '2025-11-10', time: '15:00', services: ['Taglio Capelli'], products: [], status: 'Completato' },
+            { date: '2025-10-27', time: '14:30', services: ['Trattamento Cuoio Capelluto'], products: ['Siero Cuoio Capelluto'], status: 'Completato' }
         ],
         'client-007': [
-            { date: '2026-01-11', time: '10:00', services: ['Facial Treatment', 'Manicure', 'Pedicure'], products: ['Face Moisturizer', 'Cuticle Oil'], status: 'Completed' },
-            { date: '2025-12-14', time: '10:00', services: ['Facial Treatment', 'Manicure'], products: ['Hydrating Cleanser', 'Nail Strengthener'], status: 'Completed' },
-            { date: '2025-11-16', time: '10:00', services: ['Facial Treatment', 'Manicure', 'Pedicure'], products: ['Moisturizer SPF', 'Cuticle Oil'], status: 'Completed' },
-            { date: '2025-10-19', time: '10:00', services: ['Facial Treatment', 'Pedicure'], products: ['Face Moisturizer', 'Foot Cream'], status: 'Completed' },
-            { date: '2025-09-21', time: '10:00', services: ['Facial Treatment', 'Manicure'], products: ['Gentle Cleanser'], status: 'Completed' },
-            { date: '2025-08-24', time: '10:00', services: ['Facial Treatment', 'Manicure', 'Pedicure'], products: ['Face Moisturizer', 'Cuticle Oil'], status: 'Completed' }
+            { date: '2026-01-11', time: '10:00', services: ['Trattamento Viso', 'Manicure', 'Pedicure'], products: ['Crema Idratante Viso', 'Olio Cuticole'], status: 'Completato' },
+            { date: '2025-12-14', time: '10:00', services: ['Trattamento Viso', 'Manicure'], products: ['Rinforzante Unghie'], status: 'Completato' },
+            { date: '2025-11-16', time: '10:00', services: ['Trattamento Viso', 'Manicure', 'Pedicure'], products: ['Crema SPF', 'Olio Cuticole'], status: 'Completato' },
+            { date: '2025-10-19', time: '10:00', services: ['Trattamento Viso', 'Pedicure'], products: ['Crema Idratante Viso'], status: 'Completato' },
+            { date: '2025-09-21', time: '10:00', services: ['Trattamento Viso', 'Manicure'], products: [], status: 'Completato' },
+            { date: '2025-08-24', time: '10:00', services: ['Trattamento Viso', 'Manicure', 'Pedicure'], products: ['Crema Idratante Viso', 'Olio Cuticole'], status: 'Completato' }
         ],
         'client-008': [
-            { date: '2025-12-28', time: '09:30', services: ['Haircut'], products: [], status: 'Completed' },
-            { date: '2025-11-30', time: '10:00', services: ['Haircut'], products: [], status: 'Completed' },
-            { date: '2025-11-02', time: '09:00', services: ['Haircut', 'Scalp Treatment'], products: ['Volumizing Mousse'], status: 'Completed' },
-            { date: '2025-10-05', time: '10:30', services: ['Haircut'], products: [], status: 'Completed' }
+            { date: '2025-12-28', time: '09:30', services: ['Taglio Capelli'], products: [], status: 'Completato' },
+            { date: '2025-11-30', time: '10:00', services: ['Taglio Capelli'], products: [], status: 'Completato' },
+            { date: '2025-11-02', time: '09:00', services: ['Taglio Capelli', 'Trattamento Cuoio Capelluto'], products: ['Mousse Volumizzante'], status: 'Completato' },
+            { date: '2025-10-05', time: '10:30', services: ['Taglio Capelli'], products: [], status: 'Completato' }
         ],
         'client-009': [
-            { date: '2026-01-13', time: '11:00', services: ['Hot Towel Shave', 'Facial Treatment'], products: ['Aftershave Balm', 'Face Moisturizer'], status: 'Completed' },
-            { date: '2025-12-30', time: '10:30', services: ['Beard Trim', 'Hot Towel Shave'], products: ['Beard Oil'], status: 'Completed' },
-            { date: '2025-12-16', time: '11:30', services: ['Hot Towel Shave', 'Facial Treatment'], products: ['Gentle Cleanser', 'Aftershave Balm'], status: 'Completed' },
-            { date: '2025-12-02', time: '10:00', services: ['Beard Trim'], products: ['Beard Balm'], status: 'Completed' },
-            { date: '2025-11-18', time: '11:00', services: ['Hot Towel Shave'], products: ['Aftershave Balm'], status: 'Completed' },
-            { date: '2025-11-04', time: '10:30', services: ['Beard Trim', 'Facial Treatment'], products: ['Face Moisturizer'], status: 'Completed' }
+            { date: '2026-01-13', time: '11:00', services: ['Rasatura Asciugamano Caldo', 'Trattamento Viso'], products: ['Balsamo Dopobarba', 'Crema Idratante Viso'], status: 'Completato' },
+            { date: '2025-12-30', time: '10:30', services: ['Regolazione Barba', 'Rasatura Asciugamano Caldo'], products: ['Olio da Barba'], status: 'Completato' },
+            { date: '2025-12-16', time: '11:30', services: ['Rasatura Asciugamano Caldo', 'Trattamento Viso'], products: ['Balsamo Dopobarba'], status: 'Completato' },
+            { date: '2025-12-02', time: '10:00', services: ['Regolazione Barba'], products: ['Balsamo da Barba'], status: 'Completato' },
+            { date: '2025-11-18', time: '11:00', services: ['Rasatura Asciugamano Caldo'], products: ['Balsamo Dopobarba'], status: 'Completato' },
+            { date: '2025-11-04', time: '10:30', services: ['Regolazione Barba', 'Trattamento Viso'], products: ['Crema Idratante Viso'], status: 'Completato' }
         ],
         'client-010': [
-            { date: '2026-01-09', time: '13:00', services: ['Hair Color', 'Deep Conditioning'], products: ['Color Protect Shampoo', 'Hair Serum'], status: 'Completed' },
-            { date: '2025-12-19', time: '12:00', services: ['Balayage', 'Haircut'], products: ['Color Protect Conditioner'], status: 'Completed' },
-            { date: '2025-11-28', time: '14:00', services: ['Hair Color'], products: ['Color Protect Shampoo'], status: 'Completed' },
-            { date: '2025-11-07', time: '13:30', services: ['Deep Conditioning', 'Haircut'], products: ['Hair Serum'], status: 'Completed' },
-            { date: '2025-10-17', time: '12:00', services: ['Balayage'], products: ['Color Protect Shampoo', 'Color Protect Conditioner'], status: 'Completed' },
-            { date: '2025-09-26', time: '14:00', services: ['Hair Color', 'Deep Conditioning'], products: [], status: 'Completed' }
+            { date: '2026-01-09', time: '13:00', services: ['Colore Capelli', 'Trattamento Profondo'], products: ['Shampoo Protezione Colore', 'Siero Capelli'], status: 'Completato' },
+            { date: '2025-12-19', time: '12:00', services: ['Balayage', 'Taglio Capelli'], products: ['Balsamo Protezione Colore'], status: 'Completato' },
+            { date: '2025-11-28', time: '14:00', services: ['Colore Capelli'], products: ['Shampoo Protezione Colore'], status: 'Completato' },
+            { date: '2025-11-07', time: '13:30', services: ['Trattamento Profondo', 'Taglio Capelli'], products: ['Siero Capelli'], status: 'Completato' },
+            { date: '2025-10-17', time: '12:00', services: ['Balayage'], products: ['Shampoo Protezione Colore', 'Balsamo Protezione Colore'], status: 'Completato' },
+            { date: '2025-09-26', time: '14:00', services: ['Colore Capelli', 'Trattamento Profondo'], products: [], status: 'Completato' }
         ],
         'client-011': [
-            { date: '2026-01-16', time: '14:00', services: ['Manicure'], products: ['Cuticle Oil'], status: 'Completed' },
-            { date: '2026-01-02', time: '14:30', services: ['Manicure'], products: ['Nail Polish'], status: 'Completed' },
-            { date: '2025-12-19', time: '15:00', services: ['Manicure', 'Pedicure'], products: ['Cuticle Oil', 'Nail Strengthener'], status: 'Completed' },
-            { date: '2025-12-05', time: '14:00', services: ['Manicure'], products: [], status: 'Completed' },
-            { date: '2025-11-21', time: '14:30', services: ['Manicure'], products: ['Cuticle Oil'], status: 'Completed' },
-            { date: '2025-11-07', time: '15:00', services: ['Manicure', 'Pedicure'], products: ['Nail Polish', 'Foot Cream'], status: 'Completed' }
+            { date: '2026-01-16', time: '14:00', services: ['Manicure'], products: ['Olio Cuticole'], status: 'Completato' },
+            { date: '2026-01-02', time: '14:30', services: ['Manicure'], products: [], status: 'Completato' },
+            { date: '2025-12-19', time: '15:00', services: ['Manicure', 'Pedicure'], products: ['Olio Cuticole', 'Rinforzante Unghie'], status: 'Completato' },
+            { date: '2025-12-05', time: '14:00', services: ['Manicure'], products: [], status: 'Completato' },
+            { date: '2025-11-21', time: '14:30', services: ['Manicure'], products: ['Olio Cuticole'], status: 'Completato' },
+            { date: '2025-11-07', time: '15:00', services: ['Manicure', 'Pedicure'], products: [], status: 'Completato' }
         ],
         'client-012': [
-            { date: '2026-01-07', time: '09:00', services: ['Haircut', 'Beard Trim', 'Facial Treatment'], products: ['Matte Styling Clay', 'Beard Oil', 'Face Moisturizer'], status: 'Completed' },
-            { date: '2025-12-24', time: '09:00', services: ['Haircut', 'Hot Towel Shave', 'Scalp Treatment'], products: ['Aftershave Balm', 'Scalp Serum'], status: 'Completed' },
-            { date: '2025-12-10', time: '09:00', services: ['Beard Trim', 'Facial Treatment'], products: ['Beard Balm', 'Gentle Cleanser'], status: 'Completed' },
-            { date: '2025-11-26', time: '09:00', services: ['Haircut', 'Beard Trim', 'Facial Treatment'], products: ['Matte Styling Clay', 'Face Moisturizer'], status: 'Completed' },
-            { date: '2025-11-12', time: '09:00', services: ['Hot Towel Shave', 'Scalp Treatment'], products: ['Aftershave Balm', 'Anti-Dandruff Shampoo'], status: 'Completed' },
-            { date: '2025-10-29', time: '09:00', services: ['Haircut', 'Beard Trim', 'Facial Treatment'], products: ['Beard Oil', 'Moisturizer SPF'], status: 'Completed' }
+            { date: '2026-01-07', time: '09:00', services: ['Taglio Capelli', 'Regolazione Barba', 'Trattamento Viso'], products: ['Argilla Opaca Styling', 'Olio da Barba', 'Crema Idratante Viso'], status: 'Completato' },
+            { date: '2025-12-24', time: '09:00', services: ['Taglio Capelli', 'Rasatura Asciugamano Caldo', 'Trattamento Cuoio Capelluto'], products: ['Balsamo Dopobarba', 'Siero Cuoio Capelluto'], status: 'Completato' },
+            { date: '2025-12-10', time: '09:00', services: ['Regolazione Barba', 'Trattamento Viso'], products: ['Balsamo da Barba'], status: 'Completato' },
+            { date: '2025-11-26', time: '09:00', services: ['Taglio Capelli', 'Regolazione Barba', 'Trattamento Viso'], products: ['Argilla Opaca Styling', 'Crema Idratante Viso'], status: 'Completato' },
+            { date: '2025-11-12', time: '09:00', services: ['Rasatura Asciugamano Caldo', 'Trattamento Cuoio Capelluto'], products: ['Balsamo Dopobarba', 'Shampoo Antiforfora'], status: 'Completato' },
+            { date: '2025-10-29', time: '09:00', services: ['Taglio Capelli', 'Regolazione Barba', 'Trattamento Viso'], products: ['Olio da Barba', 'Crema SPF'], status: 'Completato' }
         ]
     };
 
@@ -353,15 +353,14 @@ async function seed() {
             }
         }
     }
-    console.log('Client history seeded');
+    console.log('Storico clienti inserito');
 
     // =====================================================
-    // APPOINTMENTS (Dummy appointments for today and upcoming)
+    // APPUNTAMENTI
     // =====================================================
 
     const appointments = [
-        // ===== VERGANGENE TERMINE (Completed) für Analytics =====
-        // 10.01.2026
+        // ===== APPUNTAMENTI PASSATI (Completati) per Analytics =====
         {
             id: 'apt-c01',
             clientId: 'client-001',
@@ -370,10 +369,10 @@ async function seed() {
             stylistName: 'Marco V.',
             date: '2026-01-10',
             time: '09:00',
-            status: 'Completed',
+            status: 'Completato',
             notes: '',
-            services: ['Haircut', 'Beard Trim'],
-            products: ['Matte Styling Clay', 'Beard Oil']
+            services: ['Taglio Capelli', 'Regolazione Barba'],
+            products: ['Argilla Opaca Styling', 'Olio da Barba']
         },
         {
             id: 'apt-c02',
@@ -383,10 +382,10 @@ async function seed() {
             stylistName: 'Lucia R.',
             date: '2026-01-10',
             time: '10:30',
-            status: 'Completed',
+            status: 'Completato',
             notes: '',
-            services: ['Facial Treatment', 'Haircut'],
-            products: ['Face Moisturizer']
+            services: ['Trattamento Viso', 'Taglio Capelli'],
+            products: ['Crema Idratante Viso']
         },
         {
             id: 'apt-c03',
@@ -396,12 +395,11 @@ async function seed() {
             stylistName: 'Marco V.',
             date: '2026-01-10',
             time: '14:00',
-            status: 'Completed',
+            status: 'Completato',
             notes: '',
-            services: ['Beard Trim', 'Hot Towel Shave'],
-            products: ['Beard Oil', 'Aftershave Balm']
+            services: ['Regolazione Barba', 'Rasatura Asciugamano Caldo'],
+            products: ['Olio da Barba', 'Balsamo Dopobarba']
         },
-        // 11.01.2026
         {
             id: 'apt-c04',
             clientId: 'client-004',
@@ -410,10 +408,10 @@ async function seed() {
             stylistName: 'Lucia R.',
             date: '2026-01-11',
             time: '09:00',
-            status: 'Completed',
+            status: 'Completato',
             notes: '',
-            services: ['Balayage', 'Deep Conditioning', 'Olaplex Treatment'],
-            products: ['Color Protect Shampoo', 'Color Protect Conditioner', 'Hair Serum']
+            services: ['Balayage', 'Trattamento Profondo', 'Trattamento Olaplex'],
+            products: ['Shampoo Protezione Colore', 'Balsamo Protezione Colore', 'Siero Capelli']
         },
         {
             id: 'apt-c05',
@@ -423,10 +421,10 @@ async function seed() {
             stylistName: 'Andrea M.',
             date: '2026-01-11',
             time: '11:00',
-            status: 'Completed',
+            status: 'Completato',
             notes: '',
             services: ['Manicure', 'Pedicure'],
-            products: ['Cuticle Oil', 'Nail Strengthener']
+            products: ['Olio Cuticole', 'Rinforzante Unghie']
         },
         {
             id: 'apt-c06',
@@ -436,264 +434,50 @@ async function seed() {
             stylistName: 'Marco V.',
             date: '2026-01-11',
             time: '14:00',
-            status: 'Completed',
+            status: 'Completato',
             notes: 'VIP',
-            services: ['Haircut', 'Beard Trim', 'Facial Treatment', 'Scalp Treatment'],
-            products: ['Matte Styling Clay', 'Beard Balm', 'Face Moisturizer', 'Scalp Serum']
+            services: ['Taglio Capelli', 'Regolazione Barba', 'Trattamento Viso', 'Trattamento Cuoio Capelluto'],
+            products: ['Argilla Opaca Styling', 'Balsamo da Barba', 'Crema Idratante Viso', 'Siero Cuoio Capelluto']
         },
-        // 13.01.2026
-        {
-            id: 'apt-c07',
-            clientId: 'client-007',
-            clientName: 'Isabella Ricci',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-13',
-            time: '10:00',
-            status: 'Completed',
-            notes: '',
-            services: ['Facial Treatment', 'Manicure', 'Pedicure'],
-            products: ['Face Moisturizer', 'Moisturizer SPF', 'Cuticle Oil']
-        },
-        {
-            id: 'apt-c08',
-            clientId: 'client-006',
-            clientName: 'Luca Romano',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-13',
-            time: '11:30',
-            status: 'Completed',
-            notes: '',
-            services: ['Haircut', 'Scalp Treatment'],
-            products: ['Anti-Dandruff Shampoo', 'Scalp Serum']
-        },
-        {
-            id: 'apt-c09',
-            clientId: 'client-009',
-            clientName: 'Antonio Colombo',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-13',
-            time: '15:00',
-            status: 'Completed',
-            notes: '',
-            services: ['Hot Towel Shave', 'Facial Treatment'],
-            products: ['Aftershave Balm', 'Face Moisturizer']
-        },
-        // 14.01.2026
-        {
-            id: 'apt-c10',
-            clientId: 'client-010',
-            clientName: 'Valentina Esposito',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-14',
-            time: '09:30',
-            status: 'Completed',
-            notes: '',
-            services: ['Hair Color', 'Haircut', 'Deep Conditioning'],
-            products: ['Color Protect Shampoo', 'Hair Serum']
-        },
-        {
-            id: 'apt-c11',
-            clientId: 'client-011',
-            clientName: 'Chiara Moretti',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-14',
-            time: '11:00',
-            status: 'Completed',
-            notes: '',
-            services: ['Manicure'],
-            products: ['Cuticle Oil']
-        },
-        {
-            id: 'apt-c12',
-            clientId: 'client-008',
-            clientName: 'Giuseppe Greco',
-            stylistId: 'stylist-004',
-            stylistName: 'Giulia B.',
-            date: '2026-01-14',
-            time: '14:00',
-            status: 'Completed',
-            notes: '',
-            services: ['Haircut'],
-            products: ['Volumizing Mousse']
-        },
-        // 15.01.2026
-        {
-            id: 'apt-c13',
-            clientId: 'client-001',
-            clientName: 'Marco Rossi',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-15',
-            time: '10:00',
-            status: 'Completed',
-            notes: '',
-            services: ['Beard Trim'],
-            products: ['Beard Oil']
-        },
-        {
-            id: 'apt-c14',
-            clientId: 'client-005',
-            clientName: 'Alessandro Ferrari',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-15',
-            time: '11:30',
-            status: 'Completed',
-            notes: '',
-            services: ['Beard Trim', 'Hot Towel Shave'],
-            products: ['Beard Balm', 'Aftershave Balm']
-        },
-        {
-            id: 'apt-c15',
-            clientId: 'client-004',
-            clientName: 'Sofia Conti',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-15',
-            time: '14:00',
-            status: 'Completed',
-            notes: '',
-            services: ['Haircut', 'Olaplex Treatment'],
-            products: ['Hair Serum']
-        },
-        // 16.01.2026
-        {
-            id: 'apt-c16',
-            clientId: 'client-007',
-            clientName: 'Isabella Ricci',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-16',
-            time: '09:00',
-            status: 'Completed',
-            notes: '',
-            services: ['Facial Treatment', 'Pedicure'],
-            products: ['Moisturizer SPF']
-        },
-        {
-            id: 'apt-c17',
-            clientId: 'client-012',
-            clientName: 'Roberto Fontana',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-16',
-            time: '11:00',
-            status: 'Completed',
-            notes: 'VIP',
-            services: ['Haircut', 'Hot Towel Shave'],
-            products: ['Matte Styling Clay', 'Aftershave Balm']
-        },
-        {
-            id: 'apt-c18',
-            clientId: 'client-002',
-            clientName: 'Giulia Bianchi',
-            stylistId: 'stylist-004',
-            stylistName: 'Giulia B.',
-            date: '2026-01-16',
-            time: '15:00',
-            status: 'Completed',
-            notes: '',
-            services: ['Haircut', 'Facial Treatment'],
-            products: ['Face Moisturizer']
-        },
-        // 17.01.2026
-        {
-            id: 'apt-c19',
-            clientId: 'client-003',
-            clientName: 'Francesca Marino',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-17',
-            time: '10:00',
-            status: 'Completed',
-            notes: '',
-            services: ['Manicure', 'Pedicure'],
-            products: ['Cuticle Oil', 'Nail Strengthener']
-        },
-        {
-            id: 'apt-c20',
-            clientId: 'client-009',
-            clientName: 'Antonio Colombo',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-17',
-            time: '11:30',
-            status: 'Completed',
-            notes: '',
-            services: ['Beard Trim', 'Facial Treatment'],
-            products: ['Beard Oil', 'Face Moisturizer']
-        },
-        {
-            id: 'apt-c21',
-            clientId: 'client-006',
-            clientName: 'Luca Romano',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-17',
-            time: '14:00',
-            status: 'Completed',
-            notes: '',
-            services: ['Haircut', 'Scalp Treatment'],
-            products: ['Anti-Dandruff Shampoo']
-        },
-        {
-            id: 'apt-c22',
-            clientId: 'client-010',
-            clientName: 'Valentina Esposito',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-17',
-            time: '16:00',
-            status: 'Completed',
-            notes: '',
-            services: ['Deep Conditioning', 'Haircut'],
-            products: ['Color Protect Conditioner']
-        },
-        // ===== HEUTIGE UND ZUKÜNFTIGE TERMINE =====
-        // 18.01.2026
+        // ===== APPUNTAMENTI OGGI E FUTURI =====
         {
             id: 'apt-001',
-            clientId: 'client-001',
-            clientName: 'Marco Rossi',
+            clientId: 'client-009',
+            clientName: 'Antonio Colombo',
             stylistId: 'stylist-001',
             stylistName: 'Marco V.',
-            date: '2026-01-18',
+            date: '2026-01-19',
             time: '09:00',
-            status: 'Scheduled',
+            status: 'Programmato',
             notes: '',
-            services: ['Haircut', 'Beard Trim'],
+            services: ['Regolazione Barba', 'Rasatura Asciugamano Caldo'],
             products: []
         },
         {
             id: 'apt-002',
-            clientId: 'client-002',
-            clientName: 'Giulia Bianchi',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-18',
-            time: '10:30',
-            status: 'Scheduled',
-            notes: 'Empfindliche Haut beachten',
-            services: ['Facial Treatment'],
+            clientId: 'client-007',
+            clientName: 'Isabella Ricci',
+            stylistId: 'stylist-003',
+            stylistName: 'Andrea M.',
+            date: '2026-01-19',
+            time: '10:00',
+            status: 'Programmato',
+            notes: 'Pacchetto spa mensile',
+            services: ['Trattamento Viso', 'Manicure', 'Pedicure'],
             products: []
         },
         {
             id: 'apt-003',
-            clientId: 'client-005',
-            clientName: 'Alessandro Ferrari',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-18',
-            time: '11:00',
-            status: 'In Progress',
-            notes: '',
-            services: ['Beard Trim', 'Hot Towel Shave'],
-            products: ['Beard Oil']
+            clientId: 'client-001',
+            clientName: 'Roberto Fontana',
+            stylistId: 'stylist-004',
+            stylistName: 'Giulia B.',
+            date: '2026-01-19',
+            time: '09:00',
+            status: 'Programmato',
+            notes: 'VIP - Stanza privata',
+            services: ['Taglio Capelli', 'Regolazione Barba', 'Trattamento Viso'],
+            products: []
         },
         {
             id: 'apt-004',
@@ -701,382 +485,37 @@ async function seed() {
             clientName: 'Francesca Marino',
             stylistId: 'stylist-003',
             stylistName: 'Andrea M.',
-            date: '2026-01-18',
-            time: '14:00',
-            status: 'Scheduled',
-            notes: 'Gel Polish - neutrale Farben',
+            date: '2026-01-26',
+            time: '11:30',
+            status: 'Programmato',
+            notes: 'Smalto gel - colori neutri',
             services: ['Manicure', 'Pedicure'],
             products: []
         },
         {
             id: 'apt-005',
-            clientId: 'client-004',
-            clientName: 'Sofia Conti',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-18',
-            time: '15:00',
-            status: 'Scheduled',
-            notes: 'Balayage Auffrischung',
-            services: ['Balayage', 'Deep Conditioning'],
+            clientId: 'client-008',
+            clientName: 'Giuseppe Greco',
+            stylistId: 'stylist-001',
+            stylistName: 'Marco V.',
+            date: '2026-01-26',
+            time: '10:00',
+            status: 'Programmato',
+            notes: 'Taglio classico',
+            services: ['Taglio Capelli'],
             products: []
         },
         {
             id: 'apt-006',
-            clientId: 'client-012',
-            clientName: 'Roberto Fontana',
-            stylistId: 'stylist-004',
-            stylistName: 'Giulia B.',
-            date: '2026-01-19',
-            time: '09:00',
-            status: 'Scheduled',
-            notes: 'VIP - Privater Raum',
-            services: ['Haircut', 'Beard Trim', 'Facial Treatment'],
-            products: []
-        },
-        {
-            id: 'apt-007',
-            clientId: 'client-007',
-            clientName: 'Isabella Ricci',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-19',
-            time: '10:00',
-            status: 'Scheduled',
-            notes: 'Monatliches Spa-Paket',
-            services: ['Facial Treatment', 'Manicure', 'Pedicure'],
-            products: []
-        },
-        {
-            id: 'apt-008',
-            clientId: 'client-009',
-            clientName: 'Antonio Colombo',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-20',
-            time: '11:00',
-            status: 'Scheduled',
-            notes: 'Hot Towel Shave Enthusiast',
-            services: ['Hot Towel Shave', 'Facial Treatment'],
-            products: []
-        },
-        // 20.01.2026 - weitere Termine
-        {
-            id: 'apt-009',
-            clientId: 'client-006',
-            clientName: 'Luca Romano',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-20',
-            time: '09:00',
-            status: 'Scheduled',
-            notes: 'Kopfhautbehandlung gewünscht',
-            services: ['Haircut', 'Scalp Treatment'],
-            products: []
-        },
-        {
-            id: 'apt-010',
-            clientId: 'client-010',
-            clientName: 'Valentina Esposito',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-20',
-            time: '14:00',
-            status: 'Scheduled',
-            notes: 'Instagram-Style gewünscht',
-            services: ['Hair Color', 'Deep Conditioning'],
-            products: []
-        },
-        // 21.01.2026
-        {
-            id: 'apt-011',
-            clientId: 'client-001',
-            clientName: 'Marco Rossi',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-21',
-            time: '10:00',
-            status: 'Scheduled',
-            notes: '',
-            services: ['Beard Trim'],
-            products: []
-        },
-        {
-            id: 'apt-012',
-            clientId: 'client-011',
-            clientName: 'Chiara Moretti',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-21',
-            time: '11:00',
-            status: 'Scheduled',
-            notes: 'Nail Art gewünscht',
-            services: ['Manicure'],
-            products: []
-        },
-        {
-            id: 'apt-013',
-            clientId: 'client-008',
-            clientName: 'Giuseppe Greco',
-            stylistId: 'stylist-004',
-            stylistName: 'Giulia B.',
-            date: '2026-01-21',
-            time: '14:00',
-            status: 'Scheduled',
-            notes: 'Klassischer Schnitt',
-            services: ['Haircut'],
-            products: []
-        },
-        {
-            id: 'apt-014',
-            clientId: 'client-002',
-            clientName: 'Giulia Bianchi',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-21',
-            time: '15:30',
-            status: 'Scheduled',
-            notes: 'Empfindliche Haut',
-            services: ['Facial Treatment', 'Manicure'],
-            products: []
-        },
-        // 22.01.2026
-        {
-            id: 'apt-015',
-            clientId: 'client-005',
-            clientName: 'Alessandro Ferrari',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-22',
-            time: '09:30',
-            status: 'Scheduled',
-            notes: 'Vollbart-Pflege',
-            services: ['Beard Trim', 'Hot Towel Shave'],
-            products: []
-        },
-        {
-            id: 'apt-016',
-            clientId: 'client-004',
-            clientName: 'Sofia Conti',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-22',
-            time: '10:00',
-            status: 'Scheduled',
-            notes: 'Farbauffrischung',
-            services: ['Balayage', 'Olaplex Treatment'],
-            products: []
-        },
-        {
-            id: 'apt-017',
-            clientId: 'client-007',
-            clientName: 'Isabella Ricci',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-22',
-            time: '13:00',
-            status: 'Scheduled',
-            notes: 'Premium Produkte',
-            services: ['Facial Treatment', 'Pedicure'],
-            products: []
-        },
-        {
-            id: 'apt-018',
-            clientId: 'client-012',
-            clientName: 'Roberto Fontana',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-22',
-            time: '16:00',
-            status: 'Scheduled',
-            notes: 'VIP - Privater Raum',
-            services: ['Haircut', 'Beard Trim', 'Scalp Treatment'],
-            products: []
-        },
-        // 23.01.2026
-        {
-            id: 'apt-019',
-            clientId: 'client-003',
-            clientName: 'Francesca Marino',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-23',
-            time: '10:00',
-            status: 'Scheduled',
-            notes: 'Gel Polish - neutrale Farben',
-            services: ['Manicure', 'Pedicure'],
-            products: []
-        },
-        {
-            id: 'apt-020',
-            clientId: 'client-009',
-            clientName: 'Antonio Colombo',
-            stylistId: 'stylist-004',
-            stylistName: 'Giulia B.',
-            date: '2026-01-23',
-            time: '11:30',
-            status: 'Scheduled',
-            notes: 'Grooming-Ritual',
-            services: ['Hot Towel Shave', 'Facial Treatment'],
-            products: []
-        },
-        {
-            id: 'apt-021',
-            clientId: 'client-006',
-            clientName: 'Luca Romano',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-23',
-            time: '14:00',
-            status: 'Scheduled',
-            notes: 'Schuppen-Behandlung',
-            services: ['Haircut', 'Scalp Treatment'],
-            products: []
-        },
-        {
-            id: 'apt-022',
-            clientId: 'client-010',
-            clientName: 'Valentina Esposito',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-23',
-            time: '15:00',
-            status: 'Scheduled',
-            notes: 'Spitzen schneiden',
-            services: ['Haircut', 'Deep Conditioning'],
-            products: []
-        },
-        // 24.01.2026
-        {
-            id: 'apt-023',
-            clientId: 'client-001',
-            clientName: 'Marco Rossi',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-24',
-            time: '09:00',
-            status: 'Scheduled',
-            notes: '',
-            services: ['Haircut', 'Beard Trim'],
-            products: []
-        },
-        {
-            id: 'apt-024',
-            clientId: 'client-007',
-            clientName: 'Isabella Ricci',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-24',
-            time: '10:30',
-            status: 'Scheduled',
-            notes: 'Spa-Tag',
-            services: ['Facial Treatment', 'Manicure', 'Pedicure'],
-            products: []
-        },
-        {
-            id: 'apt-025',
-            clientId: 'client-012',
-            clientName: 'Roberto Fontana',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-24',
-            time: '14:00',
-            status: 'Scheduled',
-            notes: 'VIP Kunde',
-            services: ['Haircut', 'Hot Towel Shave', 'Facial Treatment'],
-            products: []
-        },
-        // 25.01.2026
-        {
-            id: 'apt-026',
-            clientId: 'client-004',
-            clientName: 'Sofia Conti',
-            stylistId: 'stylist-002',
-            stylistName: 'Lucia R.',
-            date: '2026-01-25',
-            time: '09:00',
-            status: 'Scheduled',
-            notes: 'Balayage Nachbesserung',
-            services: ['Balayage', 'Olaplex Treatment'],
-            products: []
-        },
-        {
-            id: 'apt-027',
-            clientId: 'client-011',
-            clientName: 'Chiara Moretti',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-25',
-            time: '11:00',
-            status: 'Scheduled',
-            notes: 'Nail Art - Wintermotive',
-            services: ['Manicure'],
-            products: []
-        },
-        {
-            id: 'apt-028',
-            clientId: 'client-005',
-            clientName: 'Alessandro Ferrari',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-25',
-            time: '13:00',
-            status: 'Scheduled',
-            notes: '',
-            services: ['Beard Trim'],
-            products: []
-        },
-        {
-            id: 'apt-029',
             clientId: 'client-002',
             clientName: 'Giulia Bianchi',
             stylistId: 'stylist-004',
             stylistName: 'Giulia B.',
             date: '2026-01-25',
             time: '15:00',
-            status: 'Scheduled',
-            notes: 'Sensible Haut',
-            services: ['Haircut', 'Facial Treatment'],
-            products: []
-        },
-        // 26.01.2026
-        {
-            id: 'apt-030',
-            clientId: 'client-008',
-            clientName: 'Giuseppe Greco',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-26',
-            time: '10:00',
-            status: 'Scheduled',
-            notes: 'Klassischer Schnitt',
-            services: ['Haircut'],
-            products: []
-        },
-        {
-            id: 'apt-031',
-            clientId: 'client-003',
-            clientName: 'Francesca Marino',
-            stylistId: 'stylist-003',
-            stylistName: 'Andrea M.',
-            date: '2026-01-26',
-            time: '11:30',
-            status: 'Scheduled',
-            notes: 'Gel Polish erneuern',
-            services: ['Manicure', 'Pedicure'],
-            products: []
-        },
-        {
-            id: 'apt-032',
-            clientId: 'client-009',
-            clientName: 'Antonio Colombo',
-            stylistId: 'stylist-001',
-            stylistName: 'Marco V.',
-            date: '2026-01-26',
-            time: '14:00',
-            status: 'Scheduled',
-            notes: 'Hot Towel Shave Ritual',
-            services: ['Beard Trim', 'Hot Towel Shave'],
+            status: 'Programmato',
+            notes: 'Pelle sensibile',
+            services: ['Taglio Capelli', 'Trattamento Viso'],
             products: []
         }
     ];
@@ -1094,81 +533,81 @@ async function seed() {
             prepare('INSERT INTO appointment_products (appointment_id, product_name) VALUES (?, ?)').run(apt.id, product);
         }
     }
-    console.log('Appointments seeded');
+    console.log('Appuntamenti inseriti');
 
     // =====================================================
-    // EMAIL TEMPLATES
+    // TEMPLATE EMAIL
     // =====================================================
 
     const emailTemplates = [
         {
             name: 'Win-back',
             type: 'win_back',
-            subject_template: 'Wir vermissen Sie, {{client_name}}!',
-            body_template: `Hallo {{client_name}},
+            subject_template: 'Ci manchi, {{client_name}}!',
+            body_template: `Ciao {{client_name}},
 
-wir haben festgestellt, dass Ihr letzter Besuch bei uns schon {{days_since_visit}} Tage her ist.
+abbiamo notato che la tua ultima visita da noi risale a {{days_since_visit}} giorni fa.
 
-Wir würden uns freuen, Sie bald wieder bei uns begrüßen zu dürfen! Als kleines Dankeschön für Ihre Treue möchten wir Ihnen einen besonderen Service anbieten.
+Saremmo felici di rivederti presto! Come ringraziamento per la tua fedeltà, vorremmo offrirti un servizio speciale.
 
-Buchen Sie jetzt Ihren nächsten Termin und profitieren Sie von unseren aktuellen Angeboten.
+Prenota ora il tuo prossimo appuntamento e approfitta delle nostre offerte attuali.
 
-Herzliche Grüße,
-Ihr SalonAssist Team`,
+Cordiali saluti,
+Il Team SalonAssist`,
             active: 1
         },
         {
-            name: 'Appointment Reminder',
+            name: 'Promemoria Appuntamento',
             type: 'appointment_reminder',
-            subject_template: 'Erinnerung: Ihr Termin am {{appointment_date}}',
-            body_template: `Hallo {{client_name}},
+            subject_template: 'Promemoria: Il tuo appuntamento del {{appointment_date}}',
+            body_template: `Ciao {{client_name}},
 
-wir möchten Sie an Ihren bevorstehenden Termin erinnern:
+ti ricordiamo il tuo prossimo appuntamento:
 
-📅 Datum: {{appointment_date}}
-🕐 Uhrzeit: {{appointment_time}}
-💇 Services: {{services}}
+Data: {{appointment_date}}
+Ora: {{appointment_time}}
+Servizi: {{services}}
 
-Falls Sie den Termin absagen oder verschieben möchten, kontaktieren Sie uns bitte rechtzeitig.
+Se desideri annullare o spostare l'appuntamento, contattaci in anticipo.
 
-Wir freuen uns auf Ihren Besuch!
+Non vediamo l'ora di vederti!
 
-Herzliche Grüße,
-Ihr SalonAssist Team`,
+Cordiali saluti,
+Il Team SalonAssist`,
             active: 1
         },
         {
-            name: 'Product Recommendation',
+            name: 'Raccomandazione Prodotti',
             type: 'product_recommendation',
-            subject_template: 'Perfekte Produkte für Ihre {{service}} Pflege',
-            body_template: `Hallo {{client_name}},
+            subject_template: 'Prodotti perfetti per la cura dopo {{service}}',
+            body_template: `Ciao {{client_name}},
 
-basierend auf Ihrem letzten Service ({{service}}) möchten wir Ihnen einige Produkte empfehlen, die perfekt zu Ihrer Pflege passen:
+in base al tuo ultimo servizio ({{service}}), vorremmo consigliarti alcuni prodotti perfetti per la tua cura:
 
 {{product_recommendations}}
 
-Diese Produkte helfen Ihnen, die Ergebnisse Ihrer Behandlung länger zu erhalten und Ihr Haar/Ihre Haut optimal zu pflegen.
+Questi prodotti ti aiuteranno a mantenere i risultati del trattamento più a lungo e a prenderti cura al meglio dei tuoi capelli/della tua pelle.
 
-Besuchen Sie uns im Salon oder bestellen Sie online!
+Vieni a trovarci in salone o ordina online!
 
-Herzliche Grüße,
-Ihr SalonAssist Team`,
+Cordiali saluti,
+Il Team SalonAssist`,
             active: 1
         },
         {
-            name: 'Promotion',
+            name: 'Promozione',
             type: 'promotion',
-            subject_template: 'Exklusives Angebot für Sie, {{client_name}}!',
-            body_template: `Hallo {{client_name}},
+            subject_template: 'Offerta esclusiva per te, {{client_name}}!',
+            body_template: `Ciao {{client_name}},
 
-als geschätzter Kunde möchten wir Ihnen ein exklusives Angebot machen:
+come cliente speciale, vorremmo farti un'offerta esclusiva:
 
 {{promotion_details}}
 
-Dieses Angebot gilt nur für kurze Zeit. Buchen Sie jetzt Ihren Termin!
+Questa offerta è valida solo per un periodo limitato. Prenota subito il tuo appuntamento!
 
-Herzliche Grüße,
-Ihr SalonAssist Team`,
+Cordiali saluti,
+Il Team SalonAssist`,
             active: 1
         }
     ];
@@ -1179,25 +618,25 @@ Ihr SalonAssist Team`,
             VALUES (?, ?, ?, ?, ?)
         `).run(template.name, template.type, template.subject_template, template.body_template, template.active);
     }
-    console.log('Email templates seeded');
+    console.log('Template email inseriti');
 
     // =====================================================
-    // OUTREACH SETTINGS
+    // IMPOSTAZIONI OUTREACH
     // =====================================================
 
     prepare(`
         INSERT INTO outreach_settings (id, win_back_threshold_days, reminder_days_before)
         VALUES (1, 30, 2)
     `).run();
-    console.log('Outreach settings seeded');
+    console.log('Impostazioni outreach inserite');
 
     saveDb();
-    console.log('Database seeding complete!');
+    console.log('Seed database completato!');
     closeDb();
 }
 
-// Run seeder
+// Esegui seeder
 seed().catch(err => {
-    console.error('Seeding failed:', err);
+    console.error('Seed fallito:', err);
     process.exit(1);
 });
