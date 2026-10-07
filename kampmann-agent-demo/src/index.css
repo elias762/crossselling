@@ -82,6 +82,10 @@ body {
 
 .tabular { font-variant-numeric: tabular-nums; }
 
+/* Bereich, an dem der Agent gerade arbeitet */
+[data-anchor] { transition: box-shadow 0.4s ease; }
+[data-anchor][data-focus] { box-shadow: 0 0 0 2px var(--color-brand-300), 0 8px 24px -12px rgb(31 74 112 / 0.35); }
+
 /* dezente Scrollbars */
 .thin-scroll { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
 .thin-scroll::-webkit-scrollbar { width: 8px; height: 8px; }

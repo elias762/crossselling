@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Archive, Check, FileText, Mail, Paperclip, Send, UserRound } from 'lucide-react'
 import type { ScenarioDef, ScenarioProps } from '../engine/types'
 import { createStore } from '../engine/store'
-import { Badge, MarkedText, Panel, Placeholder, Reveal, SystemChip, Typewriter, chipState, cx, fmtDay, fmtShort, lastWeekday, type Seg } from '../components/ui'
+import { Badge, MarkedText, Panel, Placeholder, Reveal, Typewriter, cx, fmtDay, fmtShort, lastWeekday, type Seg } from '../components/ui'
 
 const THURSDAY = lastWeekday(4)
 
@@ -10,9 +10,9 @@ const EMAIL: Seg[] = [
   { text: 'Guten Morgen,\nkönnten Sie mir bitte noch einmal ' },
   { text: 'den Lieferschein', at: [1, 2], tag: 'Dokumenttyp' },
   { text: ' zur ' },
-  { text: 'Bestellung 10572', at: [2, 1], tag: 'Bestellnummer' },
+  { text: 'Bestellung 10572', at: [1, 3], tag: 'Bestellnummer' },
   { text: ' ' },
-  { text: 'vom vergangenen Donnerstag', at: [2, 2], tag: 'Datum' },
+  { text: 'vom vergangenen Donnerstag', at: [1, 4], tag: 'Datum' },
   { text: ' ' },
   { text: 'zusenden', at: [1, 1], tag: 'Anliegen' },
   { text: '?\nVielen Dank.\nMartina Krüger · Landhaus am See' },
@@ -22,20 +22,16 @@ const REPLY = `Guten Morgen Frau Krüger,
 
 gerne senden wir Ihnen den Lieferschein zu Ihrer Bestellung 10572 vom ${fmtDay(THURSDAY)} erneut zu. Sie finden ihn im Anhang dieser E-Mail.
 
-Bei Fragen sind wir jederzeit gerne für Sie da.
-
 Freundliche Grüße
 Ihr Kundenservice`
 
 const replyStore = createStore(REPLY)
 
 const DOCS = [
-  { name: 'Rechnung_10572.pdf', type: 'Rechnung', order: '10572' },
-  { name: 'Lieferschein_10568.pdf', type: 'Lieferschein', order: '10568' },
-  { name: 'Auftragsbestätigung_10572.pdf', type: 'Auftragsbestätigung', order: '10572' },
-  { name: 'Lieferschein_10572.pdf', type: 'Lieferschein', order: '10572', match: true },
-  { name: 'Gutschrift_10551.pdf', type: 'Gutschrift', order: '10551' },
-  { name: 'Lieferschein_10575.pdf', type: 'Lieferschein', order: '10575' },
+  { name: 'Rechnung_10572.pdf', match: false },
+  { name: 'Lieferschein_10568.pdf', match: false },
+  { name: 'Lieferschein_10572.pdf', match: true },
+  { name: 'Auftragsbestätigung_10572.pdf', match: false },
 ]
 
 function Workspace({ p }: ScenarioProps) {
@@ -43,7 +39,7 @@ function Workspace({ p }: ScenarioProps) {
   return (
     <div className="grid grid-cols-12 gap-5">
       <div className="col-span-12 xl:col-span-5">
-        <Panel title="Eingang · E-Mail" icon={<Mail className="size-4" />} aside={<Badge tone={p.reached(0) ? 'brand' : 'neutral'}>Heute, 08:12 Uhr</Badge>}>
+        <Panel anchor={0} title="Eingang · E-Mail" icon={<Mail className="size-4" />} aside={<Badge tone={p.reached(0) ? 'brand' : 'neutral'}>Heute, 08:12 Uhr</Badge>}>
           <div className="space-y-1 border-b border-slate-100 pb-3 text-sm">
             <div>
               <span className="text-slate-400">Von: </span>
@@ -54,105 +50,59 @@ function Workspace({ p }: ScenarioProps) {
               <span className="font-medium text-slate-800">Lieferschein</span>
             </div>
           </div>
-          <MarkedText segs={EMAIL} p={p} className="mt-5 text-[1.05rem] leading-[2.2] whitespace-pre-line text-slate-700" />
+          <MarkedText segs={EMAIL} p={p} className="mt-5 text-[1.05rem] leading-[2.3] whitespace-pre-line text-slate-700" />
         </Panel>
       </div>
 
-      <div className="col-span-12 space-y-4 xl:col-span-7">
-        {p.reached(3) ? (
+      <div className="col-span-12 xl:col-span-7">
+        {p.reached(2) ? (
           <Reveal show>
-            <Panel anchor={3} title="Kunde" icon={<UserRound className="size-4" />} aside={<SystemChip label="Kundenstamm" state={chipState(p, 3, 1)} />}>
-              <Reveal show={p.reached(3, 1)}>
-                <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
-                  <div>
-                    <div className="text-lg font-semibold text-slate-900">Landhaus am See</div>
-                    <div className="text-sm text-slate-500">Kundennummer 20418 · Gastronomie</div>
+            <Panel anchor={2} title="Kunde & Dokumentenarchiv" icon={<Archive className="size-4" />} aside={p.reached(2, 3) ? <Badge tone="ok">1 Treffer</Badge> : undefined}>
+              <Reveal show={p.reached(2, 1)}>
+                <div className="mb-4 flex items-center gap-3 rounded-xl bg-slate-50 px-3 py-2.5">
+                  <UserRound className="size-5 text-brand-600" />
+                  <div className="flex-1">
+                    <div className="font-semibold text-slate-900">Landhaus am See</div>
+                    <div className="text-sm text-slate-500">Kundennummer 20418 · Absender ist hinterlegter Ansprechpartner</div>
                   </div>
-                  <Reveal show={p.reached(3, 2)}>
-                    <Badge tone="ok" icon={<Check className="size-3" />}>
-                      Absender ist hinterlegter Ansprechpartner
-                    </Badge>
-                  </Reveal>
+                  <Check className="size-5 text-emerald-600" />
                 </div>
               </Reveal>
+              {p.reached(2, 2) && (
+                <Reveal show>
+                  <div className="mb-2 flex flex-wrap gap-1.5 text-xs">
+                    <Badge tone="neutral">Dokumente des Kunden</Badge>
+                    {p.reached(2, 3) && <Badge tone="brand">Filter: Lieferschein · Bestellung 10572</Badge>}
+                  </div>
+                  <ul className="relative space-y-1.5 overflow-hidden">
+                    {DOCS.map((d) => {
+                      const out = p.reached(2, 3) && !d.match
+                      const hit = d.match && p.reached(2, 3)
+                      return (
+                        <li
+                          key={d.name}
+                          className={cx(
+                            'flex items-center gap-3 rounded-lg border px-3 py-2 text-[0.95rem] transition-all duration-700',
+                            hit ? 'border-emerald-300 bg-emerald-50' : 'border-slate-100 bg-white',
+                            out && 'opacity-35',
+                          )}
+                        >
+                          <FileText className={cx('size-4', hit ? 'text-emerald-600' : 'text-slate-400')} />
+                          <span className={cx('flex-1 font-medium', out ? 'text-slate-400 line-through' : 'text-slate-700')}>{d.name}</span>
+                          {hit && <Badge tone="ok">Treffer</Badge>}
+                        </li>
+                      )
+                    })}
+                    {p.active(2) && !p.reached(2, 3) && (
+                      <div className="animate-scan pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-brand-100/60 to-transparent" />
+                    )}
+                  </ul>
+                </Reveal>
+              )}
             </Panel>
           </Reveal>
         ) : (
-          <Placeholder>Kunde · wird über den Absender identifiziert</Placeholder>
-        )}
-
-        {p.reached(4) ? (
-          <Reveal show>
-            <Panel
-              anchor={4}
-              title="Dokumentenarchiv"
-              icon={<Archive className="size-4" />}
-              aside={p.reached(5, 1) ? <Badge tone="ok">1 Treffer</Badge> : <SystemChip label="Suche läuft" state="loading" />}
-            >
-              <div className="mb-2 flex flex-wrap gap-1.5 text-xs">
-                <Badge tone="neutral">Kunde 20418</Badge>
-                <Badge tone="neutral">Zeitraum: letzte 14 Tage · 38 Dokumente</Badge>
-                {p.reached(4, 2) && <Badge tone="brand">Typ: Lieferschein</Badge>}
-                {p.reached(4, 3) && <Badge tone="brand">Bestellung: 10572</Badge>}
-              </div>
-              <ul className="relative space-y-1 overflow-hidden">
-                {DOCS.map((d) => {
-                  const outType = p.reached(4, 2) && d.type !== 'Lieferschein'
-                  const outOrder = p.reached(4, 3) && d.order !== '10572'
-                  const out = outType || outOrder
-                  const hit = d.match && p.reached(5, 1)
-                  return (
-                    <li
-                      key={d.name}
-                      className={cx(
-                        'flex items-center gap-3 rounded-lg border px-3 py-1.5 text-sm transition-all duration-500',
-                        hit ? 'border-emerald-300 bg-emerald-50' : 'border-slate-100 bg-white',
-                        out && 'opacity-35',
-                      )}
-                    >
-                      <FileText className={cx('size-4', hit ? 'text-emerald-600' : 'text-slate-400')} />
-                      <span className={cx('flex-1 font-medium', out ? 'text-slate-400 line-through' : 'text-slate-700')}>{d.name}</span>
-                      <span className="text-xs text-slate-400">{d.type}</span>
-                      {hit && <Badge tone="ok">Treffer</Badge>}
-                    </li>
-                  )
-                })}
-                {p.active(4) && <div className="animate-scan pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-brand-100/60 to-transparent" />}
-              </ul>
-            </Panel>
-          </Reveal>
-        ) : (
-          <Placeholder>Dokumentenarchiv · Suche nach dem passenden Lieferschein</Placeholder>
-        )}
-
-        {p.reached(6) ? (
-          <Reveal show>
-            <Panel anchor={6} title="Gegenprüfung" icon={<Check className="size-4" />}>
-              <div className="grid gap-2 text-sm">
-                {[
-                  ['Kundennummer', 'Anfrage: 20418', 'Dokument: 20418'],
-                  ['Bestellnummer', 'Anfrage: 10572', 'Dokument: 10572'],
-                  ['Lieferdatum', `Anfrage: ${fmtShort(THURSDAY)}`, `Dokument: ${fmtShort(THURSDAY)}`],
-                ].map(([k, a, b], i) => (
-                  <Reveal key={k} show={p.reached(6, i + 1)}>
-                    <div className="flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2">
-                      <span className="w-32 font-medium text-slate-700">{k}</span>
-                      <span className="flex-1 text-slate-500">{a}</span>
-                      <span className="flex-1 text-slate-500">{b}</span>
-                      <Check className="size-4 text-emerald-600" />
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-              <Reveal show={p.reached(6, 3)} className="mt-3">
-                <Badge tone="ok" icon={<Check className="size-3" />}>
-                  Dokument eindeutig gefunden
-                </Badge>
-              </Reveal>
-            </Panel>
-          </Reveal>
-        ) : (
-          <Placeholder>Gegenprüfung · Kunde und Dokument werden abgeglichen</Placeholder>
+          <Placeholder className="py-6">Kunde & Archiv · der passende Lieferschein wird gesucht</Placeholder>
         )}
       </div>
     </div>
@@ -161,7 +111,7 @@ function Workspace({ p }: ScenarioProps) {
 
 function Output({ p }: ScenarioProps) {
   const reply = replyStore.use()
-  const sent = p.reached(9, 1)
+  const sent = p.reached(6, 1)
   const status = sent ? <Badge tone="ok">Versendet</Badge> : p.status === 'awaiting' ? <Badge tone="human">Wartet auf Freigabe</Badge> : <Badge tone="brand">Entwurf</Badge>
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -170,42 +120,67 @@ function Output({ p }: ScenarioProps) {
           <Send className="size-5" />
         </div>
         <div>
-          <div className="text-xs font-semibold tracking-wider text-slate-400 uppercase">E-Mail-Entwurf</div>
+          <div className="text-xs font-semibold tracking-wider text-slate-400 uppercase">E-Mail-Entwurf · an Martina Krüger</div>
           <div className="text-xl font-semibold text-slate-900">AW: Lieferschein</div>
         </div>
         <div className="ml-auto">{status}</div>
       </div>
-      <div className="px-6 py-5">
-        <div className="mb-4 space-y-1 text-sm">
-          <div>
-            <span className="text-slate-400">An: </span>
-            <span className="font-medium text-slate-800">Martina Krüger &lt;einkauf@landhaus-am-see.example&gt;</span>
-          </div>
+      <div className="grid gap-6 px-6 py-5 lg:grid-cols-[1fr_minmax(0,19rem)]">
+        <div>
+          {p.editing ? (
+            <textarea
+              autoFocus
+              value={reply}
+              onChange={(e) => replyStore.set(e.target.value)}
+              className="h-48 w-full resize-none rounded-lg border border-human-200 bg-human-50/40 p-3 text-[1rem] leading-relaxed text-slate-800 outline-none focus:ring-2 focus:ring-human-200"
+            />
+          ) : (
+            <p className="min-h-[10rem] text-[1rem] leading-relaxed whitespace-pre-line text-slate-800">
+              <Typewriter text={reply} show active={p.active(3)} ms={p.stepMs(3) * 0.75} />
+            </p>
+          )}
+          <Reveal show={p.reached(3, 2)} className="mt-4">
+            <div className="inline-flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
+              <Paperclip className="size-4 text-slate-400" />
+              <span className="grid size-8 place-items-center rounded-lg bg-rose-50 text-rose-600">
+                <FileText className="size-4" />
+              </span>
+              <span>
+                <span className="block text-sm font-semibold text-slate-800">Lieferschein_10572.pdf</span>
+                <span className="block text-xs text-slate-500">1 Seite · 84 KB</span>
+              </span>
+            </div>
+          </Reveal>
         </div>
-        {p.editing ? (
-          <textarea
-            autoFocus
-            value={reply}
-            onChange={(e) => replyStore.set(e.target.value)}
-            className="h-56 w-full resize-none rounded-lg border border-human-200 bg-human-50/40 p-3 text-[1rem] leading-relaxed text-slate-800 outline-none focus:ring-2 focus:ring-human-200"
-          />
-        ) : (
-          <p className="min-h-[12rem] text-[1rem] leading-relaxed whitespace-pre-line text-slate-800">
-            <Typewriter text={reply} show active={p.active(7)} ms={p.stepMs(7) * 0.9} />
-          </p>
-        )}
-        <Reveal show={p.reached(7, 2)} className="mt-4">
-          <div className="inline-flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-            <Paperclip className="size-4 text-slate-400" />
-            <span className="grid size-8 place-items-center rounded-lg bg-rose-50 text-rose-600">
-              <FileText className="size-4" />
-            </span>
-            <span>
-              <span className="block text-sm font-semibold text-slate-800">Lieferschein_10572.pdf</span>
-              <span className="block text-xs text-slate-500">1 Seite · 84 KB</span>
-            </span>
-          </div>
-        </Reveal>
+
+        {/* 5 · Prüfen: vor dem Versand */}
+        <div className={cx('rounded-xl border p-4 transition-shadow duration-500', p.active(4) ? 'border-brand-300 ring-2 ring-brand-100' : 'border-slate-200')}>
+          <div className="mb-2 text-[0.72rem] font-semibold tracking-[0.12em] text-slate-400 uppercase">Prüfung vor dem Versand</div>
+          {p.reached(4) ? (
+            <div className="space-y-2 text-[0.95rem]">
+              {[
+                ['Kunde', '20418 = 20418'],
+                ['Bestellung', '10572 = 10572'],
+                ['Datum', `${fmtShort(THURSDAY)} = ${fmtShort(THURSDAY)}`],
+              ].map(([k, v], i) => (
+                <Reveal key={k} show={p.reached(4, i + 1)}>
+                  <div className="flex items-center gap-2">
+                    <Check className="size-4 text-emerald-600" />
+                    <span className="w-24 font-medium text-slate-700">{k}</span>
+                    <span className="text-slate-500">{v}</span>
+                  </div>
+                </Reveal>
+              ))}
+              <Reveal show={p.reached(4, 3)} className="pt-1">
+                <Badge tone="ok" icon={<Check className="size-3" />}>
+                  Dokument eindeutig – passt zum Kunden
+                </Badge>
+              </Reveal>
+            </div>
+          ) : (
+            <div className="text-sm text-slate-400">folgt nach dem Entwurf</div>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -220,101 +195,68 @@ export const documentScenario: ScenarioDef = {
   source: 'E-Mail',
   clockStart: 8 * 3600 + 12 * 60 + 4,
   outputTitle: 'E-Mail mit Lieferschein',
-  outputFrom: 7,
+  outputFrom: 3,
   next: 'price',
   steps: [
     {
       title: 'E-Mail empfangen',
       description: 'Im Service-Postfach geht eine Kundenanfrage ein.',
+      insight: 'Der Auslöser ist ganz alltäglich: eine frei formulierte E-Mail – kein Formular, kein Ticket.',
       phase: 'input',
       icon: 'mail',
-      duration: 1300,
+      duration: 1800,
       activities: [{ text: 'Neue E-Mail im Service-Postfach', tone: 'data' }],
     },
     {
       title: 'Anfrage verstehen',
-      description: 'Die KI liest die E-Mail und erkennt, was der Kunde möchte.',
+      description: 'Die KI erkennt Anliegen, Dokumenttyp, Bestellnummer und Datum.',
+      insight: 'Aus einem Satz wird ein klarer Auftrag – auch „vergangener Donnerstag“ wird zu einem echten Datum.',
       phase: 'verstehen',
       icon: 'brain',
-      beats: 2,
-      duration: 2400,
+      beats: 4,
+      duration: 4400,
       activities: [
         { text: 'E-Mail wird gelesen' },
-        { text: 'Kundenanfrage erkannt: Dokument erneut senden', beat: 1, tone: 'data' },
-        { text: 'Gesuchtes Dokument: Lieferschein', beat: 2, tone: 'data' },
+        { text: 'Anfrage verstanden: Lieferschein #10572 erneut senden', beat: 4, tone: 'success' },
       ],
     },
     {
-      title: 'Bestellnummer erkennen',
-      description: 'Bestellnummer und Zeitraum werden aus dem Text herausgelesen.',
-      phase: 'verstehen',
-      icon: 'hash',
-      beats: 2,
-      duration: 2200,
-      activities: [
-        { text: 'Bestellnummer gefunden: #10572', beat: 1, tone: 'data' },
-        { text: 'Zeitraum: vergangener Donnerstag', beat: 2, tone: 'data' },
-      ],
-    },
-    {
-      title: 'Kunde identifizieren',
-      description: 'Der Absender wird im Kundenstamm gesucht.',
-      phase: 'holen',
-      icon: 'customer',
-      beats: 2,
-      duration: 2200,
-      activities: [
-        { text: 'Absender wird im Kundenstamm gesucht' },
-        { text: 'Kunde identifiziert: Landhaus am See', beat: 1, tone: 'success' },
-        { text: 'Absender ist als Ansprechpartner hinterlegt', beat: 2, tone: 'success' },
-      ],
-    },
-    {
-      title: 'Dokumentenarchiv durchsuchen',
-      description: 'Der Agent durchsucht die Dokumente des Kunden und filtert nach Typ und Bestellnummer.',
+      title: 'Lieferschein suchen',
+      description: 'Der Agent identifiziert den Kunden und durchsucht dessen Dokumente.',
+      insight: 'Statt im Archiv zu klicken und zu filtern, findet der Agent genau das eine passende Dokument.',
       phase: 'holen',
       icon: 'search',
       beats: 3,
-      duration: 3200,
+      duration: 4200,
       activities: [
-        { text: 'Suche passende Dokumente' },
-        { text: '38 Dokumente des Kunden im Zeitraum', beat: 1 },
-        { text: 'Filter: nur Lieferscheine', beat: 2 },
-        { text: 'Filter: Bestellung 10572', beat: 3 },
+        { text: 'Kunde wird identifiziert' },
+        { text: 'Kunde: Landhaus am See', beat: 1, tone: 'success' },
+        { text: 'Archiv wird durchsucht', beat: 2 },
+        { text: '1 passendes Dokument gefunden', beat: 3, tone: 'success' },
       ],
     },
     {
-      title: 'Lieferschein finden',
-      description: 'Genau ein Dokument passt zu allen Kriterien.',
-      phase: 'holen',
-      icon: 'fileSearch',
-      duration: 1400,
-      activities: [{ text: '1 passendes Dokument gefunden', beat: 1, tone: 'success' }],
-    },
-    {
-      title: 'Kunde & Dokument prüfen',
-      description: 'Bevor etwas versendet wird, gleicht der Agent Kunde, Bestellung und Datum gegeneinander ab.',
-      phase: 'pruefen',
-      icon: 'compare',
-      beats: 3,
-      duration: 2700,
-      activities: [
-        { text: 'Kundennummer stimmt überein', beat: 1, tone: 'success' },
-        { text: 'Bestellnummer stimmt überein', beat: 2, tone: 'success' },
-        { text: 'Prüfung erfolgreich · Dokument eindeutig gefunden', beat: 3, tone: 'success' },
-      ],
-    },
-    {
-      title: 'E-Mail vorbereiten',
-      description: 'Eine freundliche Antwort mit dem Lieferschein als Anhang wird formuliert.',
+      title: 'Antwort vorbereiten',
+      description: 'Eine freundliche Antwort mit dem Lieferschein im Anhang entsteht.',
+      insight: 'Die Antwort ist fertig formuliert – inklusive Anhang. Niemand musste etwas abtippen.',
       phase: 'verarbeiten',
       icon: 'pen',
       beats: 2,
-      duration: 3400,
+      duration: 4000,
       activities: [
         { text: 'Antwort wird formuliert' },
-        { text: 'Lieferschein_10572.pdf angehängt', beat: 2, tone: 'success' },
+        { text: 'Lieferschein angehängt', beat: 2, tone: 'success' },
       ],
+    },
+    {
+      title: 'Vor dem Versand prüfen',
+      description: 'Kunde, Bestellung und Datum werden gegeneinander abgeglichen.',
+      insight: 'Bevor etwas das Haus verlässt, prüft der Agent: Gehört dieses Dokument wirklich zu diesem Kunden?',
+      phase: 'pruefen',
+      icon: 'compare',
+      beats: 3,
+      duration: 3000,
+      activities: [{ text: 'Prüfung erfolgreich · Dokument eindeutig', beat: 3, tone: 'success' }],
     },
     {
       title: 'Versand freigeben',
@@ -327,33 +269,28 @@ export const documentScenario: ScenarioDef = {
         approve: 'Versand freigeben',
         edit: 'Bearbeiten',
       },
-      activities: [{ text: 'E-Mail-Entwurf zur Prüfung bereit' }],
+      activities: [],
     },
     {
-      title: 'E-Mail versendet',
-      description: 'Der Kunde erhält seinen Lieferschein – ohne Suchen, ohne Abtippen.',
+      title: 'E-Mail versenden',
+      description: 'Der Kunde erhält seinen Lieferschein.',
       phase: 'ergebnis',
       icon: 'send',
-      duration: 1500,
-      activities: [
-        { text: 'E-Mail wird versendet' },
-        { text: 'E-Mail mit Lieferschein versendet', beat: 1, tone: 'success' },
-      ],
+      duration: 1800,
+      activities: [{ text: 'E-Mail mit Lieferschein versendet', beat: 1, tone: 'success' }],
     },
   ],
   facts: [
     { label: 'Anliegen', value: 'Dokument erneut senden', step: 1, beat: 1 },
     { label: 'Dokumenttyp', value: 'Lieferschein', step: 1, beat: 2 },
-    { label: 'Bestellnummer', value: '#10572', step: 2, beat: 1 },
-    { label: 'Datum', value: fmtShort(THURSDAY), step: 2, beat: 2 },
-    { label: 'Kunde', value: 'Landhaus am See', step: 3, beat: 1 },
-    { label: 'Kundennummer', value: '20418', step: 3, beat: 1 },
-    { label: 'Dokument', value: 'Lieferschein_10572.pdf', step: 5, beat: 1 },
-    { label: 'Status', value: 'Dokument eindeutig gefunden', step: 6, beat: 3 },
+    { label: 'Bestellnummer', value: '#10572', step: 1, beat: 3 },
+    { label: 'Datum', value: fmtShort(THURSDAY), step: 1, beat: 4 },
+    { label: 'Kunde', value: 'Landhaus am See', step: 2, beat: 1 },
+    { label: 'Dokument', value: 'Lieferschein_10572.pdf', step: 2, beat: 3 },
   ],
   recap: {
     verstehen: 'Anliegen, Dokumenttyp, Bestellnummer und Datum aus einer frei formulierten E-Mail erkannt',
-    suchen: 'Kunden identifiziert und im Archiv unter 38 Dokumenten den richtigen Lieferschein gefunden',
+    suchen: 'Kunden identifiziert und im Archiv den richtigen Lieferschein gefunden',
     strukturieren: 'Aus „vergangener Donnerstag“ wurde ein konkretes Datum und ein eindeutiger Suchauftrag',
     handeln: 'Antwort formuliert, Dokument angehängt und Versand vorbereitet',
     pruefen: 'Kunde, Bestellung und Datum gegengeprüft – versendet wird erst nach Freigabe',

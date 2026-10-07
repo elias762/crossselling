@@ -1,23 +1,41 @@
 import { useEffect, useRef } from 'react'
-import { Pause, Play, RotateCcw, UserCheck } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw, UserCheck } from 'lucide-react'
 import type { ScenarioDef } from '../engine/types'
 import { useAgentRun } from '../engine/useAgentRun'
 import { ActivityPanel } from './ActivityPanel'
 import { ICONS } from './icons'
-import { PhaseRail, StepCaption, StepTrack } from './Workflow'
+import { StepCaption, StepTrack } from './Workflow'
 import { Badge, cx } from './ui'
 
 interface Props {
   scenario: ScenarioDef
   speed: number
   setSpeed: (s: number) => void
+  stepMode: boolean
+  setStepMode: (v: boolean) => void
   onReset: () => void
   onRecap: () => void
   present: boolean
+  /** false, solange ein Overlay (Abschlussbild) offen ist */
+  keysActive: boolean
 }
 
-export function DemoView({ scenario, speed, setSpeed, onReset, onRecap, present }: Props) {
-  const { progress: p, log, start, pause, approve, edit } = useAgentRun(scenario, speed)
+const SPEEDS = [
+  { v: 0.6, label: 'Langsam' },
+  { v: 1, label: 'Normal' },
+  { v: 2, label: 'Schnell' },
+]
+
+export function DemoView({ scenario, speed, setSpeed, stepMode, setStepMode, onReset, onRecap, present, keysActive }: Props) {
+  const { progress: p, log, start, pause, next, goto, approve, edit } = useAgentRun(scenario, speed, stepMode)
+
+  // „Zurück“: laufenden Schritt neu beginnen – oder, wenn er gerade erst startet, zum vorherigen
+  const back = () => {
+    if (p.status === 'idle') return
+    if (p.finished) return goto(scenario.steps.length - 1)
+    const justStarted = p.status === 'running' && p.beat === 0
+    goto(justStarted ? p.step - 1 : p.step)
+  }
   const scrollRef = useRef<HTMLDivElement>(null)
   const outputRef = useRef<HTMLDivElement>(null)
   const last = scenario.outputFrom ?? scenario.steps.length - 1
@@ -36,7 +54,10 @@ export function DemoView({ scenario, speed, setSpeed, onReset, onRecap, present 
       box.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
-    if (p.step >= last) return // Ergebnis übernimmt
+    if (p.step >= last) {
+      box.querySelectorAll<HTMLElement>('[data-focus]').forEach((n) => n.removeAttribute('data-focus'))
+      return // Ergebnis übernimmt
+    }
     // Bereich des aktuellen Schritts (bzw. des letzten davor) suchen
     let el: HTMLElement | undefined
     let best = -1
@@ -47,7 +68,9 @@ export function DemoView({ scenario, speed, setSpeed, onReset, onRecap, present 
         el = n
       }
     })
+    box.querySelectorAll<HTMLElement>('[data-focus]').forEach((n) => n !== el && n.removeAttribute('data-focus'))
     if (!el) return
+    el.setAttribute('data-focus', 'true')
     const t = window.setTimeout(() => {
       const b = box.getBoundingClientRect()
       const r = el!.getBoundingClientRect()
@@ -57,36 +80,39 @@ export function DemoView({ scenario, speed, setSpeed, onReset, onRecap, present 
     return () => window.clearTimeout(t)
   }, [p.step, p.beat, last])
 
-  // Tastatursteuerung für die Präsentation
-  const keys = useRef({ start, pause, approve, onReset, onRecap, p })
-  keys.current = { start, pause, approve, onReset, onRecap, p }
+  // Tastatursteuerung – funktioniert auch mit einem Presenter (Pfeiltasten / Bild auf/ab)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement
       if (t.tagName === 'TEXTAREA' || t.tagName === 'INPUT' || e.metaKey || e.ctrlKey || e.altKey) return
-      const k = keys.current
+      if (!keysActive) return
+      const st = p.status
       if (e.code === 'Space') {
         e.preventDefault()
-        if (k.p.status === 'running') k.pause()
-        else if (k.p.status === 'awaiting') k.approve()
-        else k.start()
-      } else if (e.key === 'Enter' && k.p.status === 'awaiting') {
+        if (st === 'running') pause()
+        else if (st === 'paused' || st === 'done') start()
+        else next()
+      } else if (e.key === 'ArrowRight' || e.key === 'PageDown') {
         e.preventDefault()
-        k.approve()
+        if (p.finished) onRecap()
+        else next()
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault()
+        back()
+      } else if (e.key === 'Enter' && st === 'awaiting') {
+        e.preventDefault()
+        approve()
       } else if (e.key === 'r' || e.key === 'R') {
-        k.onReset()
-      } else if (e.key === 'ArrowRight' && k.p.finished) {
-        k.onRecap()
+        onReset()
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [])
+  })
 
   const Icon = ICONS[scenario.icon]
   const { Workspace, Output } = scenario
   const running = p.status === 'running'
-  const startLabel = p.status === 'paused' ? 'Fortsetzen' : p.finished ? 'Erneut abspielen' : 'Demo starten'
 
   return (
     <div className="flex min-h-0 min-w-0 flex-1 gap-4">
@@ -112,7 +138,31 @@ export function DemoView({ scenario, speed, setSpeed, onReset, onRecap, present 
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex rounded-xl border border-slate-200 bg-slate-50 p-1" role="group" aria-label="Ablauf">
+              {[
+                { v: true, label: 'Schritt für Schritt' },
+                { v: false, label: 'Automatisch' },
+              ].map((m) => (
+                <button
+                  key={m.label}
+                  onClick={() => setStepMode(m.v)}
+                  className={cx('rounded-lg px-3 py-1.5 text-sm font-semibold transition', stepMode === m.v ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-500 hover:text-slate-700')}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={back}
+              disabled={p.status === 'idle'}
+              title="Schritt zurück / wiederholen (←)"
+              className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-600 transition hover:bg-slate-50 disabled:opacity-40"
+            >
+              <ArrowLeft className="size-4" />
+            </button>
+
             {p.status === 'awaiting' ? (
               <span className="inline-flex items-center gap-2 rounded-xl border border-human-200 bg-human-50 px-4 py-2.5 font-semibold text-human-700">
                 <UserCheck className="size-4" /> Wartet auf Freigabe
@@ -121,38 +171,53 @@ export function DemoView({ scenario, speed, setSpeed, onReset, onRecap, present 
               <button onClick={pause} className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 font-semibold text-slate-700 transition hover:bg-slate-50">
                 <Pause className="size-4" /> Pause
               </button>
+            ) : p.status === 'paused' ? (
+              <button onClick={start} className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-brand-700">
+                <Play className="size-4 fill-current" /> Fortsetzen
+              </button>
+            ) : p.finished ? (
+              <button onClick={start} className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-brand-700">
+                <Play className="size-4 fill-current" /> Erneut abspielen
+              </button>
             ) : (
               <button
-                onClick={start}
+                onClick={next}
                 className={cx(
-                  'inline-flex items-center gap-2 rounded-xl px-5 py-2.5 font-semibold text-white shadow-sm transition disabled:cursor-not-allowed disabled:opacity-40',
-                  'bg-brand-600 hover:bg-brand-700 focus-visible:ring-4 focus-visible:ring-brand-200 focus-visible:outline-none',
-                  p.status === 'idle' && 'animate-soft-pulse',
+                  'inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-brand-700 focus-visible:ring-4 focus-visible:ring-brand-200 focus-visible:outline-none',
+                  'animate-soft-pulse',
                 )}
               >
-                <Play className="size-4 fill-current" /> {startLabel}
+                {p.status === 'idle' ? (
+                  <>
+                    <Play className="size-4 fill-current" /> Start
+                  </>
+                ) : (
+                  <>
+                    Weiter <ArrowRight className="size-4" />
+                  </>
+                )}
               </button>
             )}
-            <button onClick={onReset} title="Zurücksetzen (R)" className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 font-semibold text-slate-600 transition hover:bg-slate-50">
-              <RotateCcw className="size-4" /> <span className="hidden 2xl:inline">Zurücksetzen</span>
+
+            <button onClick={onReset} title="Zurücksetzen (R)" className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-600 transition hover:bg-slate-50">
+              <RotateCcw className="size-4" />
             </button>
             <div className="flex rounded-xl border border-slate-200 bg-slate-50 p-1" role="group" aria-label="Geschwindigkeit">
-              {[1, 2].map((s) => (
+              {SPEEDS.map((sp) => (
                 <button
-                  key={s}
-                  onClick={() => setSpeed(s)}
-                  className={cx('rounded-lg px-3 py-1.5 text-sm font-semibold transition', speed === s ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-500 hover:text-slate-700')}
+                  key={sp.v}
+                  onClick={() => setSpeed(sp.v)}
+                  className={cx('rounded-lg px-2.5 py-1.5 text-sm font-semibold transition', speed === sp.v ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-500 hover:text-slate-700')}
                 >
-                  {s}x
+                  {sp.label}
                 </button>
               ))}
             </div>
           </div>
         </div>
 
-        <PhaseRail scenario={scenario} p={p} />
-        <StepTrack scenario={scenario} p={p} />
-        <StepCaption scenario={scenario} p={p} onApprove={approve} onEdit={edit} onStart={start} onRecap={onRecap} />
+        <StepTrack scenario={scenario} p={p} onGoto={goto} />
+        <StepCaption scenario={scenario} p={p} onApprove={approve} onEdit={edit} onNext={next} onRepeat={() => goto(p.step)} onRecap={onRecap} stepMode={stepMode} />
 
         {/* Arbeitsfläche + Ergebnis */}
         <div ref={scrollRef} className="thin-scroll min-h-0 flex-1 overflow-y-auto rounded-2xl pr-1">

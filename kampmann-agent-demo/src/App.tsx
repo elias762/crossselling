@@ -25,6 +25,7 @@ export default function App() {
   const [scenarioId, setScenarioId] = useState(SCENARIOS[0].id)
   const [runKey, setRunKey] = useState(0)
   const [speed, setSpeed] = useState(1)
+  const [stepMode, setStepMode] = useState(true)
   const [present, setPresent] = useState(false)
   const [recap, setRecap] = useState(false)
   const [fullscreen, setFullscreen] = useState(false)
@@ -153,7 +154,7 @@ export default function App() {
               })}
             </nav>
 
-            <DemoView key={`${scenarioId}-${runKey}`} scenario={scenario} speed={speed} setSpeed={setSpeed} onReset={reset} onRecap={() => setRecap(true)} present={present} />
+            <DemoView key={`${scenarioId}-${runKey}`} scenario={scenario} speed={speed} setSpeed={setSpeed} stepMode={stepMode} setStepMode={setStepMode} onReset={reset} onRecap={() => setRecap(true)} present={present} keysActive={!recap} />
           </motion.div>
         )}
       </main>
@@ -166,7 +167,7 @@ export default function App() {
         </span>
         {!present && screen === 'demo' && (
           <span className="hidden shrink-0 text-xs text-slate-400 2xl:inline">
-            Leertaste Start/Pause · Enter Freigabe · R Reset · 1–6 Case · P Präsentation · F Vollbild
+            → Weiter · ← Zurück · Leertaste Pause · Enter Freigabe · R Reset · 1–6 Case · P Präsentation · F Vollbild
           </span>
         )}
       </footer>

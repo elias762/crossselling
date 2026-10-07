@@ -16,6 +16,7 @@ const STATUS: Record<Progress['status'], { label: string; dot: string }> = {
   idle: { label: 'Bereit', dot: 'bg-slate-300' },
   running: { label: 'Arbeitet', dot: 'bg-brand-500 animate-pulse' },
   paused: { label: 'Pausiert', dot: 'bg-slate-400' },
+  hold: { label: 'Wartet auf „Weiter“', dot: 'bg-brand-400' },
   awaiting: { label: 'Wartet auf Freigabe', dot: 'bg-human-500 animate-pulse' },
   done: { label: 'Abgeschlossen', dot: 'bg-emerald-500' },
 }
@@ -61,6 +62,7 @@ export function ActivityPanel({ scenario, p, log }: { scenario: ScenarioDef; p: 
                   className={cx(
                     'flex items-start gap-2.5 rounded-lg px-2 py-1.5',
                     latest && 'bg-slate-50',
+                    !p.finished && e.step < p.step && 'opacity-50',
                     e.tone === 'human' && 'bg-human-50',
                     e.tone === 'warning' && 'bg-amber-50/70',
                   )}

@@ -11,4 +11,3 @@ export const PHASES: { id: PhaseId; label: string; short: string; icon: IconKey 
   { id: 'ergebnis', label: 'Ergebnis', short: 'Ergebnis', icon: 'check' },
 ]
 
-export const phaseLabel = (id: PhaseId) => PHASES.find((p) => p.id === id)!.short

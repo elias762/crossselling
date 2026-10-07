@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { CalendarClock, CheckSquare, Database, History, Phone, Square, UserRound } from 'lucide-react'
+import { Check, CheckSquare, ClipboardCheck, Database, History, NotebookPen, Phone, Square, TriangleAlert } from 'lucide-react'
 import type { ScenarioDef, ScenarioProps } from '../engine/types'
 import { createStore } from '../engine/store'
 import { Badge, Label, MarkedText, Panel, Placeholder, Reveal, SystemChip, Typewriter, chipState, cx, useTween, type Seg } from '../components/ui'
@@ -37,10 +37,8 @@ const TRANSCRIPT: Seg[] = [
 ]
 
 const ORDER = [
-  { name: 'Mineralwasser Classic 12 × 0,7 l Glas', qty: 20, unit: 'Kisten', water: true },
-  { name: 'Mineralwasser Medium 12 × 0,7 l Glas', qty: 12, unit: 'Kisten' },
+  { name: 'Mineralwasser 12 × 0,7 l Glas', qty: 20, unit: 'Kisten', water: true },
   { name: 'Apfelschorle 24 × 0,33 l', qty: 6, unit: 'Kisten' },
-  { name: 'Orangensaft 6 × 1,0 l', qty: 8, unit: 'Kisten' },
   { name: 'Pils 50 l KEG', qty: 4, unit: 'Fässer' },
 ]
 
@@ -62,7 +60,7 @@ function Waveform({ live }: { live: boolean }) {
 }
 
 function Transcript({ p }: ScenarioProps) {
-  const typed = useTween(p.reached(0), p.stepMs(0) * 0.92, p.reached(1))
+  const typed = useTween(p.reached(0), p.stepMs(0) * 0.85, p.reached(1))
   if (!p.reached(0)) return <Placeholder>Transkript erscheint, sobald das Gespräch verarbeitet wird.</Placeholder>
   return <MarkedText segs={TRANSCRIPT} p={p} typed={typed} className="text-[1.05rem] leading-[2.4] text-slate-700" />
 }
@@ -70,12 +68,13 @@ function Transcript({ p }: ScenarioProps) {
 function Workspace({ p }: ScenarioProps) {
   const summary = summaryStore.use()
   useEffect(() => summaryStore.reset(), [])
-  const live = p.active(0)
+  const live = p.active(0) && p.status === 'running'
+  const waterChanged = p.reached(3, 3)
 
   return (
     <div className="grid grid-cols-12 gap-5">
-      <div className="col-span-12 space-y-4 xl:col-span-5">
-        <Panel title="Eingang · Telefon" icon={<Phone className="size-4" />} aside={<Badge tone={live ? 'brand' : 'neutral'}>{live ? 'wird verarbeitet' : p.reached(0) ? 'Anruf beendet' : 'eingehend'}</Badge>}>
+      <div className="col-span-12 xl:col-span-5">
+        <Panel anchor={0} title="Eingang · Telefon" icon={<Phone className="size-4" />} aside={<Badge tone={live ? 'brand' : 'neutral'}>{live ? 'wird verarbeitet' : p.reached(0) ? 'Anruf beendet' : 'eingehend'}</Badge>}>
           <div className="flex items-center gap-4">
             <div className={cx('grid size-14 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-700', !p.reached(0) && 'animate-soft-pulse')}>
               <Phone className="size-6" />
@@ -98,31 +97,29 @@ function Workspace({ p }: ScenarioProps) {
       </div>
 
       <div className="col-span-12 space-y-4 xl:col-span-7">
-        {/* Kundenhistorie */}
+        {/* 3 · Informationen holen */}
         {p.reached(2) ? (
           <Reveal show>
-            <Panel anchor={2} title="Kundenhistorie" icon={<History className="size-4" />}>
-              <div className="flex flex-wrap gap-2">
-                <SystemChip label="Kundendaten" state={chipState(p, 2, 1)} icon={<Database className="size-3.5" />} />
-                <SystemChip label="Letzte Bestellungen" state={chipState(p, 2, 2)} icon={<Database className="size-3.5" />} />
-              </div>
-              <Reveal show={p.reached(2, 2)} className="mt-3">
-                <div className="rounded-xl border border-slate-200">
-                  <div className="flex items-center justify-between border-b border-slate-100 px-3 py-2 text-sm">
+            <Panel anchor={2} title="Kundenhistorie" icon={<History className="size-4" />} aside={<SystemChip label="Kundendaten" state={chipState(p, 2, 1)} icon={<Database className="size-3.5" />} />}>
+              {p.reached(2, 1) ? (
+                <Reveal show>
+                  <div className="mb-2 flex items-baseline justify-between text-sm">
                     <span className="font-semibold text-slate-800">Letzte Lieferung: Bestellung #K-10482</span>
-                    <span className="text-slate-500">Freitag letzter Woche · 09:40 Uhr</span>
+                    <span className="text-slate-500">Freitag letzter Woche</span>
                   </div>
-                  <ul className="divide-y divide-slate-100 text-sm">
+                  <ul className="divide-y divide-slate-100 rounded-xl border border-slate-200 text-[0.95rem]">
                     {ORDER.map((o) => {
-                      const changed = o.water && p.reached(4, 2)
+                      const changed = o.water && waterChanged
                       return (
-                        <li key={o.name} className={cx('flex items-center justify-between px-3 py-1.5 transition-colors', changed && 'bg-amber-50')}>
+                        <li key={o.name} className={cx('flex items-center justify-between px-3 py-2 transition-colors duration-500', changed && 'bg-amber-50')}>
                           <span className="text-slate-700">{o.name}</span>
                           <span className="tabular flex items-center gap-2 text-slate-600">
                             {changed ? (
                               <>
                                 <span className="text-slate-400 line-through">{o.qty}</span>
-                                <span className="font-semibold text-slate-900">{o.qty + 5} {o.unit}</span>
+                                <span className="font-semibold text-slate-900">
+                                  {o.qty + 5} {o.unit}
+                                </span>
                                 <Badge tone="warn">+5</Badge>
                               </>
                             ) : (
@@ -135,18 +132,25 @@ function Workspace({ p }: ScenarioProps) {
                       )
                     })}
                   </ul>
-                </div>
-              </Reveal>
+                </Reveal>
+              ) : (
+                <div className="text-sm text-slate-400">Kunde wird im System gesucht …</div>
+              )}
             </Panel>
           </Reveal>
         ) : (
           <Placeholder>Kundenhistorie · wird abgerufen, sobald der Kunde erkannt ist</Placeholder>
         )}
 
-        {/* Zusammenfassung */}
+        {/* 4 · Verarbeiten */}
         {p.reached(3) ? (
           <Reveal show>
-            <Panel anchor={3} title="KI-Zusammenfassung" icon={<UserRound className="size-4" />} aside={p.editing ? <Badge tone="human">wird bearbeitet</Badge> : summary !== SUMMARY ? <Badge tone="human">vom Mitarbeiter angepasst</Badge> : undefined}>
+            <Panel
+              anchor={3}
+              title="Entwurf Gesprächsnotiz"
+              icon={<NotebookPen className="size-4" />}
+              aside={p.editing ? <Badge tone="human">wird bearbeitet</Badge> : summary !== SUMMARY ? <Badge tone="human">vom Mitarbeiter angepasst</Badge> : undefined}
+            >
               {p.editing ? (
                 <textarea
                   autoFocus
@@ -156,34 +160,51 @@ function Workspace({ p }: ScenarioProps) {
                 />
               ) : (
                 <p className="text-[1rem] leading-relaxed text-slate-800">
-                  <Typewriter text={summary} show active={p.active(3)} ms={p.stepMs(3) * 0.9} />
+                  <Typewriter text={summary} show active={p.active(3) && !p.reached(3, 2)} ms={p.stepMs(3) * 0.3} />
                 </p>
+              )}
+              {p.reached(3, 2) && (
+                <div className="mt-4">
+                  <Label>Aufgaben</Label>
+                  <ul className="space-y-1.5">
+                    {TASKS.map((t, i) => (
+                      <Reveal key={t} show={p.reached(3, i + 2)}>
+                        <li className="flex items-center gap-2.5 text-[0.98rem] text-slate-800">
+                          {p.finished ? <CheckSquare className="size-4.5 text-emerald-600" /> : <Square className="size-4.5 text-slate-400" />}
+                          {t}
+                          {i === 3 && p.reached(4, 2) && <Badge tone="warn">Rückfrage Disposition</Badge>}
+                        </li>
+                      </Reveal>
+                    ))}
+                  </ul>
+                </div>
               )}
             </Panel>
           </Reveal>
         ) : (
-          <Placeholder>Zusammenfassung · entsteht aus Gespräch und Kundenhistorie</Placeholder>
+          <Placeholder>Gesprächsnotiz · Zusammenfassung und Aufgaben entstehen aus Gespräch und Historie</Placeholder>
         )}
 
-        {/* Aufgaben */}
+        {/* 5 · Prüfen */}
         {p.reached(4) ? (
           <Reveal show>
-            <Panel anchor={4} title="Erkannte Aufgaben" icon={<CalendarClock className="size-4" />}>
-              <ul className="space-y-1.5">
-                {TASKS.map((t, i) => (
-                  <Reveal key={t} show={p.reached(4, i + 1)}>
-                    <li className="flex items-center gap-2.5 text-[0.98rem] text-slate-800">
-                      {p.finished ? <CheckSquare className="size-4.5 text-emerald-600" /> : <Square className="size-4.5 text-slate-400" />}
-                      {t}
-                      {i === 3 && <Badge tone="human">Rückfrage Disposition</Badge>}
-                    </li>
-                  </Reveal>
-                ))}
-              </ul>
+            <Panel anchor={4} title="Prüfung durch den Agenten" icon={<ClipboardCheck className="size-4" />}>
+              <div className="space-y-2 text-[0.95rem]">
+                <Reveal show={p.reached(4, 1)}>
+                  <div className="flex items-center gap-3 rounded-lg bg-emerald-50 px-3 py-2 text-emerald-800">
+                    <Check className="size-4.5 shrink-0" /> Mengenänderung plausibel: 20 → 25 Kisten Wasser
+                  </div>
+                </Reveal>
+                <Reveal show={p.reached(4, 2)}>
+                  <div className="flex items-center gap-3 rounded-lg bg-amber-50 px-3 py-2 text-amber-800">
+                    <TriangleAlert className="size-4.5 shrink-0" /> Kühlwagen: Zusage kann nur die Disposition geben – als Rückfrage markiert
+                  </div>
+                </Reveal>
+              </div>
             </Panel>
           </Reveal>
         ) : (
-          <Placeholder>Aufgaben · werden aus dem Gespräch abgeleitet</Placeholder>
+          <Placeholder>Prüfung · der Agent kontrolliert sein eigenes Ergebnis</Placeholder>
         )}
       </div>
     </div>
@@ -192,7 +213,7 @@ function Workspace({ p }: ScenarioProps) {
 
 function Output({ p }: ScenarioProps) {
   const summary = summaryStore.use()
-  const released = p.reached(6, 2)
+  const released = p.reached(6, 1)
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <div className="flex flex-wrap items-center gap-3 border-b border-slate-100 bg-slate-50/70 px-6 py-4">
@@ -203,9 +224,7 @@ function Output({ p }: ScenarioProps) {
           <div className="text-xs font-semibold tracking-wider text-slate-400 uppercase">CRM · Gesprächsnotiz</div>
           <div className="text-xl font-semibold text-slate-900">Gesprächsnotiz – Restaurant Hafenblick</div>
         </div>
-        <div className="ml-auto">
-          {released ? <Badge tone="ok">Zur Weiterbearbeitung freigegeben</Badge> : <Badge tone="brand">wird gespeichert …</Badge>}
-        </div>
+        <div className="ml-auto">{released ? <Badge tone="ok">Zur Weiterbearbeitung freigegeben</Badge> : <Badge tone="brand">wird gespeichert …</Badge>}</div>
       </div>
       <div className="grid gap-6 px-6 py-5 md:grid-cols-[minmax(0,14rem)_1fr]">
         <dl className="space-y-3 text-sm">
@@ -214,7 +233,6 @@ function Output({ p }: ScenarioProps) {
             ['Ansprechpartner', 'Herr Schneider'],
             ['Kanal', 'Telefon · 03:42 Min.'],
             ['Referenz', 'Bestellung #K-10482'],
-            ['Liefertermin', 'Freitag, vor 11:00 Uhr'],
           ].map(([k, v]) => (
             <div key={k}>
               <dt className="text-slate-400">{k}</dt>
@@ -257,74 +275,69 @@ export const callScenario: ScenarioDef = {
   steps: [
     {
       title: 'Gespräch erfassen',
-      description: 'Der Anruf wird aufgezeichnet und die gesprochene Sprache in Text umgewandelt.',
+      description: 'Der Anruf wird aufgezeichnet und in Text umgewandelt.',
+      insight: 'Aus gesprochener Sprache wird Text – die Grundlage für alle weiteren Schritte.',
       phase: 'input',
       icon: 'audio',
-      beats: 3,
-      duration: 3600,
+      beats: 2,
+      duration: 4000,
       activities: [
         { text: 'Eingehender Anruf · Restaurant Hafenblick', tone: 'data' },
-        { text: 'Audio wurde aufgenommen.', beat: 1 },
-        { text: 'Sprache wird verarbeitet.', beat: 2 },
-        { text: 'Transkript erstellt', beat: 3, tone: 'success' },
+        { text: 'Sprache wird in Text umgewandelt', beat: 1 },
+        { text: 'Transkript erstellt', beat: 2, tone: 'success' },
       ],
     },
     {
       title: 'Gespräch verstehen',
-      description: 'Die KI erkennt im freien Gesprächstext die geschäftlich relevanten Informationen.',
+      description: 'Die KI markiert im Text, was geschäftlich wichtig ist.',
+      insight: 'Die KI erkennt im freien Gespräch, was relevant ist – ganz ohne Formular oder feste Vorgaben.',
       phase: 'verstehen',
       icon: 'brain',
       beats: 7,
-      duration: 4600,
+      duration: 6300,
       activities: [
-        { text: 'Gesprächsinhalt wird analysiert' },
-        { text: 'Kunde erkannt', beat: 1, tone: 'data' },
-        { text: 'Ansprechpartner erkannt', beat: 2, tone: 'data' },
-        { text: 'Liefertermin erkannt', beat: 3, tone: 'data' },
-        { text: 'Wunschzeit erkannt', beat: 4, tone: 'data' },
-        { text: 'Bezug auf Vorwoche erkannt', beat: 5, tone: 'data' },
-        { text: 'Mengenänderung erkannt', beat: 6, tone: 'data' },
-        { text: 'Zusätzliche Anfrage erkannt', beat: 7, tone: 'data' },
+        { text: 'Gespräch wird analysiert' },
+        { text: '7 Informationen erkannt', beat: 7, tone: 'success' },
       ],
     },
     {
       title: 'Kundenhistorie abrufen',
-      description: 'Der Agent sucht den Kunden im System und lädt die Bestellung der Vorwoche.',
+      description: 'Der Agent schaut im System nach der Bestellung der Vorwoche.',
+      insight: 'Der Agent verbindet das Gespräch mit Unternehmensdaten – wie ein Kollege, der kurz ins System schaut.',
       phase: 'holen',
       icon: 'database',
-      beats: 3,
-      duration: 3000,
+      beats: 1,
+      duration: 2600,
       activities: [
         { text: 'Kundendaten werden abgerufen' },
-        { text: 'Kunde im System gefunden · Kd.-Nr. 20117', beat: 1, tone: 'success' },
-        { text: 'Letzte Bestellung gefunden: #K-10482', beat: 2, tone: 'success' },
-        { text: 'Bestellpositionen geladen', beat: 3 },
+        { text: 'Letzte Bestellung #K-10482 gefunden', beat: 1, tone: 'success' },
       ],
     },
     {
-      title: 'Gespräch zusammenfassen',
-      description: 'Aus Gespräch und Kundenhistorie entsteht eine kurze, verständliche Zusammenfassung.',
+      title: 'Notiz & Aufgaben erstellen',
+      description: 'Aus Gespräch und Historie entstehen eine Zusammenfassung und konkrete To-dos.',
+      insight: 'Aus einem unstrukturierten Gespräch werden eine klare Zusammenfassung und fünf konkrete Aufgaben.',
       phase: 'verarbeiten',
       icon: 'note',
-      beats: 2,
-      duration: 3800,
+      beats: 6,
+      duration: 6000,
       activities: [
-        { text: 'Zusammenfassung wird erstellt' },
-        { text: 'Zusammenfassung erstellt', beat: 2, tone: 'success' },
+        { text: 'Zusammenfassung wird geschrieben' },
+        { text: 'Aufgaben werden abgeleitet', beat: 2 },
+        { text: 'Entwurf der Gesprächsnotiz fertig', beat: 6, tone: 'success' },
       ],
     },
     {
-      title: 'Aufgaben erkennen',
-      description: 'Der Agent leitet konkrete nächste Schritte für den Innendienst ab.',
-      phase: 'verarbeiten',
-      icon: 'tasks',
-      beats: 5,
-      duration: 3500,
+      title: 'Ergebnis prüfen',
+      description: 'Der Agent kontrolliert seinen Entwurf und markiert, was er nicht selbst entscheiden kann.',
+      insight: 'Der Agent kennt seine Grenzen: Was er nicht sicher entscheiden kann, markiert er für den Menschen.',
+      phase: 'pruefen',
+      icon: 'clipboard',
+      beats: 2,
+      duration: 3200,
       activities: [
-        { text: 'Aufgaben werden abgeleitet' },
-        { text: 'Wassermenge angepasst: 20 → 25 Kisten', beat: 2, tone: 'data' },
-        { text: 'Kühlwagen-Anfrage an Disposition vorgemerkt', beat: 4, tone: 'warning' },
-        { text: '5 Aufgaben erkannt', beat: 5, tone: 'success' },
+        { text: 'Mengenänderung plausibel', beat: 1, tone: 'success' },
+        { text: 'Kühlwagen-Anfrage → Rückfrage an Disposition', beat: 2, tone: 'warning' },
       ],
     },
     {
@@ -332,27 +345,21 @@ export const callScenario: ScenarioDef = {
       description: 'Der Agent bereitet vor – der Mitarbeiter behält die Kontrolle.',
       phase: 'freigabe',
       icon: 'human',
-      beats: 1,
       duration: 900,
       human: {
         question: 'Stimmen Zusammenfassung und Aufgaben? Erst nach Freigabe wird die Notiz gespeichert.',
         approve: 'Gesprächsnotiz freigeben',
         edit: 'Bearbeiten',
       },
-      activities: [{ text: 'Gesprächsnotiz zur Prüfung vorbereitet' }],
+      activities: [],
     },
     {
-      title: 'Gesprächsnotiz erstellt',
-      description: 'Die freigegebene Notiz wird gespeichert und die Aufgaben stehen zur Weiterbearbeitung bereit.',
+      title: 'Gesprächsnotiz speichern',
+      description: 'Die freigegebene Notiz landet im CRM, die Aufgaben beim Innendienst.',
       phase: 'ergebnis',
       icon: 'check',
-      beats: 2,
       duration: 2000,
-      activities: [
-        { text: 'Gesprächsnotiz wird im CRM angelegt' },
-        { text: '5 Aufgaben an Innendienst übergeben', beat: 1 },
-        { text: 'Gesprächsnotiz gespeichert', beat: 2, tone: 'success' },
-      ],
+      activities: [{ text: 'Gesprächsnotiz im CRM gespeichert', beat: 1, tone: 'success' }],
     },
   ],
   facts: [
@@ -362,15 +369,14 @@ export const callScenario: ScenarioDef = {
     { label: 'Lieferzeit', value: 'vor 11:00 Uhr', step: 1, beat: 4 },
     { label: 'Referenz', value: 'Bestellung der Vorwoche', step: 1, beat: 5 },
     { label: 'Änderung', value: '+5 Kisten Wasser', step: 1, beat: 6, tone: 'warning' },
-    { label: 'Zusatzanfrage', value: 'Verfügbarkeit Kühlwagen', step: 1, beat: 7, tone: 'warning' },
-    { label: 'Letzte Lieferung', value: 'Bestellung #K-10482', step: 2, beat: 2 },
+    { label: 'Zusatzanfrage', value: 'Kühlwagen am Wochenende', step: 1, beat: 7, tone: 'warning' },
   ],
   recap: {
     verstehen: 'Gesprochenes Gespräch in Text umgewandelt und Kunde, Termin und Wünsche erkannt',
     suchen: 'Kundendaten und die Bestellung #K-10482 der Vorwoche gefunden',
     strukturieren: 'Freier Gesprächstext → Zusammenfassung und fünf konkrete Aufgaben',
     handeln: 'Gesprächsnotiz im CRM vorbereitet und Aufgaben an den Innendienst übergeben',
-    pruefen: 'Mitarbeiter hat geprüft und freigegeben – die Kühlwagen-Frage bleibt beim Menschen',
+    pruefen: 'Kühlwagen-Frage als Rückfrage markiert, Mitarbeiter hat geprüft und freigegeben',
   },
   Workspace,
   Output,

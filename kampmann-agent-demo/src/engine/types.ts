@@ -33,6 +33,8 @@ export interface StepDef {
   duration?: number
   activities: Activity[]
   human?: HumanGate
+  /** Merksatz, der im Schrittmodus nach dem Schritt erscheint – zum Erklären. */
+  insight?: string
 }
 
 export interface Fact {
@@ -51,7 +53,8 @@ export interface Recap {
   pruefen: string
 }
 
-export type RunStatus = 'idle' | 'running' | 'paused' | 'awaiting' | 'done'
+/** hold = Schritt fertig, wartet im Schrittmodus auf „Weiter“ */
+export type RunStatus = 'idle' | 'running' | 'paused' | 'hold' | 'awaiting' | 'done'
 
 export interface Progress {
   step: number
@@ -60,6 +63,7 @@ export interface Progress {
   speed: number
   editing: boolean
   finished: boolean
+  holding: boolean
   /** Wurde Schritt `step` (und darin Teilschritt `beat`) bereits erreicht? */
   reached: (step: number, beat?: number) => boolean
   /** Ist Schritt `step` gerade aktiv? */
