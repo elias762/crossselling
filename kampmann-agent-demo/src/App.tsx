@@ -1,24 +1,22 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { Lightbulb, Maximize2, Minimize2, Presentation } from 'lucide-react'
+import { Lightbulb, Map as MapIcon, Maximize2, Minimize2, Presentation } from 'lucide-react'
 import { SCENARIOS } from './scenarios'
 import { DemoView } from './components/DemoView'
 import { ICONS } from './components/icons'
 import { PotentialBoard, RecapScreen, StartScreen } from './components/Screens'
+import { UseCaseMap } from './components/UseCaseMap'
+import { IDEAS } from './ideas/ideas'
+import logoUrl from './assets/kampmann-logo.png'
 import { Toaster, cx } from './components/ui'
 
-type Screen = 'start' | 'demo' | 'board'
+type Screen = 'start' | 'demo' | 'board' | 'map'
 
 function Logo() {
-  return (
-    <span className="grid size-10 place-items-center rounded-xl bg-brand-700 text-white shadow-sm" aria-hidden>
-      <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-        <circle cx="12" cy="12" r="3.2" />
-        <path d="M12 3v3.5M12 17.5V21M3 12h3.5M17.5 12H21" />
-      </svg>
-    </span>
-  )
+  return <img src={logoUrl} alt="Kampmann & Co. – Ihr Gastronomiepartner" className="h-11 w-auto rounded-lg shadow-sm" />
 }
+
+const DEMO_NAMES = Object.fromEntries(SCENARIOS.map((s) => [s.id, s.name]))
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('start')
@@ -75,6 +73,7 @@ export default function App() {
       if (n >= 1 && n <= SCENARIOS.length) select(SCENARIOS[n - 1].id)
       else if (e.key === 'p' || e.key === 'P') setPresent((v) => !v)
       else if (e.key === 'f' || e.key === 'F') toggleFullscreen()
+      else if (e.key === 'l' || e.key === 'L') setScreen('map')
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -93,6 +92,11 @@ export default function App() {
         </button>
         <span className="hidden rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-500 md:inline">Interaktiver Demonstrator · Beispieldaten</span>
         <div className="flex-1" />
+        {screen !== 'map' && (
+          <button onClick={() => setScreen('map')} className="hidden items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 lg:inline-flex" title="Use-Case-Landkarte (L)">
+            <MapIcon className="size-4" /> Use-Case-Landkarte
+          </button>
+        )}
         {screen !== 'board' && (
           <button onClick={() => setScreen('board')} className="hidden items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 lg:inline-flex">
             <Lightbulb className="size-4" /> Potenzial-Board
@@ -119,6 +123,8 @@ export default function App() {
         {screen === 'start' && <StartScreen onStart={() => setScreen('demo')} />}
 
         {screen === 'board' && <PotentialBoard onBack={() => setScreen('demo')} />}
+
+        {screen === 'map' && <UseCaseMap onBack={() => setScreen('demo')} onOpenDemo={select} demoNames={DEMO_NAMES} />}
 
         {screen === 'demo' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }} className="flex min-h-0 min-w-0 flex-1 gap-4">
@@ -152,6 +158,24 @@ export default function App() {
                   </button>
                 )
               })}
+              <button
+                onClick={() => setScreen('map')}
+                title={`Use-Case-Landkarte: ${IDEAS.length} weitere Ideen (L)`}
+                className={cx(
+                  'mt-2 flex items-center gap-3 rounded-2xl border border-dashed border-slate-300 text-left transition hover:border-brand-300 hover:bg-white',
+                  compact ? 'justify-center p-2.5' : 'p-3',
+                )}
+              >
+                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-slate-100 text-slate-500">
+                  <MapIcon className="size-5" />
+                </span>
+                {!compact && (
+                  <span className="min-w-0">
+                    <span className="block font-semibold leading-snug text-slate-700">+ {IDEAS.length} weitere Ideen</span>
+                    <span className="mt-0.5 block text-[0.85rem] leading-snug text-slate-500">Use-Case-Landkarte aus den Fachbereichen</span>
+                  </span>
+                )}
+              </button>
             </nav>
 
             <DemoView key={`${scenarioId}-${runKey}`} scenario={scenario} speed={speed} setSpeed={setSpeed} stepMode={stepMode} setStepMode={setStepMode} onReset={reset} onRecap={() => setRecap(true)} present={present} keysActive={!recap} />
@@ -167,7 +191,7 @@ export default function App() {
         </span>
         {!present && screen === 'demo' && (
           <span className="hidden shrink-0 text-xs text-slate-400 2xl:inline">
-            → Weiter · ← Zurück · Leertaste Pause · Enter Freigabe · R Reset · 1–6 Case · P Präsentation · F Vollbild
+            → Weiter · ← Zurück · Leertaste Pause · Enter Freigabe · R Reset · 1–6 Case · L Landkarte · P Präsentation · F Vollbild
           </span>
         )}
       </footer>
@@ -184,6 +208,11 @@ export default function App() {
               setRecap(false)
               setScreen('board')
             }}
+            onMap={() => {
+              setRecap(false)
+              setScreen('map')
+            }}
+            ideaCount={IDEAS.length}
           />
         )}
       </AnimatePresence>

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
-import { ArrowLeft, ArrowRight, BrainCircuit, ClipboardCheck, Layers, Lightbulb, Plus, Search, Trash2, Wrench, X } from 'lucide-react'
+import { Map as MapIcon, ArrowLeft, ArrowRight, BrainCircuit, ClipboardCheck, Layers, Lightbulb, Plus, Search, Trash2, Wrench, X } from 'lucide-react'
 import type { Recap, ScenarioDef } from '../engine/types'
 import { ICONS } from './icons'
 import { PHASES } from './phases'
 import { cx } from './ui'
+import logoUrl from '../assets/kampmann-logo.png'
 
 /* ------------------------------------------------------------------ */
 /* Startscreen                                                          */
@@ -26,6 +27,7 @@ export function StartScreen({ onStart }: { onStart: () => void }) {
     <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-6 text-center">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60rem_30rem_at_50%_-10%,var(--color-brand-100),transparent)]" />
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="relative max-w-5xl">
+        <img src={logoUrl} alt="Kampmann & Co. – Ihr Gastronomiepartner" className="mx-auto mb-8 h-28 w-auto rounded-2xl shadow-lg" />
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm font-medium text-slate-500">
           KI-Workshop · Interaktiver Demonstrator · Beispieldaten
         </div>
@@ -76,7 +78,7 @@ export const CAPABILITIES: { key: keyof Recap; title: string; text: string; icon
   { key: 'pruefen', title: 'Prüfen', text: 'Ergebnisse kontrollieren und Ausnahmen an Menschen übergeben', icon: ClipboardCheck, question: 'Wo gleichen wir Listen ab oder suchen nach Fehlern und Lücken?', example: 'z. B. fehlende Preise, Umsatzabgleiche' },
 ]
 
-export function RecapScreen({ scenario, next, onClose, onNext, onBoard }: { scenario: ScenarioDef; next?: ScenarioDef; onClose: () => void; onNext: () => void; onBoard: () => void }) {
+export function RecapScreen({ scenario, next, onClose, onNext, onBoard, onMap, ideaCount }: { scenario: ScenarioDef; next?: ScenarioDef; onClose: () => void; onNext: () => void; onBoard: () => void; onMap: () => void; ideaCount: number }) {
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
       if (e.key === 'Escape' || e.key === 'ArrowLeft') onClose()
@@ -146,6 +148,9 @@ export function RecapScreen({ scenario, next, onClose, onNext, onBoard }: { scen
               </button>
             )}
           </div>
+          <button onClick={onMap} className="mt-4 inline-flex items-center gap-2 text-[1rem] font-semibold text-brand-600 hover:text-brand-800">
+            <MapIcon className="size-4" /> {ideaCount} weitere Ideen aus den Fachbereichen ansehen
+          </button>
         </motion.div>
       </div>
     </motion.div>

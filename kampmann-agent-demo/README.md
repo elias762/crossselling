@@ -66,11 +66,23 @@ Die übrigen vier Cases bleiben sichtbar und belegen die Breite. Jeder lässt si
 | `Enter` | Freigabe erteilen (Human-in-the-loop) |
 | `R` | Zurücksetzen |
 | `1`–`6` | Use Case wählen |
+| `L` | Use-Case-Landkarte |
 | `P` | Präsentationsmodus (größere Schrift, kompakte Seitenleiste) |
 | `F` | Vollbild |
 | `Esc` | Abschlussbild schließen |
 
 Ein Presenter (Clicker) sendet in der Regel `Bild ab` / `Bild auf` und steuert die Demo damit direkt.
+
+## Use-Case-Landkarte (weitere Ideen aus den Fachbereichen)
+
+Erreichbar über den Header, die Karte „+ 20 weitere Ideen“ unten in der Seitenleiste, das Abschlussbild oder die Taste `L`.
+
+- **20 Themen**, gruppiert nach Fachbereich: Logistik & Fuhrpark, Auftragseingang & Bestand, Einkauf/Preise/Stammdaten, Buchhaltung & DMS, Vertrieb & Statistik.
+- Oben sind sie nach der **Art der KI-Unterstützung** gezählt: Auswertung, Kontrolle, Automatisierung, Dokumente. Ein Klick auf eine dieser Kacheln filtert die Landkarte.
+- **Ein Klick auf eine Karte öffnet einen Mini-Agenten**: dieselben sieben Schritte in je einem Satz, dazu ein kleines Beispiel-Ergebnis und der Originalwortlaut aus dem Fachbereich. Bedienung: *Abspielen* oder `Leertaste`, `→`/`←` schrittweise, `Esc` schließt.
+- Themen, die schon als Live-Demo existieren (Preiserhöhungen, fehlende Preise), öffnen direkt den passenden Case.
+
+Die Inhalte stehen in `src/ideas/ideas.ts` und lassen sich dort ohne Programmierkenntnisse anpassen. Alle Zahlen sind Beispielwerte.
 
 ## Potenzial-Board
 
