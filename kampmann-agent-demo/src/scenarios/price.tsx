@@ -151,6 +151,8 @@ export const priceScenario: ScenarioDef = {
   name: 'Price Update Agent',
   subtitle: 'Preiserhöhungen automatisch verarbeiten',
   origin: 'Preiserhöhungen ins System',
+  context:
+    'Lieferanten kündigen Preiserhöhungen per Schreiben mit Artikelliste an. Heute werden die neuen Einkaufspreise Artikel für Artikel von Hand ins System übertragen.',
   icon: 'trend',
   source: 'Lieferantenschreiben',
   clockStart: 9 * 3600 + 5 * 60 + 40,

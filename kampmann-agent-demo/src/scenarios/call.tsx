@@ -267,6 +267,8 @@ export const callScenario: ScenarioDef = {
   name: 'AI Call Assistant',
   subtitle: 'Kundenanruf automatisch dokumentieren',
   origin: 'Kundenanrufe zusammenfassen',
+  context:
+    'Gastronomen rufen an, um Bestellungen aufzugeben oder zu ändern. Heute notiert der Innendienst das Gespräch von Hand und überträgt Wünsche und Aufgaben anschließend ins System.',
   icon: 'phone',
   source: 'Telefon',
   clockStart: 10 * 3600 + 30 * 60 + 12,

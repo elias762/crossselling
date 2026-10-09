@@ -191,7 +191,7 @@ export default function App() {
         </span>
         {!present && screen === 'demo' && (
           <span className="hidden shrink-0 text-xs text-slate-400 2xl:inline">
-            → Weiter · ← Zurück · Leertaste Pause · Enter Freigabe · R Reset · 1–6 Case · L Landkarte · P Präsentation · F Vollbild
+            → Weiter · ← Zurück · Enter Freigabe · 1–6 Case · L Landkarte · P Präsentation
           </span>
         )}
       </footer>

@@ -187,6 +187,8 @@ export const qualityScenario: ScenarioDef = {
   name: 'Price Quality Agent',
   subtitle: 'Artikel ohne hinterlegten Preis erkennen',
   origin: 'Fehlende Preise erkennen',
+  context:
+    'Artikel ohne Einkaufs- oder Verkaufspreis führen zu Fehlern bei Rechnung und Kalkulation. Solche Lücken zu finden heißt heute, lange Artikellisten durchzusehen.',
   icon: 'scan',
   source: 'Artikelstamm',
   clockStart: 6 * 3600 + 30 * 60,

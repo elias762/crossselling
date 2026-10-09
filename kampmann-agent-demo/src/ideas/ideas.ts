@@ -1,10 +1,10 @@
 /**
  * Weitere Use Cases aus den Fachbereichen – bewusst schlank gehalten:
- * je Idee ein Satz pro Phase und ein kleines Beispiel-Ergebnis (fiktive Zahlen).
+ * je Idee ein kurzer Business-Kontext, ein Satz pro Phase und ein kleines Beispiel-Ergebnis (fiktive Zahlen).
  */
 
-export type IdeaType = 'report' | 'control' | 'action' | 'document'
-export type GroupId = 'logistik' | 'auftrag' | 'einkauf' | 'buchhaltung' | 'vertrieb'
+export type IdeaType = 'report' | 'control' | 'action' | 'document' | 'text'
+export type GroupId = 'logistik' | 'bestand' | 'auftrag' | 'vertrieb' | 'einkauf' | 'buchhaltung'
 
 export type IdeaResult =
   | { kind: 'table'; columns: string[]; rows: { cells: string[]; warn?: boolean }[] }
@@ -18,10 +18,12 @@ export interface Idea {
   group: GroupId
   type: IdeaType
   title: string
+  /** Worum geht's? – die heutige Situation in 1–2 Sätzen */
+  context: string
   /** Was die KI macht – ein Satz */
   short: string
-  /** Originalwortlaut aus dem Unternehmen */
-  origin: string
+  /** Originalwortlaut aus dem Unternehmen (eine oder mehrere Nennungen) */
+  origin: string | string[]
   /** Bereits als Live-Demo umgesetzt → ID des Szenarios */
   related?: string
   steps?: SevenSteps
@@ -34,24 +36,434 @@ export const TYPES: Record<IdeaType, { label: string; hint: string }> = {
   report: { label: 'Auswertung', hint: 'Daten zusammenführen und als Bericht aufbereiten' },
   control: { label: 'Kontrolle', hint: 'Automatisch prüfen und Auffälligkeiten melden' },
   action: { label: 'Automatisierung', hint: 'Arbeitsschritte vorbereiten oder ausführen' },
-  document: { label: 'Dokumente', hint: 'Rechnungen, Schreiben und Mails verstehen' },
+  document: { label: 'Dokumente', hint: 'Rechnungen und Schreiben verstehen' },
+  text: { label: 'Texte', hint: 'Angebote, Karten und Antworten formulieren' },
 }
 
 export const GROUPS: { id: GroupId; label: string }[] = [
-  { id: 'logistik', label: 'Logistik & Fuhrpark' },
-  { id: 'auftrag', label: 'Auftragseingang & Bestand' },
+  { id: 'vertrieb', label: 'Vertrieb & Kunden' },
+  { id: 'auftrag', label: 'Aufträge & Kundenservice' },
+  { id: 'bestand', label: 'Bestand & Bestellwesen (WWS)' },
   { id: 'einkauf', label: 'Einkauf, Preise & Stammdaten' },
+  { id: 'logistik', label: 'Logistik & Fuhrpark' },
   { id: 'buchhaltung', label: 'Buchhaltung & DMS' },
-  { id: 'vertrieb', label: 'Vertrieb & Statistik' },
 ]
 
 export const IDEAS: Idea[] = [
+  /* ------------------------------ Vertrieb & Kunden ------------------------------ */
+  {
+    id: 'angebote',
+    group: 'vertrieb',
+    type: 'text',
+    title: 'Angebote erstellen',
+    context: 'Gastronomen fragen Sortiment und Preise an, z. B. für eine Neueröffnung. Heute wird jedes Angebot aus Preislisten und Vorlagen von Hand zusammengebaut.',
+    short: 'Aus einer Kundenanfrage wird ein fertiges Angebot mit passenden Artikeln und Kundenpreisen.',
+    origin: 'Angebote erstellen',
+    steps: [
+      'Anfrage: „Neueröffnung, 80 Plätze, Bier und Softdrinks“',
+      'Bedarf, Betriebsart und Wünsche erkennen',
+      'Sortiment, Preisgruppe und Konditionen laden',
+      'Angebot mit passenden Artikeln zusammenstellen',
+      'Marge und Lieferbarkeit prüfen',
+      'Außendienst passt an und gibt frei',
+      'Angebot als PDF an den Kunden',
+    ],
+    resultTitle: 'Angebot Neueröffnung',
+    result: {
+      kind: 'table',
+      columns: ['Artikel', 'Menge / Woche', 'Preis'],
+      rows: [
+        { cells: ['Pils 50 l KEG', '4 Fass', '129,00 € / Fass'] },
+        { cells: ['Mineralwasser 12 × 0,7 l', '20 Kisten', '7,90 € / Kiste'] },
+        { cells: ['Cola 24 × 0,33 l', '8 Kisten', '18,40 € / Kiste'] },
+        { cells: ['Hauswein (Vorschlag)', '2 Kisten', 'Marge unter Ziel – prüfen'], warn: true },
+      ],
+    },
+  },
+  {
+    id: 'weinkarte',
+    group: 'vertrieb',
+    type: 'text',
+    title: 'Weinkarten schreiben',
+    context: 'Gastronomen brauchen ansprechende Weinkarten mit kurzen Beschreibungen und Speiseempfehlungen. Heute entsteht jede Karte individuell von Hand.',
+    short: 'Aus der Weinauswahl des Kunden entsteht eine fertige Weinkarte mit Beschreibungen.',
+    origin: 'Weinkarten schreiben',
+    steps: [
+      'Weinauswahl des Restaurants + Stil der Küche',
+      'Rebsorte, Region und Geschmack erkennen',
+      'Produktdaten und Verkaufspreise laden',
+      'Kurze Beschreibungen und Speiseempfehlungen schreiben',
+      'Jahrgänge und Preise abgleichen',
+      'Kunde und Außendienst lesen gegen',
+      'Druckfertige Weinkarte',
+    ],
+    resultTitle: 'Weinkarte Restaurant Hafenblick',
+    result: {
+      kind: 'table',
+      columns: ['Wein', 'Beschreibung', 'Glas 0,2 l'],
+      rows: [
+        { cells: ['Riesling trocken · Mosel', 'Frisch, Zitrus – passt zu Fisch', '6,50 €'] },
+        { cells: ['Spätburgunder · Baden', 'Kirsche, samtig – zu Wild und Pasta', '7,90 €'] },
+        { cells: ['Grauburgunder · Pfalz', 'Birne, cremig – zu Geflügel', 'Jahrgang prüfen'], warn: true },
+      ],
+    },
+  },
+  {
+    id: 'statistiken',
+    group: 'vertrieb',
+    type: 'report',
+    title: 'Wiederkehrende Statistiken',
+    context: 'Kunden und Hersteller bekommen regelmäßig dieselben Auswertungen, etwa den Absatz je Monat. Heute werden sie jedes Mal neu erstellt.',
+    short: 'Die immer gleichen Statistiken für Kunden und Hersteller automatisch erstellen.',
+    origin: 'Statistiken sowohl Kunde als auch Hersteller, die immer wiederkehrend sind',
+    steps: [
+      'Monatsende: Statistiken sind fällig',
+      'Welche Statistik für wen? (Vorlagen)',
+      'Absatzdaten je Kunde und Hersteller laden',
+      'Statistik im gewohnten Format erstellen',
+      'Plausibilität gegenüber Vormonat prüfen',
+      'Vertrieb gibt den Versand frei',
+      'Statistiken an Kunden und Hersteller',
+    ],
+    resultTitle: 'Statistiken September',
+    result: {
+      kind: 'table',
+      columns: ['Statistik', 'Empfänger', 'Status'],
+      rows: [
+        { cells: ['Monatsabsatz Gastronomie', '38 Kunden', 'erstellt'] },
+        { cells: ['Herstellerreport Brauerei', '6 Hersteller', 'erstellt'] },
+        { cells: ['Aktionsauswertung Q3', 'Vertrieb intern', '−40 % ggü. Vormonat – prüfen'], warn: true },
+      ],
+    },
+  },
+  {
+    id: 'rv-abgleich',
+    group: 'vertrieb',
+    type: 'control',
+    title: 'RV-Abgleich Statistik ↔ Infolauf',
+    context: 'Statistik und Infolauf sollten zusammenpassen. Gesucht sind Kunden mit Absatz, bei denen keine RV hinterlegt ist.',
+    short: 'Statistik und Infolauf abgleichen – Kunden ohne gepflegte RV finden.',
+    origin: 'RV-Abgleich zwischen Statistik und Infolauf hinsichtlich Kunden, die keine RV gepflegt haben',
+    steps: [
+      'Statistik und Infolauf',
+      'Kunden in beiden Listen zuordnen',
+      'Gepflegte RV je Kunde laden',
+      'Abgleich: Absatz vorhanden, RV fehlt?',
+      'Neukunden und Sonderfälle unterscheiden',
+      'Vertrieb pflegt fehlende RV nach',
+      'Liste: Kunden ohne RV',
+    ],
+    resultTitle: 'Abgleich Q3',
+    result: {
+      kind: 'table',
+      columns: ['Kunde', 'Absatz Q3', 'RV gepflegt'],
+      rows: [
+        { cells: ['Restaurant Hafenblick', '12.480 €', '✓'] },
+        { cells: ['Hotel Lindenhof', '8.920 €', 'fehlt'], warn: true },
+        { cells: ['Café Kranz', '3.150 €', 'fehlt'], warn: true },
+      ],
+    },
+  },
+
+  /* -------------------------- Aufträge & Kundenservice -------------------------- */
+  {
+    id: 'mails',
+    group: 'auftrag',
+    type: 'text',
+    title: 'Mails beantworten',
+    context: 'Im Postfach landen täglich viele ähnliche Anfragen: Liefertermine, Preise, Rechnungskopien, Reklamationen. Heute wird jede Mail einzeln gelesen und beantwortet.',
+    short: 'Die KI sortiert eingehende Mails und schreibt passende Antwortentwürfe.',
+    origin: 'Mails beantworten',
+    steps: [
+      'Neue Mails im Postfach',
+      'Anliegen erkennen: Termin, Preis, Reklamation …',
+      'Kunde, Aufträge und Lieferstatus nachschlagen',
+      'Antwortentwurf im gewohnten Ton schreiben',
+      'Heikle Fälle wie Reklamationen markieren',
+      'Mitarbeiter prüft und sendet',
+      'Beantwortete Mails',
+    ],
+    resultTitle: 'Postfach heute Vormittag',
+    result: {
+      kind: 'table',
+      columns: ['Mail', 'Anliegen', 'Entwurf'],
+      rows: [
+        { cells: ['„Wann kommt meine Lieferung?“', 'Liefertermin', 'fertig'] },
+        { cells: ['„Bitte Rechnung 4471 nochmal“', 'Dokument', 'fertig'] },
+        { cells: ['„Fass war undicht“', 'Reklamation', 'an Mitarbeiter übergeben'], warn: true },
+      ],
+    },
+  },
+  {
+    id: 'mail-bestellung',
+    group: 'auftrag',
+    type: 'action',
+    title: 'Bestellung per Mail → Drinks',
+    context: 'Viele Kunden bestellen einfach per Mail. Heute tippt der Innendienst jede Bestellung ins Warenwirtschaftssystem Drinks ab und antwortet separat.',
+    short: 'Bestellmail lesen, Auftrag in Drinks einspielen und Bestätigung an den Kunden schreiben.',
+    origin: 'Automatisierte Antwort bei Bestelleingängen per Mail und gleichzeitig Einspielen in Drinks',
+    steps: [
+      'Bestellung per E-Mail',
+      'Artikel und Mengen aus dem Text lesen',
+      'Passende Artikel in Drinks finden',
+      'Auftrag anlegen und Antwort entwerfen',
+      'Unklare Positionen markieren',
+      'Innendienst gibt Auftrag und Antwort frei',
+      'Auftrag in Drinks + Bestätigung an den Kunden',
+    ],
+    resultTitle: 'Auftrag aus der Mail',
+    result: {
+      kind: 'table',
+      columns: ['In der Mail', 'Artikel in Drinks', 'Menge'],
+      rows: [
+        { cells: ['„2 Kisten Cola“', '60318 Cola 24 × 0,33 l', '2 Ki'] },
+        { cells: ['„Wasser wie immer“', '30112 Mineralwasser 12 × 0,7 l', '10 Ki'] },
+        { cells: ['„das neue Radler“', '2 mögliche Treffer', 'Rückfrage'], warn: true },
+      ],
+    },
+  },
+  {
+    id: 'gastivo-kontrolle',
+    group: 'auftrag',
+    type: 'control',
+    title: 'Gastivo-Bestellung prüfen',
+    context: 'Gastivo ist eine Online-Bestellplattform für Gastronomen. Jede Bestellung von dort muss zur Tourenplanung passen und die Dieselpauschale korrekt enthalten.',
+    short: 'Jede Gastivo-Bestellung automatisch auf Logistik und Dieselpauschale prüfen.',
+    origin: 'Bei Bestelleingang via Gastivo – automatisierte Kontrolle bzgl. Logistik und Dieselpauschale',
+    steps: [
+      'Neue Bestellung über Gastivo',
+      'Kunde, Positionen und Wunschtermin erkennen',
+      'Tourplan und Konditionen des Kunden laden',
+      'Liefertag und Dieselpauschale ermitteln',
+      'Mindestwert unterschritten? Pauschale fehlt?',
+      'Innendienst entscheidet bei Abweichung',
+      'Bestellung geprüft übernommen',
+    ],
+    resultTitle: 'Prüfung Bestellung Hotel Lindenhof',
+    result: {
+      kind: 'table',
+      columns: ['Prüfung', 'Ergebnis'],
+      rows: [
+        { cells: ['Liefertag passt zur Tour', 'Donnerstag · Tour 2'] },
+        { cells: ['Mindestbestellwert', '412 € (min. 250 €)'] },
+        { cells: ['Dieselpauschale', 'fehlt – 9,50 € ergänzen?'], warn: true },
+      ],
+    },
+  },
+
+  /* ------------------------ Bestand & Bestellwesen (WWS) ------------------------ */
+  {
+    id: 'reichweite',
+    group: 'bestand',
+    type: 'report',
+    title: 'Reichweitenplanung',
+    context: 'Die Reichweite zeigt, wie viele Wochen der Bestand bei normalem Abverkauf noch reicht. Sie ist die Grundlage, um rechtzeitig und in der richtigen Menge zu bestellen.',
+    short: 'Absatz und Bestand je Artikel → Reichweite in Wochen als Grundlage fürs Bestellen.',
+    origin: ['Im WWS: optimierte Reichweitenplanung, um das Bestellwesen zu optimieren', 'Aufstellung monatlicher Absatz zu Lagerbestand pro Artikel'],
+    steps: [
+      'Absatzzahlen und Lagerbestände aus dem WWS',
+      'Artikel über beide Listen zuordnen',
+      'Monatsabsatz der letzten 12 Monate laden',
+      'Reichweite in Wochen berechnen',
+      'Engpässe und zu hohe Bestände markieren',
+      'Einkauf bewertet die Auffälligkeiten',
+      'Reichweiten-Übersicht fürs Bestellwesen',
+    ],
+    resultTitle: 'Reichweite je Artikel',
+    result: {
+      kind: 'table',
+      columns: ['Artikel', 'Absatz / Monat', 'Bestand', 'Reichweite'],
+      rows: [
+        { cells: ['Mineralwasser 12 × 0,7 l', '2.400 Ki', '1.150 Ki', '2,1 Wochen – knapp'], warn: true },
+        { cells: ['Pils 50 l KEG', '310 Fass', '280 Fass', '3,9 Wochen'] },
+        { cells: ['Bitter Lemon 24 × 0,2 l', '6 Ki', '140 Ki', '101 Wochen – zu viel'], warn: true },
+      ],
+    },
+  },
+  {
+    id: 'penner-renner',
+    group: 'bestand',
+    type: 'control',
+    title: 'Penner-Renner-Analyse',
+    context: '„Renner“ verkaufen sich schnell, „Penner“ liegen lange im Lager und binden Geld und Platz. Wer beide früh erkennt, kann Sortiment und Bestellungen besser steuern.',
+    short: 'Bestände und Abverkäufe laufend überwachen – Schnelldreher und Ladenhüter automatisch erkennen.',
+    origin: 'Im WWS: Überwachung der Bestände und Abverkäufe, Penner-Renner',
+    steps: [
+      'Abverkäufe und Bestände aus dem WWS',
+      'Artikel nach Warengruppe einordnen',
+      'Abverkauf der letzten 3 Monate laden',
+      'Umschlag je Artikel berechnen und einstufen',
+      'Saisonartikel und Neuheiten berücksichtigen',
+      'Einkauf entscheidet über Aktion oder Auslistung',
+      'Wöchentliche Penner-Renner-Liste',
+    ],
+    resultTitle: 'Penner-Renner diese Woche',
+    result: {
+      kind: 'table',
+      columns: ['Artikel', 'Abverkauf / Woche', 'Einstufung'],
+      rows: [
+        { cells: ['Mineralwasser 12 × 0,7 l', '560 Ki', 'Renner'] },
+        { cells: ['Pils 50 l KEG', '78 Fass', 'Renner'] },
+        { cells: ['Glühwein 6 × 1,0 l', '3 Ki', 'Saisonartikel – ok'] },
+        { cells: ['Bitter Lemon 24 × 0,2 l', '1 Ki', 'Penner – Aktion prüfen'], warn: true },
+      ],
+    },
+  },
+  {
+    id: 'mindestbestand',
+    group: 'bestand',
+    type: 'action',
+    title: 'Nachbestellung bei Mindestbestand',
+    context: 'Für jeden Artikel gibt es einen Mindestbestand. Wird er unterschritten, muss rechtzeitig bei der Industrie nachbestellt werden, damit nichts ausgeht.',
+    short: 'Mindestbestand unterschritten → fertiger Bestellvorschlag an die Industrie.',
+    origin: 'Automatisierte Bestellung an Industrie bei Unterschreitung der Mindestbestände',
+    steps: [
+      'Täglicher Lagerbestand',
+      'Mindestbestände je Artikel kennen',
+      'Absatz und Lieferzeiten laden',
+      'Bestellmenge berechnen',
+      'Palettenmengen und Aktionen beachten',
+      'Einkauf gibt die Bestellung frei',
+      'Bestellung an die Industrie',
+    ],
+    resultTitle: 'Bestellvorschlag heute',
+    result: {
+      kind: 'table',
+      columns: ['Artikel', 'Bestand', 'Mindestbestand', 'Vorschlag'],
+      rows: [
+        { cells: ['Mineralwasser 12 × 0,7 l', '380 Ki', '500 Ki', '320 Ki (8 Paletten)'] },
+        { cells: ['Cola 24 × 0,33 l', '95 Ki', '120 Ki', '120 Ki (3 Paletten)'] },
+      ],
+    },
+  },
+  {
+    id: 'rueckladung',
+    group: 'bestand',
+    type: 'control',
+    title: 'Rückladung trotz Bestand',
+    context: 'Rückladungen sind Waren, die von der Tour wieder ins Lager kommen. Fälle, in denen das trotz vorhandenem Bestand passiert, sollen erkannt und geklärt werden.',
+    short: 'Rückladungen mit dem Lagerbestand abgleichen und Klärungsfälle aufzeigen.',
+    origin: 'Bestandsüberprüfung bei Rückladungen trotz Bestand',
+    steps: [
+      'Rückladeliste der Tour',
+      'Artikel und Mengen erkennen',
+      'Lagerbestand zum Ladezeitpunkt laden',
+      'Rückladung und Bestand gegenüberstellen',
+      'Fälle „Rückladung trotz Bestand“ markieren',
+      'Lagerleitung klärt die Ursache',
+      'Liste der Klärungsfälle',
+    ],
+    resultTitle: 'Rückladungen Tour 2',
+    result: {
+      kind: 'table',
+      columns: ['Artikel', 'Rückladung', 'Bestand', 'Hinweis'],
+      rows: [
+        { cells: ['Apfelschorle 24 × 0,33 l', '6 Ki', '420 Ki', 'trotz Bestand – klären'], warn: true },
+        { cells: ['Pils 50 l KEG', '2 Fass', '0 Fass', 'erklärbar'] },
+      ],
+    },
+  },
+
+  /* ---------------------- Einkauf, Preise & Stammdaten ---------------------- */
+  {
+    id: 'artikelanlage',
+    group: 'einkauf',
+    type: 'action',
+    title: 'Artikelanlage aus Stichpunkten',
+    context: 'Einen neuen Artikel anzulegen heißt heute, viele Felder von Hand zu füllen: Gebinde, Warengruppe, Pfand und alle Preisgruppen. Das kostet Zeit und ist fehleranfällig.',
+    short: 'Nur Name, EK und VK eingeben – die KI füllt den Rest und berechnet alle Preisgruppen.',
+    origin: [
+      'Artikelanlage (nur kurze Stichpunkte wie Name, EK und VK eingeben, Rest erledigt KI)',
+      'Bei Artikelneuanlage automatisierte Umrechnung aller Preisgruppen – Verknüpfung mit der Kalkulationsdatei',
+    ],
+    steps: [
+      'Stichpunkte: „Holunder-Schorle 24 × 0,33 l, EK 18,40 €, VK 24,29 €“',
+      'Gebinde, Warengruppe und Pfand ableiten',
+      'Aufschläge aus der Kalkulationsdatei laden',
+      'Alle Felder füllen, Preisgruppen berechnen',
+      'Mindestmarge und Dubletten prüfen',
+      'Einkauf gibt den Artikel frei',
+      'Fertiger Artikel im WWS',
+    ],
+    resultTitle: 'Neuer Artikel: Holunder-Schorle',
+    result: {
+      kind: 'table',
+      columns: ['Preisgruppe', 'Aufschlag', 'Verkaufspreis'],
+      rows: [
+        { cells: ['PG 1 · Gastronomie', '+32 %', '24,29 €'] },
+        { cells: ['PG 2 · Großkunde', '+24 %', '22,82 €'] },
+        { cells: ['PG 3 · Handel', '+18 %', '21,71 €'] },
+        { cells: ['PG 4 · Aktion', '+9 %', '20,06 € – unter Mindestmarge'], warn: true },
+      ],
+    },
+    note: 'Zusätzlich vorbefüllt: Warengruppe, Gebinde, Pfand, Einheit.',
+  },
+  {
+    id: 'preiserhoehung-schreiben',
+    group: 'einkauf',
+    type: 'document',
+    related: 'price',
+    title: 'Preiserhöhungsschreiben auswerten',
+    context: 'Preiserhöhungen der Industrie kommen als Schreiben mit langen Artikellisten. Entscheidend ist: Welche unserer Artikel werden um wie viel Euro teurer?',
+    short: 'Welche Artikel erhöhen sich um wie viel €? – auch bei endlos langen Listen wie von Coca-Cola.',
+    origin: 'Die KI wertet die Preiserhöhungsschreiben der Industrie aus & kann sagen, welche Artikel im System sich um wie viel € erhöhen (gerade bei Coca-Cola hilfreich, wo es eine endlos lange Excel-Liste gibt)',
+  },
+  {
+    id: 'preiserhoehung-excel',
+    group: 'einkauf',
+    type: 'action',
+    related: 'kovit',
+    title: 'Preiserhöhungen per Excel einspielen',
+    context: 'Lieferanten schicken Preiserhöhungen oft als Excel-Datei. Heute werden die Werte von dort manuell ins System übertragen.',
+    short: 'Excel-Datei mit Preiserhöhungen einlesen und die Werte automatisch übernehmen.',
+    origin: 'Preiserhöhungen: die Lieferantenpreise werden von der KI erfasst → über eine Schnittstelle z. B. die Excel-Datei mit den Preiserhöhungen reinziehen',
+  },
+  {
+    id: 'fehlende-preise',
+    group: 'einkauf',
+    type: 'control',
+    related: 'quality',
+    title: 'Übersicht fehlende Preise',
+    context: 'Artikel ohne Preis führen zu Fehlern bei Rechnung und Kalkulation. Die Lücken zu finden heißt heute, lange Listen durchzusehen.',
+    short: 'Übersicht, bei welchen Artikeln Preise fehlen.',
+    origin: 'Preise: die KI kann eine Übersicht erstellen, bei welchen Artikeln Preise fehlen',
+  },
+  {
+    id: 'freitagsmail',
+    group: 'einkauf',
+    type: 'action',
+    title: 'Freitags-Mail: Artikelneuanlagen',
+    context: 'Jeden Freitag bekommt das Team eine Übersicht der neu angelegten Artikel. Heute wird diese Mail von Hand zusammengestellt.',
+    short: 'Die Wochenübersicht der Neuanlagen als fertige Mail – der Mensch schickt sie ab.',
+    origin: 'Jeden Freitag wird die Mail an Team Kampmann mit den Artikelneuanlagen von der KI erfasst und durch den Menschen verschickt',
+    steps: [
+      'Freitag: Wochenrückblick startet',
+      'Neuanlagen der Woche erkennen',
+      'Artikeldaten und Preise laden',
+      'Mail an Team Kampmann formulieren',
+      'Vollständigkeit prüfen (Preis, EAN, Bild)',
+      'Mitarbeiter liest gegen und verschickt',
+      'Mail an Team Kampmann',
+    ],
+    resultTitle: 'Neuanlagen dieser Woche',
+    result: {
+      kind: 'table',
+      columns: ['Neuanlage', 'Preis', 'Status'],
+      rows: [
+        { cells: ['Holunder-Schorle 24 × 0,33 l', '✓', 'vollständig'] },
+        { cells: ['Craft IPA 20 × 0,33 l', '✓', 'vollständig'] },
+        { cells: ['Hafer-Drink 12 × 1,0 l', 'fehlt', 'Preis ergänzen'], warn: true },
+      ],
+    },
+  },
+
   /* ---------------------------- Logistik & Fuhrpark ---------------------------- */
   {
     id: 'auslieferung',
     group: 'logistik',
     type: 'report',
     title: 'Auslieferung je Tour & Monat',
+    context: 'Für Planung und Abrechnung muss klar sein, was jede Tour pro Monat ausliefert. Heute werden Fässer, Kisten und Hektoliter von Hand gezählt und in Gewicht umgerechnet.',
     short: 'Fässer, Kisten und Hektoliter je Tour zählen – inklusive Umrechnung von HL in kg.',
     origin: 'Aufstellung der Auslieferung von Fass / Kiste / HL pro Monat / pro Tour, dabei Umrechnung der HL in kg nach vorgegebenem Umrechnungsschlüssel',
     steps: [
@@ -76,37 +488,11 @@ export const IDEAS: Idea[] = [
     note: 'Umrechnungsschlüssel im Beispiel: 1 HL = 130 kg inkl. Gebinde',
   },
   {
-    id: 'absatz-bestand',
-    group: 'logistik',
-    type: 'report',
-    title: 'Absatz zu Lagerbestand je Artikel',
-    short: 'Monatlicher Absatz neben dem Bestand – wie lange reicht die Ware?',
-    origin: 'Aufstellung monatlicher Absatz zu Lagerbestand pro Artikel',
-    steps: [
-      'Absatzzahlen und Lagerbestände',
-      'Artikel über beide Listen zuordnen',
-      'Monatsabsatz der letzten 12 Monate laden',
-      'Reichweite in Wochen berechnen',
-      'Engpässe und Ladenhüter markieren',
-      'Einkauf bewertet die Auffälligkeiten',
-      'Übersicht Absatz zu Bestand',
-    ],
-    resultTitle: 'Reichweite je Artikel',
-    result: {
-      kind: 'table',
-      columns: ['Artikel', 'Absatz / Monat', 'Bestand', 'Reichweite'],
-      rows: [
-        { cells: ['Mineralwasser 12 × 0,7 l', '2.400 Ki', '1.150 Ki', '2,1 Wochen – knapp'], warn: true },
-        { cells: ['Pils 50 l KEG', '310 Fass', '280 Fass', '3,9 Wochen'] },
-        { cells: ['Glühwein 6 × 1,0 l', '12 Ki', '640 Ki', '231 Wochen – Ladenhüter'], warn: true },
-      ],
-    },
-  },
-  {
     id: 'kosten-lkw',
     group: 'logistik',
     type: 'report',
     title: 'Kosten je LKW & Kostenstelle',
+    context: 'Um zu wissen, was ein Fahrzeug wirklich kostet, müssen Rechnungen aus vielen Quellen zusammengeführt werden: Tankkarte, Werkstatt, Maut, Leasing.',
     short: 'Diesel, Werkstatt, Maut und Leasing automatisch je Fahrzeug zusammengeführt.',
     origin: 'Aufstellung der Kosten pro LKW / Kostenstelle',
     steps: [
@@ -134,6 +520,7 @@ export const IDEAS: Idea[] = [
     group: 'logistik',
     type: 'report',
     title: 'Laufleistung & Verbrauch je LKW',
+    context: 'Die Tankkarte (UTA) liefert die getankten Liter, das MDE-Gerät im Fahrzeug die Kilometerstände. Erst zusammen ergibt sich der Verbrauch je 100 km.',
     short: 'UTA-Tankabrechnung und Kilometerstände aus dem MDE-Gerät zu l/100 km verrechnet.',
     origin: 'Aufstellung der Laufleistung LKW pro Monat / Jahr (UTA-Abrechnung, Eingabe MDE-Gerät), Verbrauch/100 km',
     steps: [
@@ -161,6 +548,7 @@ export const IDEAS: Idea[] = [
     group: 'logistik',
     type: 'report',
     title: 'Personalkosten Logistik',
+    context: 'Die Personalkosten der Logistik sind ein großer Kostenblock. Für die Steuerung werden sie je Bereich und Monat gebraucht.',
     short: 'Personalkosten der Logistik je Bereich und Monat – aggregiert, ohne Einzelpersonen.',
     origin: 'Aufstellung der Personalkosten MA Logistik',
     steps: [
@@ -188,6 +576,7 @@ export const IDEAS: Idea[] = [
     group: 'logistik',
     type: 'report',
     title: 'Überstunden Logistik',
+    context: 'Überstunden zeigen, wo Touren oder Teams überlastet sind. Heute werden sie aus der Zeiterfassung manuell zusammengestellt.',
     short: 'Überstunden aus der Zeiterfassung automatisch je Team ausgewertet.',
     origin: 'Aufstellung Überstunden MA Logistik',
     steps: [
@@ -215,6 +604,7 @@ export const IDEAS: Idea[] = [
     group: 'logistik',
     type: 'report',
     title: 'Umsatz je Tour zu Kosten',
+    context: 'Lohnt sich eine Tour? Dafür wird ihr Umsatz den Kosten für Fahrzeug und Personal gegenübergestellt – monatlich und über das Jahr.',
     short: 'Umsatz je Tour gegen LKW- und Personalkosten – monatlich und kumuliert.',
     origin: 'Aufstellung monatlich und kumuliert: Umsatz pro Tour zu Kosten LKW und Personal',
     steps: [
@@ -239,204 +629,13 @@ export const IDEAS: Idea[] = [
     note: 'Baut auf den Auswertungen zu LKW-Kosten und Personalkosten auf.',
   },
 
-  /* ------------------------ Auftragseingang & Bestand ------------------------ */
-  {
-    id: 'gastivo-kontrolle',
-    group: 'auftrag',
-    type: 'control',
-    title: 'Gastivo-Bestellung prüfen',
-    short: 'Jede Gastivo-Bestellung automatisch auf Logistik und Dieselpauschale prüfen.',
-    origin: 'Bei Bestelleingang via Gastivo – automatisierte Kontrolle bzgl. Logistik und Dieselpauschale',
-    steps: [
-      'Neue Bestellung über Gastivo',
-      'Kunde, Positionen und Wunschtermin erkennen',
-      'Tourplan und Konditionen des Kunden laden',
-      'Liefertag und Dieselpauschale ermitteln',
-      'Mindestwert unterschritten? Pauschale fehlt?',
-      'Innendienst entscheidet bei Abweichung',
-      'Bestellung geprüft übernommen',
-    ],
-    resultTitle: 'Prüfung Bestellung Hotel Lindenhof',
-    result: {
-      kind: 'table',
-      columns: ['Prüfung', 'Ergebnis'],
-      rows: [
-        { cells: ['Liefertag passt zur Tour', 'Donnerstag · Tour 2'] },
-        { cells: ['Mindestbestellwert', '412 € (min. 250 €)'] },
-        { cells: ['Dieselpauschale', 'fehlt – 9,50 € ergänzen?'], warn: true },
-      ],
-    },
-  },
-  {
-    id: 'mail-bestellung',
-    group: 'auftrag',
-    type: 'action',
-    title: 'Bestellung per Mail → Drinks',
-    short: 'Bestellmail lesen, Auftrag in Drinks einspielen und Bestätigung an den Kunden schreiben.',
-    origin: 'Automatisierte Antwort bei Bestelleingängen per Mail und gleichzeitig Einspielen in Drinks',
-    steps: [
-      'Bestellung per E-Mail',
-      'Artikel und Mengen aus dem Text lesen',
-      'Passende Artikel in Drinks finden',
-      'Auftrag anlegen und Antwort entwerfen',
-      'Unklare Positionen markieren',
-      'Innendienst gibt Auftrag und Antwort frei',
-      'Auftrag in Drinks + Bestätigung an den Kunden',
-    ],
-    resultTitle: 'Auftrag aus der Mail',
-    result: {
-      kind: 'table',
-      columns: ['In der Mail', 'Artikel in Drinks', 'Menge'],
-      rows: [
-        { cells: ['„2 Kisten Cola“', '60318 Cola 24 × 0,33 l', '2 Ki'] },
-        { cells: ['„Wasser wie immer“', '30112 Mineralwasser 12 × 0,7 l', '10 Ki'] },
-        { cells: ['„das neue Radler“', '2 mögliche Treffer – Rückfrage', '–'], warn: true },
-      ],
-    },
-  },
-  {
-    id: 'rueckladung',
-    group: 'auftrag',
-    type: 'control',
-    title: 'Rückladung trotz Bestand',
-    short: 'Rückladungen mit dem Lagerbestand abgleichen und Klärungsfälle aufzeigen.',
-    origin: 'Bestandsüberprüfung bei Rückladungen trotz Bestand',
-    steps: [
-      'Rückladeliste der Tour',
-      'Artikel und Mengen erkennen',
-      'Lagerbestand zum Ladezeitpunkt laden',
-      'Rückladung und Bestand gegenüberstellen',
-      'Fälle „Rückladung trotz Bestand“ markieren',
-      'Lagerleitung klärt die Ursache',
-      'Liste der Klärungsfälle',
-    ],
-    resultTitle: 'Rückladungen Tour 2',
-    result: {
-      kind: 'table',
-      columns: ['Artikel', 'Rückladung', 'Bestand', 'Hinweis'],
-      rows: [
-        { cells: ['Apfelschorle 24 × 0,33 l', '6 Ki', '420 Ki', 'trotz Bestand – klären'], warn: true },
-        { cells: ['Pils 50 l KEG', '2 Fass', '0 Fass', 'erklärbar'] },
-      ],
-    },
-  },
-  {
-    id: 'mindestbestand',
-    group: 'auftrag',
-    type: 'action',
-    title: 'Nachbestellung bei Mindestbestand',
-    short: 'Mindestbestand unterschritten → fertiger Bestellvorschlag an die Industrie.',
-    origin: 'Automatisierte Bestellung an Industrie bei Unterschreitung der Mindestbestände',
-    steps: [
-      'Täglicher Lagerbestand',
-      'Mindestbestände je Artikel kennen',
-      'Absatz und Lieferzeiten laden',
-      'Bestellmenge berechnen',
-      'Palettenmengen und Aktionen beachten',
-      'Einkauf gibt die Bestellung frei',
-      'Bestellung an die Industrie',
-    ],
-    resultTitle: 'Bestellvorschlag heute',
-    result: {
-      kind: 'table',
-      columns: ['Artikel', 'Bestand', 'Mindestbestand', 'Vorschlag'],
-      rows: [
-        { cells: ['Mineralwasser 12 × 0,7 l', '380 Ki', '500 Ki', '320 Ki (8 Paletten)'] },
-        { cells: ['Cola 24 × 0,33 l', '95 Ki', '120 Ki', '120 Ki (3 Paletten)'] },
-      ],
-    },
-  },
-
-  /* ---------------------- Einkauf, Preise & Stammdaten ---------------------- */
-  {
-    id: 'neuanlage-preisgruppen',
-    group: 'einkauf',
-    type: 'action',
-    title: 'Artikelneuanlage: alle Preisgruppen',
-    short: 'Neuer Artikel → Verkaufspreise aller Preisgruppen aus der Kalkulationsdatei.',
-    origin: 'Bei Artikelneuanlage automatisierte Umrechnung aller Preisgruppen – Verknüpfung mit der Kalkulationsdatei',
-    steps: [
-      'Neuer Artikel mit Einkaufspreis 18,40 €',
-      'Warengruppe und Gebinde erkennen',
-      'Aufschläge aus der Kalkulationsdatei laden',
-      'Verkaufspreis je Preisgruppe berechnen',
-      'Mindestmarge und Rundung prüfen',
-      'Einkauf gibt die Preise frei',
-      'Preise im System hinterlegt',
-    ],
-    resultTitle: 'Preisgruppen für den neuen Artikel',
-    result: {
-      kind: 'table',
-      columns: ['Preisgruppe', 'Aufschlag', 'Verkaufspreis'],
-      rows: [
-        { cells: ['PG 1 · Gastronomie', '+32 %', '24,29 €'] },
-        { cells: ['PG 2 · Großkunde', '+24 %', '22,82 €'] },
-        { cells: ['PG 3 · Handel', '+18 %', '21,71 €'] },
-        { cells: ['PG 4 · Aktion', '+9 %', '20,06 € – unter Mindestmarge'], warn: true },
-      ],
-    },
-  },
-  {
-    id: 'preiserhoehung-excel',
-    group: 'einkauf',
-    type: 'action',
-    related: 'kovit',
-    title: 'Preiserhöhungen per Excel einspielen',
-    short: 'Excel-Datei mit Preiserhöhungen einlesen und die Werte automatisch übernehmen.',
-    origin: 'Preiserhöhungen: die Lieferantenpreise werden von der KI erfasst → über eine Schnittstelle z. B. die Excel-Datei mit den Preiserhöhungen reinziehen',
-  },
-  {
-    id: 'preiserhoehung-schreiben',
-    group: 'einkauf',
-    type: 'document',
-    related: 'price',
-    title: 'Preiserhöhungsschreiben auswerten',
-    short: 'Welche Artikel erhöhen sich um wie viel €? – auch bei endlos langen Listen wie von Coca-Cola.',
-    origin: 'Die KI wertet die Preiserhöhungsschreiben der Industrie aus & kann sagen, welche Artikel im System sich um wie viel € erhöhen (gerade bei Coca-Cola hilfreich, wo es eine endlos lange Excel-Liste gibt)',
-  },
-  {
-    id: 'fehlende-preise',
-    group: 'einkauf',
-    type: 'control',
-    related: 'quality',
-    title: 'Übersicht fehlende Preise',
-    short: 'Übersicht, bei welchen Artikeln Preise fehlen.',
-    origin: 'Preise: die KI kann eine Übersicht erstellen, bei welchen Artikeln Preise fehlen',
-  },
-  {
-    id: 'freitagsmail',
-    group: 'einkauf',
-    type: 'action',
-    title: 'Freitags-Mail: Artikelneuanlagen',
-    short: 'Die Wochenübersicht der Neuanlagen als fertige Mail – der Mensch schickt sie ab.',
-    origin: 'Jeden Freitag wird die Mail an Team Kampmann mit den Artikelneuanlagen von der KI erfasst und durch den Menschen verschickt',
-    steps: [
-      'Freitag: Wochenrückblick startet',
-      'Neuanlagen der Woche erkennen',
-      'Artikeldaten und Preise laden',
-      'Mail an Team Kampmann formulieren',
-      'Vollständigkeit prüfen (Preis, EAN, Bild)',
-      'Mitarbeiter liest gegen und verschickt',
-      'Mail an Team Kampmann',
-    ],
-    resultTitle: 'Neuanlagen dieser Woche',
-    result: {
-      kind: 'table',
-      columns: ['Neuanlage', 'Preis', 'Status'],
-      rows: [
-        { cells: ['Holunder-Schorle 24 × 0,33 l', '✓', 'vollständig'] },
-        { cells: ['Craft IPA 20 × 0,33 l', '✓', 'vollständig'] },
-        { cells: ['Hafer-Drink 12 × 1,0 l', 'fehlt', 'Preis ergänzen'], warn: true },
-      ],
-    },
-  },
-
   /* ---------------------------- Buchhaltung & DMS ---------------------------- */
   {
     id: 'dms-kontierung',
     group: 'buchhaltung',
     type: 'document',
     title: 'Rechnungen kontieren & Wareneingang vorschlagen',
+    context: 'Jede Eingangsrechnung muss kontiert (Sachkonto, Kostenstelle) und dem passenden Wareneingang zugeordnet werden, bevor sie weiterläuft.',
     short: 'Kontierung und passender Wareneingang werden vorgeschlagen – der Mensch prüft und gibt an die Reko.',
     origin:
       'DMS: das Kontieren der Rechnungen wird von der KI übernommen & es werden bereits Wareneingänge vorgeschlagen, welche passen könnten (sowohl im, als auch außerhalb des Lieferanten). Durch den Menschen wird dies jedoch noch einmal kurz geprüft und an die Reko übermittelt.',
@@ -466,6 +665,7 @@ export const IDEAS: Idea[] = [
     group: 'buchhaltung',
     type: 'document',
     title: 'Rechnungsordner → DMS',
+    context: 'Rechnungen kommen als PDF in einen Eingangsordner. Heute werden sie einzeln geöffnet, benannt und ins DMS (Dokumentenmanagement) übernommen.',
     short: 'Rechnungen aus dem Eingangsordner erkennen, auslesen und selbst ins DMS importieren.',
     origin: 'Rechnungseingangsordner: Rechnungen selber ins DMS importieren',
     steps: [
@@ -485,62 +685,6 @@ export const IDEAS: Idea[] = [
         { label: 'ins DMS importiert', value: '41' },
         { label: 'keine Rechnung', value: '3' },
         { label: 'mögliche Dubletten', value: '2', warn: true },
-      ],
-    },
-  },
-
-  /* --------------------------- Vertrieb & Statistik --------------------------- */
-  {
-    id: 'statistiken',
-    group: 'vertrieb',
-    type: 'report',
-    title: 'Wiederkehrende Statistiken',
-    short: 'Die immer gleichen Statistiken für Kunden und Hersteller automatisch erstellen.',
-    origin: 'Statistiken sowohl Kunde als auch Hersteller, die immer wiederkehrend sind',
-    steps: [
-      'Monatsende: Statistiken sind fällig',
-      'Welche Statistik für wen? (Vorlagen)',
-      'Absatzdaten je Kunde und Hersteller laden',
-      'Statistik im gewohnten Format erstellen',
-      'Plausibilität gegenüber Vormonat prüfen',
-      'Vertrieb gibt den Versand frei',
-      'Statistiken an Kunden und Hersteller',
-    ],
-    resultTitle: 'Statistiken September',
-    result: {
-      kind: 'table',
-      columns: ['Statistik', 'Empfänger', 'Status'],
-      rows: [
-        { cells: ['Monatsabsatz Gastronomie', '38 Kunden', 'erstellt'] },
-        { cells: ['Herstellerreport Brauerei', '6 Hersteller', 'erstellt'] },
-        { cells: ['Aktionsauswertung Q3', 'Vertrieb intern', '−40 % ggü. Vormonat – prüfen'], warn: true },
-      ],
-    },
-  },
-  {
-    id: 'rv-abgleich',
-    group: 'vertrieb',
-    type: 'control',
-    title: 'RV-Abgleich Statistik ↔ Infolauf',
-    short: 'Statistik und Infolauf abgleichen – Kunden finden, bei denen keine RV gepflegt ist.',
-    origin: 'RV-Abgleich zwischen Statistik und Infolauf hinsichtlich Kunden, die keine RV gepflegt haben',
-    steps: [
-      'Statistik und Infolauf',
-      'Kunden in beiden Listen zuordnen',
-      'Gepflegte RV je Kunde laden',
-      'Abgleich: Absatz vorhanden, RV fehlt?',
-      'Neukunden und Sonderfälle unterscheiden',
-      'Vertrieb pflegt fehlende RV nach',
-      'Liste: Kunden ohne RV',
-    ],
-    resultTitle: 'Abgleich Q3',
-    result: {
-      kind: 'table',
-      columns: ['Kunde', 'Absatz Q3', 'RV gepflegt'],
-      rows: [
-        { cells: ['Restaurant Hafenblick', '12.480 €', '✓'] },
-        { cells: ['Hotel Lindenhof', '8.920 €', 'fehlt'], warn: true },
-        { cells: ['Café Kranz', '3.150 €', 'fehlt'], warn: true },
       ],
     },
   },

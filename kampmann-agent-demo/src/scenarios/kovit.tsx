@@ -164,6 +164,8 @@ export const kovitScenario: ScenarioDef = {
   name: 'KOVIT Agent',
   subtitle: 'Preiserhöhungssätze automatisch in Excel pflegen',
   origin: 'KOVIT-Datei aktualisieren',
+  context:
+    'In der KOVIT-Datei (Excel) werden je Artikel die Preiserhöhungssätze der Lieferanten gepflegt. Heute werden neue Sätze von Hand aus den Lieferantendaten übertragen.',
   icon: 'excel',
   source: 'Excel',
   clockStart: 13 * 3600 + 15 * 60 + 2,

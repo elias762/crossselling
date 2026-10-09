@@ -4,10 +4,12 @@ import {
   ArrowLeft,
   ArrowRight,
   ChartColumn,
-  ChartLine,
   Check,
   FileText,
-  PackageCheck,
+  Headset,
+  MessageSquareText,
+  Store,
+  Warehouse,
   Pause,
   Play,
   PlayCircle,
@@ -30,15 +32,19 @@ const TYPE_STYLE: Record<IdeaType, { icon: typeof Zap; badge: string; dot: strin
   control: { icon: ShieldCheck, badge: 'bg-amber-50 text-amber-800 ring-amber-200', dot: 'bg-amber-500' },
   action: { icon: Zap, badge: 'bg-emerald-50 text-emerald-700 ring-emerald-200', dot: 'bg-emerald-500' },
   document: { icon: FileText, badge: 'bg-sky-50 text-sky-700 ring-sky-200', dot: 'bg-sky-500' },
+  text: { icon: MessageSquareText, badge: 'bg-rose-50 text-rose-700 ring-rose-200', dot: 'bg-rose-500' },
 }
 
 const GROUP_ICON: Record<GroupId, typeof Zap> = {
-  logistik: Truck,
-  auftrag: PackageCheck,
+  vertrieb: Store,
+  auftrag: Headset,
+  bestand: Warehouse,
   einkauf: Tags,
+  logistik: Truck,
   buchhaltung: Receipt,
-  vertrieb: ChartLine,
 }
+
+const origins = (i: Idea) => (Array.isArray(i.origin) ? i.origin : [i.origin])
 
 function TypeBadge({ type }: { type: IdeaType }) {
   const s = TYPE_STYLE[type]
@@ -81,7 +87,7 @@ export function UseCaseMap({ onBack, onOpenDemo, demoNames }: { onBack: () => vo
       </div>
 
       {/* Was ist möglich? – nach Art der KI-Unterstützung */}
-      <div className="mx-auto mt-6 grid w-full max-w-5xl grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="mx-auto mt-6 grid w-full max-w-6xl grid-cols-2 gap-3 md:grid-cols-5">
         {counts.map(({ t, n }) => {
           const s = TYPE_STYLE[t]
           const Icon = s.icon
@@ -147,7 +153,14 @@ export function UseCaseMap({ onBack, onOpenDemo, demoNames }: { onBack: () => vo
                       )}
                     </div>
                     <div className="mt-3 text-[1.02rem] leading-snug font-semibold text-slate-900">{i.title}</div>
-                    <div className="mt-1 text-[0.9rem] leading-snug text-slate-500">{i.short}</div>
+                    <div className="mt-1.5 text-[0.86rem] leading-snug text-slate-500">
+                      <span className="font-semibold text-slate-400">Worum geht's? </span>
+                      {i.context}
+                    </div>
+                    <div className="mt-1.5 text-[0.9rem] leading-snug text-slate-800">
+                      <span className="font-semibold text-brand-600">Mit KI: </span>
+                      {i.short}
+                    </div>
                     <div className="mt-auto pt-3 text-sm font-semibold text-brand-600 opacity-80 group-hover:opacity-100">
                       {i.related ? `→ ${demoNames[i.related]} öffnen` : '→ Agent ansehen'}
                     </div>
@@ -221,9 +234,17 @@ function IdeaAgent({ idea, onClose }: { idea: Idea; onClose: () => void }) {
               <span className="text-sm text-slate-400">{GROUPS.find((g) => g.id === idea.group)!.label}</span>
             </div>
             <h3 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">{idea.title}</h3>
-            <p className="mt-1 text-[0.95rem] text-slate-500">
-              <span className="font-semibold text-slate-600">Aus dem Fachbereich: </span>
-              <span className="italic">„{idea.origin}“</span>
+            <p className="mt-1.5 max-w-4xl text-[1rem] leading-snug text-slate-700">
+              <span className="font-semibold text-slate-500">Worum geht's? </span>
+              {idea.context}
+            </p>
+            <p className="mt-1 text-[0.88rem] text-slate-400">
+              <span className="font-semibold">Aus dem Fachbereich: </span>
+              {origins(idea).map((o, k) => (
+                <span key={k} className="italic">
+                  {k > 0 && ' · '}„{o}“
+                </span>
+              ))}
             </p>
           </div>
           <button onClick={onClose} className="rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700" aria-label="Schließen">

@@ -191,6 +191,8 @@ export const documentScenario: ScenarioDef = {
   name: 'Document Service Agent',
   subtitle: 'Rechnungen und Lieferscheine automatisch finden und versenden',
   origin: 'Lieferschein/Rechnung versenden',
+  context:
+    'Kunden bitten per Mail um eine Kopie von Lieferschein oder Rechnung. Heute sucht jemand das Dokument im Archiv heraus und verschickt es manuell.',
   icon: 'file',
   source: 'E-Mail',
   clockStart: 8 * 3600 + 12 * 60 + 4,

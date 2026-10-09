@@ -84,6 +84,8 @@ export interface ScenarioDef {
   subtitle: string
   /** Kundencase in der Sprache des Unternehmens. */
   origin: string
+  /** Worum geht's? – die heutige Situation in 1–2 Sätzen (Business-Kontext). */
+  context: string
   icon: IconKey
   /** Woher kommt der Input? z. B. „Telefon“, „E-Mail“, „Excel“ */
   source: string

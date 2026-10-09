@@ -160,6 +160,8 @@ export const revenueScenario: ScenarioDef = {
   name: 'Revenue Matching Agent',
   subtitle: 'Gastivo-Umsätze automatisch mit internen Umsätzen abgleichen',
   origin: 'Gastivo-Umsatzabgleich',
+  context:
+    'Gastivo ist eine Bestellplattform für Gastronomen. Die Umsätze aus der Gastivo-Liste müssen mit den eigenen Umsatzdaten abgeglichen und ergänzt werden – heute Bestellnummer für Bestellnummer von Hand.',
   icon: 'compare',
   source: 'Excel + internes System',
   clockStart: 14 * 3600 + 2 * 60 + 10,

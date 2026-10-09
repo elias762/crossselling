@@ -20,6 +20,8 @@ Alle sechs Use Cases nutzen **dieselbe Agentenoberfläche**. Es wechselt nur das
 
 **Input → Verstehen → Informationen holen → Verarbeiten → Prüfen → Menschliche Freigabe → Ergebnis**
 
+Jeder Live-Case zeigt vor dem Start (und jederzeit über „ⓘ Worum geht's?“ im Kopf) kurz den Business-Kontext.
+
 ## Zwei Ablaufmodi
 
 - **Schritt für Schritt** (Standard): Der Agent führt einen Schritt aus und hält dann an. Es erscheint ein kurzer **Merksatz** zum Schritt, danach geht es mit **Weiter** (oder `→`) zum nächsten Schritt. Mit **Wiederholen** bzw. `←` lässt sich ein Schritt noch einmal zeigen. Ein Klick auf eine Schrittkarte springt direkt dorthin.
@@ -75,10 +77,11 @@ Ein Presenter (Clicker) sendet in der Regel `Bild ab` / `Bild auf` und steuert d
 
 ## Use-Case-Landkarte (weitere Ideen aus den Fachbereichen)
 
-Erreichbar über den Header, die Karte „+ 20 weitere Ideen“ unten in der Seitenleiste, das Abschlussbild oder die Taste `L`.
+Erreichbar über den Header, die Karte „+ 24 weitere Ideen“ unten in der Seitenleiste, das Abschlussbild oder die Taste `L`.
 
-- **20 Themen**, gruppiert nach Fachbereich: Logistik & Fuhrpark, Auftragseingang & Bestand, Einkauf/Preise/Stammdaten, Buchhaltung & DMS, Vertrieb & Statistik.
-- Oben sind sie nach der **Art der KI-Unterstützung** gezählt: Auswertung, Kontrolle, Automatisierung, Dokumente. Ein Klick auf eine dieser Kacheln filtert die Landkarte.
+- **24 Themen in 6 Clustern**: Vertrieb & Kunden, Aufträge & Kundenservice, Bestand & Bestellwesen (WWS), Einkauf/Preise/Stammdaten, Logistik & Fuhrpark, Buchhaltung & DMS.
+- Jede Karte erklärt kurz **„Worum geht's?“** (die heutige Situation) und **„Mit KI“** (was der Agent übernimmt).
+- Oben sind sie nach der **Art der KI-Unterstützung** gezählt: Auswertung, Kontrolle, Automatisierung, Dokumente, Texte. Ein Klick auf eine dieser Kacheln filtert die Landkarte.
 - **Ein Klick auf eine Karte öffnet einen Mini-Agenten**: dieselben sieben Schritte in je einem Satz, dazu ein kleines Beispiel-Ergebnis und der Originalwortlaut aus dem Fachbereich. Bedienung: *Abspielen* oder `Leertaste`, `→`/`←` schrittweise, `Esc` schließt.
 - Themen, die schon als Live-Demo existieren (Preiserhöhungen, fehlende Preise), öffnen direkt den passenden Case.
 

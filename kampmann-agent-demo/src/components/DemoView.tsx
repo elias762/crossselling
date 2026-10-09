@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw, UserCheck } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Info, Pause, Play, RotateCcw, UserCheck } from 'lucide-react'
 import type { ScenarioDef } from '../engine/types'
 import { useAgentRun } from '../engine/useAgentRun'
 import { ActivityPanel } from './ActivityPanel'
@@ -128,14 +128,19 @@ export function DemoView({ scenario, speed, setSpeed, stepMode, setStepMode, onR
               <h2 className="text-xl font-semibold tracking-tight text-slate-900">{scenario.name}</h2>
               <Badge tone="neutral">Input: {scenario.source}</Badge>
             </div>
-            <div className="truncate text-[0.95rem] text-slate-500">
-              {scenario.subtitle}
-              {!present && (
-                <span className="text-slate-400">
-                  {' '}
-                  · Kundencase: <span className="italic">„{scenario.origin}“</span>
+            <div className="flex min-w-0 items-center gap-2 text-[0.95rem] text-slate-500">
+              <span className="truncate">{scenario.subtitle}</span>
+              <span className="group/info relative shrink-0">
+                <button className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[0.8rem] font-semibold text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus:bg-slate-100 focus:text-slate-700 focus:outline-none">
+                  <Info className="size-3.5" /> Worum geht's?
+                </button>
+                <span className="pointer-events-none absolute top-full left-0 z-30 mt-1.5 w-[26rem] rounded-xl border border-slate-200 bg-white p-3.5 text-[0.92rem] leading-snug text-slate-700 opacity-0 shadow-xl transition group-focus-within/info:opacity-100 group-hover/info:opacity-100">
+                  {scenario.context}
+                  <span className="mt-2 block text-[0.8rem] text-slate-400">
+                    Kundencase: <span className="italic">„{scenario.origin}“</span>
+                  </span>
                 </span>
-              )}
+              </span>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">

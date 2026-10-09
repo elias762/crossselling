@@ -193,11 +193,14 @@ export function StepCaption({ scenario, p, onApprove, onEdit, onNext, onRepeat, 
   if (!step) {
     return (
       <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-3.5">
-        <div className="flex-1 text-[0.98rem] text-slate-600">
-          <span className="font-semibold text-slate-800">Bereit.</span>{' '}
-          {stepMode
-            ? 'Der Agent arbeitet Schritt für Schritt und wartet nach jedem Schritt auf „Weiter“ – so bleibt Zeit zum Erklären.'
-            : 'Der Agent läuft automatisch durch alle Schritte und hält nur bei der Freigabe an.'}
+        <div className="min-w-[16rem] flex-1">
+          <div className="text-[1rem] leading-snug text-slate-700">
+            <span className="font-semibold text-slate-900">Worum geht's? </span>
+            {scenario.context}
+          </div>
+          <div className="mt-1 text-[0.82rem] text-slate-400">
+            {stepMode ? 'Der Agent hält nach jedem Schritt an und wartet auf „Weiter“.' : 'Der Agent läuft automatisch durch und hält nur bei der Freigabe an.'}
+          </div>
         </div>
         <button onClick={onNext} className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-4 py-2 font-semibold text-white hover:bg-brand-700">
           Ersten Schritt starten <ArrowRight className="size-4" />
