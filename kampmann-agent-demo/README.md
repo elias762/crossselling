@@ -89,7 +89,16 @@ Die Inhalte stehen in `src/ideas/ideas.ts` und lassen sich dort ohne Programmier
 
 ## Potenzial-Board
 
-Fünf Spalten (Verstehen, Suchen, Strukturieren, Handeln, Prüfen), jeweils mit Leitfrage. Notizen lassen sich direkt im Workshop eintippen. Sie werden lokal im Browser gespeichert und lassen sich über *Board leeren* zurücksetzen.
+Die Brücke in den interaktiven Teil: **„Welche manuellen, wiederkehrenden Aufgaben kosten Sie heute Zeit?“**
+
+- **Impulsfragen** wechseln oben automatisch, z. B. „Wo tippen Sie Daten von einem System ins andere ab?“.
+- **Aufgabe erfassen:** Text eingeben und per Klick Bereich, Häufigkeit, Dauer und „Was macht die Aufgabe mühsam?“ wählen (Abtippen, Suchen, Abgleichen, Auswertungen, Mails/Texte). Das Board zeigt sofort den geschätzten Zeitaufwand pro Jahr und wie KI helfen könnte. Nur der Text ist Pflicht, alles andere optional.
+- **Priorisieren:** Mit ▲ abstimmen (Punkte-Abfrage). Sortieren nach Stimmen oder nach Zeitaufwand. Oben stehen Anzahl, Gesamtstunden und die häufigste Art.
+- **Speichern:** Alles wird automatisch im Browser des Workshop-Rechners gespeichert und übersteht ein Neuladen. Es wird aber nicht geteilt und nicht online gespeichert.
+- **Export für Excel:** Lädt alle Aufgaben als CSV herunter (öffnet direkt in Excel). Am besten am Ende des Workshops exportieren.
+- **Beispiele einfügen** (nur bei leerem Board) zeigt, wie ein gefülltes Board aussieht. Mit *Leeren* wird alles entfernt.
+
+Die Zeitschätzung rechnet Häufigkeit × Dauer (täglich = 220 Arbeitstage, wöchentlich = 46 Wochen). Sie zeigt den heutigen Aufwand, nicht die Ersparnis durch KI.
 
 ## Technik
 
