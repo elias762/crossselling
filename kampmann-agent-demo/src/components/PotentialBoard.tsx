@@ -61,6 +61,8 @@ interface Task {
   freq: FreqId | ''
   minutes: number
   kinds: KindId[]
+  /** Freitext: was die Aufgabe mühsam macht */
+  pain?: string
   votes: number
 }
 
@@ -98,14 +100,14 @@ function loadTasks(): Task[] {
 }
 
 const EXAMPLES: Omit<Task, 'id'>[] = [
-  { text: 'Bestellungen aus Mails ins WWS abtippen', area: 'kundenservice', freq: 'taeglich', minutes: 30, kinds: ['abtippen'], votes: 0 },
+  { text: 'Bestellungen aus Mails ins WWS abtippen', area: 'kundenservice', freq: 'taeglich', minutes: 30, kinds: ['abtippen'], pain: 'Jeder Kunde schreibt anders, Artikel muss man oft erst suchen', votes: 0 },
   { text: 'Lieferscheine für Kunden heraussuchen und verschicken', area: 'kundenservice', freq: 'taeglich', minutes: 15, kinds: ['suchen', 'schreiben'], votes: 0 },
   { text: 'Monatliche Tour-Auswertung in Excel zusammenstellen', area: 'logistik', freq: 'monatlich', minutes: 120, kinds: ['auswerten'], votes: 0 },
 ]
 
 function downloadCsv(tasks: Task[]) {
   const esc = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`
-  const head = ['Aufgabe', 'Bereich', 'Häufigkeit', 'Minuten je Durchgang', 'Stunden pro Jahr (Schätzung)', 'Was ist mühsam?', 'Stimmen']
+  const head = ['Aufgabe', 'Bereich', 'Häufigkeit', 'Minuten je Durchgang', 'Stunden pro Jahr (Schätzung)', 'Was ist mühsam?', 'Warum mühsam (Freitext)', 'Stimmen']
   const rows = tasks.map((t) => [
     t.text,
     AREAS.find((a) => a.id === t.area)?.label ?? '',
@@ -113,6 +115,7 @@ function downloadCsv(tasks: Task[]) {
     t.minutes || '',
     hoursPerYear(t) || '',
     t.kinds.map((k) => KINDS.find((x) => x.id === k)!.label).join(', '),
+    t.pain ?? '',
     t.votes,
   ])
   const csv = '﻿' + [head, ...rows].map((r) => r.map(esc).join(';')).join('\r\n')
@@ -148,6 +151,7 @@ export function PotentialBoard({ onBack }: { onBack: () => void }) {
   const [freq, setFreq] = useState<FreqId | ''>('')
   const [minutes, setMinutes] = useState(0)
   const [kinds, setKinds] = useState<KindId[]>([])
+  const [pain, setPain] = useState('')
   const [sort, setSort] = useState<'votes' | 'hours'>('votes')
   const [prompt, setPrompt] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -172,12 +176,13 @@ export function PotentialBoard({ onBack }: { onBack: () => void }) {
       inputRef.current?.focus()
       return
     }
-    setTasks((list) => [{ id: Date.now(), text: t, area, freq, minutes, kinds, votes: 0 }, ...list])
+    setTasks((list) => [{ id: Date.now(), text: t, area, freq, minutes, kinds, pain: pain.trim() || undefined, votes: 0 }, ...list])
     setText('')
     setArea('')
     setFreq('')
     setMinutes(0)
     setKinds([])
+    setPain('')
     inputRef.current?.focus()
   }
 
@@ -308,6 +313,19 @@ export function PotentialBoard({ onBack }: { onBack: () => void }) {
               </Chip>
             ))}
           </div>
+          <textarea
+            value={pain}
+            onChange={(e) => setPain(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                add()
+              }
+            }}
+            rows={2}
+            placeholder="In eigenen Worten, z. B. „Jeder Kunde schreibt anders, Artikel muss man erst suchen“"
+            className="mt-2 w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-[0.98rem] outline-none focus:border-brand-300 focus:bg-white focus:ring-4 focus:ring-brand-100"
+          />
 
           <div className="mt-5 flex items-center gap-3">
             <button type="submit" className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-brand-700">
@@ -403,6 +421,7 @@ export function PotentialBoard({ onBack }: { onBack: () => void }) {
                     </div>
                     <div className="min-w-0 flex-1 py-0.5">
                       <div className="text-[1.05rem] leading-snug font-semibold text-slate-900">{t.text}</div>
+                      {t.pain && <div className="mt-0.5 text-[0.92rem] leading-snug text-slate-600 italic">„{t.pain}“</div>}
                       <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.86rem] text-slate-500">
                         {a && <span className="rounded-md bg-slate-100 px-2 py-0.5 font-medium text-slate-600">{a.label}</span>}
                         {f && t.minutes > 0 && (
