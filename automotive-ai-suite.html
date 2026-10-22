@@ -405,6 +405,31 @@ textarea.inp{width:100%;resize:vertical;line-height:1.5;font-size:13px;padding:1
 .cal button.c:disabled{cursor:default}
 .chip:disabled{opacity:.6;cursor:default}
 
+
+.lever.kq{grid-row:span 1}
+.kqh{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.kqnum{display:inline-block;min-width:1.6em;transition:color .3s}
+.kqflash{color:var(--ai)!important;animation:kqp .9s ease}
+@keyframes kqp{0%{transform:scale(1)}30%{transform:scale(1.25)}100%{transform:scale(1)}}
+.kqrow{display:grid;grid-template-columns:220px minmax(0,1fr);gap:12px;align-items:start;margin-top:8px}
+.kqspark{width:220px;height:48px;display:block;max-width:100%}
+.kqspark .hl{fill:none;stroke:var(--ink-3);stroke-width:1.5}
+.kqspark .tl{fill:none;stroke:var(--ai);stroke-width:2}
+.kqspark .tg{stroke:var(--ok);stroke-dasharray:3 3;stroke-width:1}
+.kqspark text{font-size:9px;fill:var(--ok);font-family:var(--mono)}
+.kqspark circle{fill:var(--ink-3);stroke:var(--panel);stroke-width:2}
+.kqspark circle.dn{fill:var(--ok)}.kqspark circle.up{fill:var(--crit-dot)}
+.kqc{display:flex;gap:8px;align-items:flex-start;font-size:12px;background:var(--ai-soft);border-radius:7px;padding:7px 10px;color:var(--ink)}
+.kqc svg{color:var(--ai);margin-top:2px}
+.kqrow>*,.kqc>div{min-width:0}
+.kqc>div{overflow-wrap:anywhere}
+@media (max-width:620px){.kqrow{grid-template-columns:minmax(0,1fr)}.lever{flex-direction:column;gap:8px}.levers{grid-template-columns:minmax(0,1fr)}.funnel>div{grid-template-columns:90px 1fr 64px}.ind{grid-template-columns:1fr}}
+.kqev{display:grid;gap:2px;margin-top:6px;font-size:11.5px}
+.kqev>div{display:grid;grid-template-columns:42px 34px 1fr;gap:6px;color:var(--ink-2)}
+.lever .actbar{padding-top:8px}
+.lever .steps{padding:2px 0}
+.levers{align-items:start}
+
 /* Responsive */
 @media (max-width:1280px){
   .ws3{grid-template-columns:280px minmax(0,1fr)}
@@ -1259,11 +1284,11 @@ function renderSales(){
   <div class="kpis">
     ${kpi('Verträge KW 43',g.vLast,`<span class="${g.vLast>=g.vPrev?'delta-up':'delta-dn'}">${sgn(g.vLast-g.vPrev,0)} ggü. KW 42</span>`)}
     ${kpi('Lead → Vertrag (12 Wochen)',pct(g.conv))}${kpi('Ø Reaktionszeit Leads (4 W.)',de(g.reakt,1)+' h')}
-    ${kpi('Überfällige A-Kunden-Kontakte',g.over,`Ziel ≤ ${SP_TARGET}`,'k-over')}${kpi('Report-Verzug','1 Tag','vorher 1–2 Wochen')}
+    ${kpi('Überfällige A-Kunden-Kontakte',KQ.anim?KQ.anim.from:g.over,`Ziel ≤ ${SP_TARGET}`,'k-over')}${kpi('Report-Verzug','1 Tag','vorher 1–2 Wochen')}
   </div>
   <div class="levers">
     <div class="lever"><span class="tagp">Steuerung</span><div><b>Wöchentliche Verkäufer-Reports</b><p>Verzug bis zur Sichtbarkeit: <b>Wochen → Tage</b>. Reports KW 43 für ${D.SALES.length} von ${D.SALES.length} Verkäufern automatisch erstellt, Montag 07:00, Datenstand Vortag 22:00.</p></div></div>
-    <div class="lever"><span class="tagp">Umsatz</span><div><b>Kontaktqualität je Verkäufer</b><p>Überfällige A-Kunden-Kontakte: <b>${SP_BASE} → ${g.over}</b> · Ziel −50 % (≤ ${SP_TARGET})</p><div class="pbar"><i style="width:${prog}%"></i></div></div></div>
+    ${kqLever()}
   </div>
   <div class="ws ws2">
     <section class="pane">
@@ -1275,7 +1300,7 @@ function renderSales(){
           <td class="wrap"><b>${esc(r.name)}</b>${r.kind==='site'?' <span class="muted">›</span>':''}<small>${esc(r.sub)}${f.length?' · '+f.map(x=>`<span class="pill warn" title="${esc(x[1])}"><i></i>${x[0]}</span>`).join(' '):''}</small></td>
           <td class="rt num">${a.vertr}</td><td title="Verträge, gleitende Summe über 4 Wochen">${spark(a.weeks.map((w,i,ar)=>sum(ar.slice(Math.max(0,i-3),i+1).map(x=>x.vertraege))))}</td>
           <td class="rt num">${pct(a.conv)}</td><td class="rt num ${a.reakt>6?'delta-dn':''}">${de(a.reakt,1)} h</td><td class="rt num ${a.nachlass>8?'delta-dn':''}">${pct(a.nachlass)}</td>
-          <td class="rt num ${a.over>=6&&r.kind!=='site'?'delta-dn':''}">${a.over}</td><td class="rt num">${pct(a.quote,0)}</td></tr>`;}).join('')}
+          <td class="rt num ${a.over>=6&&r.kind!=='site'?'delta-dn':''}">${a.over}${(()=>{const st=sum((r.kind==='site'?D.SALES.filter(x=>x.site===r.key):[r.s]).map(x=>KQ.start[x.id]||0)),d=a.over-st;return d?`<small class="${d<0?'delta-up':'delta-dn'}">${d<0?'−':'+'}${Math.abs(d)} heute</small>`:'';})()}</td><td class="rt num">${pct(a.quote,0)}</td></tr>`;}).join('')}
       </tbody></table></div>
     </section>
     <section class="pane"><div class="ph"><h2>${SP.seller?'Verkäufer':SP.level==='site'?'Standort '+siteName(SP.site):'Gruppe'}</h2><div class="r"><span class="pill">KW 32–43</span></div></div>
@@ -1314,7 +1339,7 @@ function spSeller(s){
     <div class="block">${spChart({name:s.name,a},avgS,'Ø Verkäufer '+siteName(s.site))}</div>
     <div class="block"><div class="lbl" style="margin-bottom:6px">Vertriebstrichter · 12 Wochen</div>${funnel(a)}</div>
     <div class="block"><div class="bh"><span class="lbl">Kontaktqualität A-Kunden</span><span class="r src">${s.aKunden} A-Kunden · Kontaktquote ${pct(a.quote,0)} · CRM-Doku ${s.doku} %</span></div>
-      ${ov.length?`<div class="alist">${ov.map(o=>{const pl=plan&&plan.items[o.id];return `<div><div class="r1"><b>${esc(o.name)}</b><span class="pill ${o.tage>30?'crit':'warn'}"><i></i>überfällig seit ${o.tage} T.</span></div><div class="sm">${esc(o.car)} · ${esc(o.anlass)}</div>${pl?`<div class="plan fade">${ic('spark')}<div><b>${esc(pl.kanal)} · ${esc(pl.termin)}</b><br>${esc(pl.text)}</div></div>`:`<div class="xs muted">Ziel: ${esc(o.ziel)}</div>`}</div>`;}).join('')}</div>`:
+      ${ov.length?`<div class="alist">${ov.map(o=>{const pl=plan&&plan.items[o.id];return `<div><div class="r1"><b>${esc(o.name)}${o.neu?' <span class="pill ai"><i></i>neu erkannt</span>':''}</b><span class="pill ${o.tage>30?'crit':'warn'}"><i></i>überfällig seit ${o.tage} T.</span></div><div class="sm">${esc(o.car)} · ${esc(o.anlass)}</div>${pl?`<div class="plan fade">${ic('spark')}<div><b>${esc(pl.kanal)} · ${esc(pl.termin)}</b><br>${esc(pl.text)}</div></div>`:`<div class="xs muted">Ziel: ${esc(o.ziel)}</div>`}</div>`;}).join('')}</div>`:
         `<div class="done">${ic('check')}<div><b>Keine überfälligen A-Kunden-Kontakte</b>Alle Kontakte sind als Aufgaben im CRM eingeplant.</div></div>`}
       ${ov.length?`<div class="actbar" style="margin-top:10px" id="sp-plan">${SP.planBusy===s.id?'':plan?`<button class="btn" data-act="sp-tasks" data-id="${s.id}">${ic('check')}${ov.length} Aufgaben ins CRM übernehmen</button>${srcPill(plan.src)}`:`<button class="btn ai" data-act="sp-plan" data-id="${s.id}">${ic('spark')}KI-Kontaktplan erstellen</button><span class="src">Priorisiert nach Dringlichkeit und Anlass, mit Gesprächsaufhänger.</span>`}</div>`:''}</div>
     <div class="block" id="sp-rep">${SP.busy==='seller:'+s.id?'':rep?spRepCard(rep,s.name):`<div class="actbar"><button class="btn ai" data-act="sp-report" data-k="seller:${s.id}">${ic('spark')}KI-Wochenreport KW 43</button><span class="src">Automatisch jeden Montag 07:00 · Datenstand Vortag</span></div>`}</div>
@@ -1358,9 +1383,131 @@ Antworte nur mit einem JSON-Array: [{"id":"…","kanal":"Telefon|E-Mail|Persönl
   SP.plan[id]=res;SP.planBusy=null;log('Cockpit','KI',`Kontaktplan für ${s.name}: ${ov.length} A-Kunden priorisiert${res.src==='live'?' · Live-KI':''}`);render();
 }
 function spTasks(id){
-  const s=D.SALES.find(x=>x.id===id),ov=openOver(s);ov.forEach(o=>SP.done[o.id]=1);delete SP.plan[id];
-  log('Cockpit','Freigabe',`${ov.length} Kontaktaufgaben für ${s.name} ins CRM übernommen`);toast(`${ov.length} Aufgaben im CRM angelegt`);render();
+  const s=D.SALES.find(x=>x.id===id),ov=openOver(s),before=kqNow();ov.forEach(o=>SP.done[o.id]=1);delete SP.plan[id];
+  log('Cockpit','Freigabe',`${ov.length} Kontaktaufgaben für ${s.name} ins CRM übernommen`);toast(`${ov.length} Aufgaben im CRM angelegt`);
+  kqChange(before,`Kontaktplan ${s.name} übernommen`,[{name:s.name,abgearbeitet:ov.length}]);
 }
+/* ===================== KI-Monitor Kontaktqualität ===================== */
+const KQ={start:{},hist:[92,91,89,90,88,86,87,85,84,83,82,81,80,79],days:['Do 08.','Fr 09.','Mo 12.','Di 13.','Mi 14.','Do 15.','Fr 16.','Mo 19.','Di 20.','Mi 21.','Do 22.','Fr 23.','Mo 26.','heute 07:00'],
+  ev:[],comment:null,cBusy:false,anim:null,busy:null,queue:[
+    ['Lisa Haas','Barbara Lechner','GLC 300 e','Leasingende 03/2027 (neu aus Leasingdaten)','Nachfolgeangebot vorbereiten',2,62000],
+    ['Kai Berger','Helmut Obermaier','E 300 e','Werkstattauftrag heute: 148.000 km','Wechselpotenzial ansprechen',1,71000],
+    ['Sven Vogel','Renate Fuchs','GLB 200 d','Garantieende 12/2026 (neu aus DMS)','Anschlussgarantie oder Neufahrzeug anbieten',1,48000],
+    ['Julia Wolf','Peter Winkler','C 220 d T-Modell','Finanzierung endet in 3 Monaten','Ablöse oder Anschlussfinanzierung anbieten',3,55000],
+    ['Eva Kraus','Sandra Kaiser','A 250 e','Angebot vom 09.10. ohne Nachfassen','Offenes Angebot nachfassen',2,39000],
+    ['Tobias Eder','Gerhard Seitz','GLE 350 de','Leasingende 02/2027 (neu aus Leasingdaten)','Nachfolgeangebot vorbereiten',1,88000],
+    ['Andrea Schmid','Ingrid Reiter','EQE 300','Werkstattbesuch gestern, Ladeleistung reklamiert','Bedarf aktiv erfragen',1,69000]
+  ]};
+D.SALES.forEach(s=>KQ.start[s.id]=s.over.length);
+const kqNow=()=>sum(D.SALES.map(s=>openOver(s).length));
+function kqTop(n){return D.SALES.map(s=>({s,o:openOver(s).length})).filter(x=>x.o).sort((a,b)=>b.o-a.o).slice(0,n||3);}
+function kqTemplate(before,after,why){
+  const T=SP_TARGET,top=kqTop(2);
+  if(before==null)return `Stand heute 07:00: ${after} überfällige A-Kunden-Kontakte bei ${D.SALES.filter(s=>openOver(s).length).length} Verkäufern. Größter Rückstand bei ${top.map(x=>`${x.s.name} (${x.o})`).join(' und ')}. Für das Ziel müssen ${Math.max(0,after-T)} Kontakte abgearbeitet werden.`;
+  const d=after-before;
+  return `${why}: ${before} → ${after} (${d>0?'+':'−'}${Math.abs(d)}). ${after<=T?'Das Ziel von höchstens '+T+' ist erreicht.':'Bis zum Ziel fehlen noch '+(after-T)+' Kontakte.'}${top.length?' Größter Rückstand jetzt bei '+top.map(x=>`${x.s.name} (${x.o})`).join(' und ')+'.':''}`;
+}
+KQ.comment={t:kqTemplate(null,kqNow()),src:'demo',at:'07:00'};
+async function kqComment(before,after,why,changes){
+  KQ.cBusy=true;const el=$('#kq-comment');if(el)el.innerHTML=`<span class="spin" style="color:var(--ai)"></span> KI ordnet die Veränderung ein …`;
+  let res=null;
+  if(aiLive()){try{const r=await aiCall('text',`Ordne für die Geschäftsführung einer Mercedes-Benz Autohausgruppe die Veränderung der überfälligen A-Kunden-Kontakte ein. Höchstens 2 Sätze, höchstens 45 Wörter, Deutsch, sachlich, keine Aufzählung. Nenne die Veränderung, den wichtigsten Treiber und den Abstand zum Ziel. Fiktive Daten.
+${JSON.stringify({ereignis:why,vorher:before,nachher:after,ausgangswert_heute:SP_BASE,ziel_max:SP_TARGET,veraenderung_je_verkaeufer:changes,groesster_rueckstand_jetzt:kqTop(3).map(x=>({name:x.s.name,standort:siteName(x.s.site),offen:x.o}))})}`,{cache:false});res={t:r.text.trim(),src:'live'};}catch(e){}}
+  if(!res){await wait(500);res={t:kqTemplate(before,after,why),src:'demo'};}
+  res.at=nowT();KQ.comment=res;KQ.cBusy=false;
+  const c=$('#kq-comment');if(c)c.outerHTML=kqCommentHtml();
+}
+const kqCommentHtml=()=>`<div id="kq-comment" class="kqc fade">${ic('spark')}<div><span class="lbl" style="color:var(--ai)">KI-Einordnung · ${KQ.comment.at} Uhr</span> ${srcPill(KQ.comment.src)}<br>${esc(KQ.comment.t)}</div></div>`;
+function kqChange(before,why,changes){
+  const after=kqNow();KQ.anim={from:before,to:after};
+  KQ.ev.unshift({t:nowT(),d:after-before,why});render();
+  kqComment(before,after,why,changes);
+}
+function kqAnimate(){
+  const a=KQ.anim;if(!a)return;KQ.anim=null;
+  const els=[$('#kq-now'),$('#k-over .v')].filter(Boolean);
+  els.forEach(e=>{e.classList.add('kqflash');});
+  const t0=performance.now(),dur=1100;
+  const step=t=>{const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3),v=Math.round(a.from+(a.to-a.from)*e);els.forEach(x=>x.textContent=v);if(k<1)requestAnimationFrame(step);else setTimeout(()=>els.forEach(x=>x.classList.remove('kqflash')),900);};
+  requestAnimationFrame(step);
+}
+function kqLever(){
+  const now=kqNow(),T=SP_TARGET,B=SP_BASE,d=now-B,prog=Math.max(0,Math.min(100,(B-now)/(B-T)*100));
+  const vals=KQ.hist.slice(0,-1).concat([B],KQ.ev.slice().reverse().map((_,i,arr)=>null)).filter(v=>v!=null);
+  const series=KQ.hist.slice(0,-1).concat([B]);let run=B;KQ.ev.slice().reverse().forEach(e=>{run+=e.d;series.push(run);});
+  const W=220,H=48,mn=Math.min(T,...series)-2,mx=Math.max(...series)+2,sx=i=>4+i*(W-8)/(series.length-1),sy=v=>H-4-(v-mn)/(mx-mn)*(H-8);
+  const today=KQ.hist.length-1;
+  const svg=`<svg class="kqspark" viewBox="0 0 ${W} ${H}" role="img" aria-label="Verlauf überfällige A-Kunden-Kontakte"><line x1="0" x2="${W}" y1="${sy(T)}" y2="${sy(T)}" class="tg"/><text x="${W-2}" y="${sy(T)-3}" text-anchor="end">Ziel ${T}</text>
+    <polyline points="${series.slice(0,today+1).map((v,i)=>sx(i)+','+sy(v)).join(' ')}" class="hl"/>${series.length>today+1?`<polyline points="${series.slice(today).map((v,i)=>sx(i+today)+','+sy(v)).join(' ')}" class="tl"/>`:''}
+    <circle cx="${sx(series.length-1)}" cy="${sy(series[series.length-1])}" r="3.5" class="${d<0?'dn':d>0?'up':''}"/></svg>`;
+  return `<div class="lever kq" id="lv-kq"><span class="tagp">Umsatz</span><div>
+    <div class="kqh"><b>Kontaktqualität je Verkäufer</b><span class="pill ai"><i></i>KI-Monitor</span></div>
+    <p>Überfällige A-Kunden-Kontakte: <b>${B} → <span id="kq-now" class="kqnum">${KQ.anim?KQ.anim.from:now}</span></b> · Ziel −50 % (≤ ${T})${d?` <span class="pill ${d<0?'ok':'crit'}"><i></i>${d<0?'−':'+'}${Math.abs(d)} heute</span>`:''}${now<=T?' <span class="pill ok"><i></i>Ziel erreicht</span>':''}</p>
+    <div class="pbar"><i style="width:${prog}%"></i></div>
+    <div class="kqrow">${svg}${KQ.cBusy?`<div id="kq-comment" class="kqc"><span class="spin" style="color:var(--ai)"></span> KI ordnet die Veränderung ein …</div>`:kqCommentHtml()}</div>
+    ${KQ.ev.length?`<div class="kqev">${KQ.ev.slice(0,3).map(e=>`<div><span class="mono">${e.t}</span><span class="${e.d<0?'delta-up':'delta-dn'} mono">${e.d<0?'−':'+'}${Math.abs(e.d)}</span><span>${esc(e.why)}</span></div>`).join('')}</div>`:''}
+    <div class="actbar" id="kq-act">${KQ.busy==='scan'?'':`<button class="btn ai sm" data-act="kq-off" ${now?'':'disabled'}>${ic('spark')}KI-Kontaktoffensive</button><button class="btn ghost sm" data-act="kq-scan">${ic('refresh')}Neue Signale prüfen</button><span class="src">DMS, Leasing- und Werkstattdaten</span>`}</div>
+  </div></div>`;
+}
+function kqDemoPlan(list){
+  const days=['Mo 26.10.','Di 27.10.','Mi 28.10.','Do 29.10.','Fr 30.10.'],cnt={};
+  const items={};list.forEach(x=>{const o=x.o,k=Object.keys(KANAL).find(y=>o.anlass.includes(y))||'Fahrzeug';const n=cnt[x.s.id]=(cnt[x.s.id]||0)+1;
+    const prio=((o.tage>25&&/Leasing|Finanzierung|Angebot/.test(o.anlass))||o.tage>42)?'A':'B';items[o.id]={prio,kanal:KANAL[k][0],termin:days[Math.min(4,Math.floor((n-1)/3))],text:KANAL[k][1]};});
+  return {items,sum:`${list.length} überfällige Kontakte bei ${new Set(list.map(x=>x.s.id)).size} Verkäufern priorisiert. Priorität A sind Anlässe mit kurzfristiger Abschlusschance und deutlichem Verzug.`,src:'demo'};
+}
+async function kqOffensive(){
+  const list=D.SALES.flatMap(s=>openOver(s).map(o=>({s,o})));if(!list.length||KQ.busy)return;KQ.busy='off';
+  openOverlay(`<div class="modal"><div class="box wide"><div class="mh"><h2>${ic('spark')} KI-Kontaktoffensive</h2><button class="x" data-act="close" aria-label="Schließen">${ic('x')}</button></div><div class="mb" id="kq-mb"></div></div></div>`);
+  const live=aiLive();
+  const plan=await withSteps($('#kq-mb'),[`${list.length} überfällige A-Kunden-Kontakte aus dem CRM laden`,'Anlässe bewerten: Leasingende, Finanzierung, offene Angebote, Werkstattsignale','Priorität A oder B vergeben','Kanal, Termin und Gesprächsaufhänger je Kontakt festlegen','Auf Verkäufer und Wochentage verteilen'],async()=>{
+    const demo=kqDemoPlan(list);
+    if(live){try{const v=await aiCall('json',`Du bist KI-Vertriebsassistent einer Mercedes-Benz Autohausgruppe. Erstelle für alle überfälligen A-Kunden-Kontakte einen Kontaktplan für KW 44 (Mo 26.10. bis Fr 30.10.2026). Priorität A = sofort (Leasing- oder Finanzierungsende oder offenes Angebot und mehr als 25 Tage überfällig, oder mehr als 42 Tage überfällig), sonst B. Etwa ein Drittel der Kontakte ist A. Höchstens 3 Kontakte pro Verkäufer und Tag. Fiktive Daten.
+Kontakte: ${JSON.stringify(list.map(x=>({id:x.o.id,verkaeufer:x.s.name,kunde:x.o.name,fahrzeug:x.o.car,anlass:x.o.anlass,ueberfaellig_tage:x.o.tage})))}
+Antworte nur mit JSON: {"zusammenfassung":"zwei Sätze für die Geschäftsführung","kontakte":[{"id":"…","prio":"A oder B","kanal":"Telefon, E-Mail oder Persönlich","termin":"z. B. Mo 26.10.","text":"Gesprächsaufhänger, höchstens 14 Wörter"}]}`);
+      const items={};(Array.isArray(v&&v.kontakte)?v.kontakte:[]).forEach(x=>{if(x&&x.id&&demo.items[x.id])items[x.id]={prio:x.prio==='A'?'A':'B',kanal:String(x.kanal||'Telefon'),termin:String(x.termin||''),text:String(x.text||'')};});
+      if(Object.keys(items).length<list.length/2)throw new Error('unvollständig');
+      Object.keys(demo.items).forEach(k=>{if(!items[k])items[k]=demo.items[k];});
+      return {items,sum:String(v.zusammenfassung||demo.sum),src:'live'};}catch(e){}}
+    await wait(300);return demo;
+  });
+  KQ.busy=null;KQ.plan={plan,list};kqPreview();
+}
+function kqPreview(){
+  const {plan,list}=KQ.plan,now=kqNow(),A=list.filter(x=>plan.items[x.o.id].prio==='A');
+  const by={};list.forEach(x=>{const b=by[x.s.id]=by[x.s.id]||{s:x.s,n:0,a:0,first:''};b.n++;if(plan.items[x.o.id].prio==='A')b.a++;if(!b.first)b.first=plan.items[x.o.id].termin;});
+  const rows=Object.values(by).sort((a,b)=>b.n-a.n);
+  const top=A.slice().sort((a,b)=>b.o.tage-a.o.tage).slice(0,8);
+  $('#kq-mb').innerHTML=`<div class="ai-card fade"><div class="ah"><b>${ic('spark')}Kontaktplan KW 44</b><div class="r">${srcPill(plan.src)}<span class="pill warn"><i></i>Freigabe erforderlich</span></div></div><div class="ab"><p>${esc(plan.sum)}</p></div></div>
+    <div class="kpis">${kpi('Kontakte im Plan',list.length)}${kpi('davon Priorität A',A.length)}${kpi('Verkäufer',rows.length)}${kpi('Überfällig nach Freigabe A',now-A.length,'Ziel ≤ '+SP_TARGET)}${kpi('Überfällig nach Freigabe aller',now-list.length)}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+      <div class="tblwrap" style="max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:8px"><table class="tbl"><thead><tr><th>Verkäufer</th><th class="rt">Kontakte</th><th class="rt">Prio A</th><th>Start</th></tr></thead><tbody>${rows.map(r=>`<tr style="cursor:default"><td><b>${esc(r.s.name)}</b><small>${siteName(r.s.site)}</small></td><td class="rt num">${r.n}</td><td class="rt num">${r.a}</td><td>${esc(r.first)}</td></tr>`).join('')}</tbody></table></div>
+      <div class="alist" style="max-height:300px;overflow:auto">${top.map(x=>{const p=plan.items[x.o.id];return `<div><div class="r1"><b>${esc(x.o.name)}</b><span class="pill crit"><i></i>A · ${x.o.tage} T.</span></div><div class="sm">${esc(x.o.car)} · ${esc(x.o.anlass)} · ${esc(x.s.name)}</div><div class="plan">${ic('spark')}<div><b>${esc(p.kanal)} · ${esc(p.termin)}</b><br>${esc(p.text)}</div></div></div>`;}).join('')}</div>
+    </div>`;
+  const mf=document.createElement('div');mf.className='mf';
+  mf.innerHTML=`<span class="src" style="margin-right:auto">Übernahme legt Aufgaben im CRM an und entfernt die Kontakte aus „überfällig“.</span><button class="btn ghost" data-act="close">Abbrechen</button><button class="btn ghost" data-act="kq-apply" data-w="A">Nur Priorität A übernehmen (${A.length})</button><button class="btn" data-act="kq-apply" data-w="all">${ic('check')}Alle ${list.length} Aufgaben übernehmen</button>`;
+  $('#kq-mb').parentNode.appendChild(mf);
+}
+function kqApply(w){
+  if(!KQ.plan)return;const {plan,list}=KQ.plan,before=kqNow();
+  const sel=list.filter(x=>w==='all'||plan.items[x.o.id].prio==='A');
+  const ch={};sel.forEach(x=>{SP.done[x.o.id]=1;ch[x.s.name]=(ch[x.s.name]||0)+1;});
+  KQ.plan=null;closeOverlay();CP.view='sales';
+  log('Cockpit','Freigabe',`KI-Kontaktoffensive: ${sel.length} Kontaktaufgaben ins CRM übernommen (${w==='all'?'alle':'Priorität A'})${plan.src==='live'?' · Live-KI':''}`);
+  toast(`${sel.length} Kontaktaufgaben im CRM angelegt`);
+  kqChange(before,`Kontaktoffensive freigegeben (${w==='all'?'alle':'Priorität A'})`,Object.keys(ch).map(k=>({name:k,abgearbeitet:ch[k]})));
+}
+async function kqScan(){
+  if(KQ.busy)return;KQ.busy='scan';render();
+  const el=$('#kq-act');const take=KQ.queue.splice(0,KQ.queue.length>4?3:KQ.queue.length);
+  await withSteps(el,['Leasing- und Finanzierungsenden abgleichen','Werkstattaufträge von heute auswerten','Offene Angebote ohne Nachfassen suchen','Neue Anlässe den Verkäufern zuordnen'],async()=>{await wait(200);});
+  const before=kqNow(),ch=[];
+  take.forEach((q,i)=>{const s=D.SALES.find(x=>x.name===q[0]);s.over.unshift({id:'n'+Date.now()+i,name:q[1],car:q[2],anlass:q[3],ziel:q[4],tage:q[5],wert:q[6],neu:true});ch.push({name:s.name,neu:q[1]+' · '+q[3]});});
+  KQ.busy=null;
+  if(!take.length){KQ.comment={t:'Keine neuen Anlässe in DMS, Leasing- und Werkstattdaten seit der letzten Prüfung.',src:'demo',at:nowT()};render();toast('Keine neuen Signale');return;}
+  log('Cockpit','KI',`${take.length} neue A-Kunden-Anlässe erkannt und Verkäufern zugeordnet`);toast(`${take.length} neue Anlässe erkannt`);
+  kqChange(before,`${take.length} neue Anlässe aus DMS-, Leasing- und Werkstattdaten`,ch);
+}
+
 /* ===================== 03 Gebrauchtwagen: Portalabgleich, Preisindikation, Ranking ===================== */
 const GW={sel:D.CARS[0].id,site:'all',risk:'all',q:'',sort:'need',dir:1,mode:'balance',expl:{},busy:null,moved:{},prof:{},crawl:null,stand:'06:00',allBusy:false};
 const MODE={marge:'Marge',balance:'Ausgewogen',umschlag:'Bestandsumschlag'};
@@ -1731,6 +1878,7 @@ function render(){
   $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===S.view));
   $('#view').innerHTML=V[2]();
   $$('[data-keep]').forEach(e=>{if(keep[e.dataset.keep]!=null)e.scrollTop=keep[e.dataset.keep];});
+  if(typeof kqAnimate==='function')kqAnimate();
   if(aid&&/^(gw-q|cp-in)$/.test(aid)){const e=$('#'+aid);if(e){e.focus();try{e.setSelectionRange(selS,selS);}catch(x){}}}
   counts();
 }
@@ -1759,6 +1907,7 @@ const ACT={
   'sp-site':a=>{SP.level='site';SP.site=a.dataset.id;SP.seller=null;render();},
   'sp-seller':a=>{const s=D.SALES.find(x=>x.id===a.dataset.id);if(SP.level==='sites'){SP.level='site';SP.site=s.site;}SP.seller=s.id;render();const p=$('[data-keep="sp-det"]');if(p)p.scrollTop=0;},
   'sp-sort':a=>{const k=a.dataset.k;if(SP.sort===k)SP.dir*=-1;else{SP.sort=k;SP.dir=k==='name'?1:-1;}render();},
+  'kq-off':()=>kqOffensive(),'kq-apply':a=>kqApply(a.dataset.w),'kq-scan':()=>kqScan(),
   'sp-metric':a=>{SP.metric=a.dataset.m;render();},'sp-report':a=>spReport(a.dataset.k),'sp-plan':a=>spPlan(a.dataset.id),'sp-tasks':a=>spTasks(a.dataset.id),
   'gw-crawl':()=>gwCrawl(),'gw-crawlall':()=>gwCrawlAll(),
   'gw-yt':a=>gwProf(p=>p.yt=+a.dataset.v),'gw-kt':a=>gwProf(p=>p.kt=+a.dataset.v),
