@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Automotive AI Suite</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: Suite-Chrome oben, vier Module als Zweispalter (Narrativ links, bedienbarer Prototyp rechts), dann Priorisierung und Empfehlung. */
+:root{
+  --bg:#f2f4f7; --surface:#ffffff; --surface-2:#e9edf2; --line:#d4dae3;
+  --ink:#121a2b; --ink-2:#4b5566; --ink-3:#7c8595;
+  --accent:#1c5cab; --accent-2:#256abf; --accent-soft:#e3edfa; --accent-ink:#ffffff;
+  --signal:#b97700; --signal-soft:#fff3d6;
+  --ok:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --bar:#2a78d6; --bar-sel:#104281; --bar-dim:#9ec5f4;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+  --shadow:0 1px 2px rgba(18,26,43,.06),0 8px 24px rgba(18,26,43,.06);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f141d; --surface:#171d29; --surface-2:#1f2735; --line:#2c3545;
+  --ink:#edf0f5; --ink-2:#b4bccb; --ink-3:#7f8898;
+  --accent:#5598e7; --accent-2:#3987e5; --accent-soft:#1a2a44; --accent-ink:#0b1220;
+  --signal:#eda100; --signal-soft:#3a2d10;
+  --bar:#3987e5; --bar-sel:#9ec5f4; --bar-dim:#1c5cab;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141d; --surface:#171d29; --surface-2:#1f2735; --line:#2c3545;
+  --ink:#edf0f5; --ink-2:#b4bccb; --ink-3:#7f8898;
+  --accent:#5598e7; --accent-2:#3987e5; --accent-soft:#1a2a44; --accent-ink:#0b1220;
+  --signal:#eda100; --signal-soft:#3a2d10;
+  --bar:#3987e5; --bar-sel:#9ec5f4; --bar-dim:#1c5cab;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+h1,h2,h3,h4{font-family:var(--display);font-stretch:110%;letter-spacing:-.01em;line-height:1.1;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+
+/* Top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;min-height:56px;flex-wrap:wrap;padding-block:8px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-stretch:115%;font-size:15px}
+.brand .dot{width:10px;height:10px;border-radius:2px;background:var(--accent);transform:rotate(45deg)}
+.brand small{font-family:var(--mono);font-weight:400;font-size:11px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+.nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.nav a{text-decoration:none;color:var(--ink-2);font-size:13px;padding:6px 10px;border-radius:6px}
+.nav a:hover{background:var(--surface-2);color:var(--ink)}
+.nav a b{font-family:var(--mono);font-weight:500;color:var(--ink-3);margin-right:4px;font-size:11px}
+
+/* Hero */
+.hero{padding-block:56px 32px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:end}
+.hero h1{font-size:clamp(34px,5vw,58px);font-weight:800;font-stretch:118%;margin:14px 0 18px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.lede{font-size:17px;color:var(--ink-2);max-width:60ch}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:13px}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block}
+.group-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.group-card .hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:12px}
+.group-card .hd strong{font-family:var(--display);font-stretch:110%;font-size:16px}
+.sites{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.site{background:var(--surface-2);border-radius:6px;padding:8px 10px;font-size:12px;line-height:1.3}
+.site b{display:block;font-weight:600;font-size:13px}
+.site span{color:var(--ink-3);font-family:var(--mono);font-size:11px}
+.site.flag{box-shadow:inset 0 0 0 1px var(--signal)}
+.site.flag span{color:var(--signal)}
+.group-card .ft{display:flex;gap:16px;margin-top:12px;font-size:12px;color:var(--ink-3);flex-wrap:wrap}
+.group-card .ft b{color:var(--ink);font-weight:600}
+
+/* Section scaffold */
+.sec{padding-block:48px;border-top:1px solid var(--line)}
+.sec-hd{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:start;margin-bottom:28px}
+.idx{font-family:var(--display);font-weight:800;font-stretch:125%;font-size:44px;line-height:1;color:var(--accent);min-width:64px}
+.sec-hd h2{font-size:clamp(24px,3vw,34px);font-weight:700}
+.sec-hd .sub{color:var(--ink-2);margin-top:8px;max-width:62ch;font-size:16px}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border-radius:6px;background:var(--signal-soft);color:var(--signal);white-space:nowrap;align-self:start}
+.cols{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:32px;align-items:start}
+.cols>*{min-width:0}
+.narr h3{font-size:13px;font-family:var(--mono);font-weight:500;font-stretch:100%;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:22px 0 8px}
+.narr h3:first-child{margin-top:0}
+.narr ol{margin:0;padding-left:0;list-style:none;counter-reset:s;display:grid;gap:8px}
+.narr ol li{counter-increment:s;display:grid;grid-template-columns:26px 1fr;gap:8px;align-items:start}
+.narr ol li::before{content:counter(s);font-family:var(--mono);font-size:12px;color:var(--accent);border:1px solid var(--line);border-radius:6px;width:26px;height:26px;display:grid;place-items:center;background:var(--surface)}
+.narr p{color:var(--ink-2)}
+.callout{margin-top:18px;border-left:3px solid var(--accent);padding:10px 14px;background:var(--surface);border-radius:0 8px 8px 0}
+.callout b{display:block;font-family:var(--display);font-stretch:110%;margin-bottom:3px}
+.value{margin-top:18px;background:var(--accent-soft);border-radius:8px;padding:12px 14px}
+.value b{display:block;color:var(--accent);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+
+/* Prototype frame */
+.app{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.app-bar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--surface-2);flex-wrap:wrap}
+.app-bar .t{font-family:var(--display);font-weight:700;font-stretch:110%;font-size:14px}
+.app-bar .s{color:var(--ink-3);font-size:12px}
+.live{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 25%,transparent)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.kpi{padding:12px 16px;border-right:1px solid var(--line)}
+.kpi:last-child{border-right:0}
+.kpi b{display:block;font-family:var(--display);font-stretch:110%;font-weight:700;font-size:26px;line-height:1.1;transition:color .3s}
+.kpi span{font-size:12px;color:var(--ink-3)}
+.kpi.bump b{color:var(--accent)}
+.app-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr)}
+.app-body>*{min-width:0}
+.pane{padding:14px 16px}
+.pane+.pane{border-left:1px solid var(--line)}
+.pane h4{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px;font-stretch:100%}
+.list{display:grid;gap:6px}
+.item{text-align:left;width:100%;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:9px 11px;display:grid;gap:3px}
+.item:hover{border-color:var(--accent)}
+.item.on{border-color:var(--accent);background:var(--accent-soft)}
+.item .r{display:flex;justify-content:space-between;gap:8px;font-size:13px}
+.item .r b{font-weight:600}
+.item .r span{font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap}
+.item small{color:var(--ink-2);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.quote{font-size:13px;color:var(--ink-2);border-left:2px solid var(--line);padding:4px 12px;margin:0 0 12px}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:8px 14px;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn .sp{width:12px;height:12px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.btn.busy .sp{display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.kv{display:grid;gap:6px;font-size:13px}
+.kv div{display:grid;grid-template-columns:120px 1fr;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+.kv div:last-child{border-bottom:0}
+.kv dt{color:var(--ink-3);font-family:var(--mono);font-size:11px;letter-spacing:.04em;padding-top:2px}
+.kv dd{margin:0}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-family:var(--mono);padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}
+.pill.sig{background:var(--signal-soft);color:var(--signal)}
+.pill.ok{background:color-mix(in srgb,var(--ok) 16%,var(--surface));color:var(--ink)}
+.pill.crit{background:color-mix(in srgb,var(--crit) 16%,var(--surface));color:var(--ink)}
+.pill.warn{background:color-mix(in srgb,var(--warn) 22%,var(--surface));color:var(--ink)}
+.pill i{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
+.pill.crit i{background:var(--crit)}.pill.warn i{background:var(--warn)}.pill.ok i{background:var(--ok)}
+.reveal{animation:fade .45s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.draft{background:var(--surface-2);border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.5;margin-top:10px;white-space:pre-line}
+.slots{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.slot{border:1px solid var(--line);border-radius:6px;padding:4px 9px;font-family:var(--mono);font-size:12px;background:var(--surface)}
+.slot.on{border-color:var(--accent);background:var(--accent-soft)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.status{font-size:12px;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.status.done{color:var(--ok)}
+.note{font-size:11px;color:var(--ink-3);padding:8px 16px;border-top:1px solid var(--line);font-family:var(--mono)}
+
+/* Chart */
+.chart{width:100%;height:auto;display:block;font-family:var(--body)}
+.chart text{fill:var(--ink-2);font-size:12px}
+.chart .v{fill:var(--ink);font-family:var(--mono);font-size:11px}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .bar{fill:var(--bar);cursor:pointer;transition:fill .2s}
+.chart .bar.sel{fill:var(--bar-sel)}
+.chart .bar.dim{fill:var(--bar-dim)}
+.chart .flag{fill:var(--signal);font-family:var(--mono);font-size:10px}
+.chart .hit{fill:transparent;cursor:pointer}
+.chart .hit:hover+.bar,.chart .hit:hover~.bar{filter:brightness(1.1)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-3);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:5px}
+.insight{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:12px;background:var(--surface)}
+.insight .h{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px}
+.insight .h b{font-family:var(--display);font-stretch:110%}
+.insight p{font-size:13px;color:var(--ink-2);margin-bottom:8px}
+.insight ul{margin:0;padding-left:18px;font-size:13px;color:var(--ink-2);display:grid;gap:3px}
+.hyp{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--signal)}
+.chat{border-top:1px solid var(--line);padding:12px 16px}
+.chat .q{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chat .q button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:12px;text-align:left}
+.chat .q button:hover,.chat .q button.on{border-color:var(--accent);background:var(--accent-soft)}
+.bubble{background:var(--surface-2);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.5}
+.bubble .src{display:block;margin-top:6px;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.04em;color:var(--ink-3);padding:6px 8px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap}
+.tbl th.on{color:var(--accent)}
+.tbl td{padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl tr{cursor:pointer}
+.tbl tbody tr:hover td{background:var(--surface-2)}
+.tbl tr.on td{background:var(--accent-soft)}
+.tbl-wrap{overflow-x:auto}
+.price{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.price div{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.price b{display:block;font-family:var(--display);font-stretch:110%;font-size:22px;font-weight:700}
+.price span{font-size:11px;color:var(--ink-3)}
+.price div.ai{border-color:var(--accent);background:var(--accent-soft)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:6px 12px;font-size:12px}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.measures{display:grid;gap:6px;margin-top:10px;font-size:13px}
+.measures div{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:8px}
+.measures .n{font-family:var(--mono);font-size:11px;color:var(--accent)}
+.measures .d{font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap}
+
+/* Score */
+.score{display:grid;gap:4px;font-size:12px;margin-top:8px}
+.score div{display:grid;grid-template-columns:150px 1fr 36px;gap:10px;align-items:center}
+.score .bar{height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.score .bar i{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .5s ease}
+.score .pt{font-family:var(--mono);text-align:right;color:var(--ink-2)}
+
+/* Priorisierung */
+.prio{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:32px;align-items:start}
+.prio>*{min-width:0}
+.crit{display:grid;gap:8px}
+.crit button{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:12px 14px;display:grid;gap:2px}
+.crit button b{font-family:var(--display);font-stretch:110%;font-weight:700}
+.crit button span{font-size:12px;color:var(--ink-3)}
+.crit button.on{border-color:var(--accent);background:var(--accent-soft)}
+.rank{display:grid;gap:10px}
+.rank div{display:grid;grid-template-columns:36px 190px 1fr;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;transition:transform .4s}
+.rank .pos{font-family:var(--display);font-weight:800;font-stretch:125%;font-size:24px;color:var(--accent)}
+.rank .nm{font-weight:600}
+.rank .bars{display:flex;gap:4px}
+.rank .bars i{height:10px;flex:1;border-radius:3px;background:var(--surface-2)}
+.rank .bars i.f{background:var(--accent)}
+.foot{font-size:12px;color:var(--ink-3);margin-top:12px}
+
+/* Empfehlung */
+.rec-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:start}
+.rec-grid>*{min-width:0}
+.flow{width:100%;height:auto;display:block}
+.flow text{fill:var(--ink);font-size:12px;font-family:var(--body)}
+.flow .lab{font-family:var(--mono);font-size:10px;fill:var(--ink-3);letter-spacing:.06em}
+.flow .box{fill:var(--surface);stroke:var(--line)}
+.flow .box.hub{fill:var(--accent-soft);stroke:var(--accent)}
+.flow .arrow{stroke:var(--accent);stroke-width:2;fill:none;marker-end:url(#ah)}
+.req{display:grid;gap:10px;margin-top:8px}
+.req div{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.req .ic{width:30px;height:30px;border-radius:8px;background:var(--accent-soft);display:grid;place-items:center;color:var(--accent)}
+.req b{display:block;font-family:var(--display);font-stretch:110%;font-weight:700;margin-bottom:2px}
+.req p{font-size:13px;color:var(--ink-2)}
+.closing{margin-top:40px;background:var(--ink);color:var(--bg);border-radius:16px;padding:32px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:center}
+.closing h3{font-size:clamp(22px,3vw,30px);font-weight:700;margin-bottom:10px}
+.closing p{color:color-mix(in srgb,var(--bg) 78%,transparent);font-size:15px}
+.closing .demo{display:grid;gap:8px}
+.closing .demo div{background:color-mix(in srgb,var(--bg) 10%,transparent);border:1px solid color-mix(in srgb,var(--bg) 20%,transparent);border-radius:10px;padding:12px 14px;font-size:13px}
+.closing .demo b{display:block;font-family:var(--display);font-stretch:110%}
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-3);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:900px){
+  .hero-grid,.cols,.prio,.rec-grid,.closing{grid-template-columns:1fr}
+  .app-body{grid-template-columns:1fr}
+  .pane+.pane{border-left:0;border-top:1px solid var(--line)}
+  .sec-hd{grid-template-columns:auto 1fr}
+  .sec-hd .tag{grid-column:2}
+  .rank div{grid-template-columns:30px 1fr}
+  .rank .bars{grid-column:2}
+}
+@media (max-width:520px){
+  .sites{grid-template-columns:repeat(2,1fr)}
+  .kpis{grid-template-columns:1fr 1fr 1fr}
+  .kpi{padding:10px}
+  .kpi b{font-size:20px}
+  .kv div{grid-template-columns:1fr}
+  .price{grid-template-columns:1fr}
+  .score div{grid-template-columns:1fr 1fr 32px}
+  .idx{font-size:32px;min-width:44px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Automotive AI Suite <small>· Powered by SH&amp;Partner</small></div>
+    <nav class="nav" aria-label="Module">
+      <a href="#aftersales"><b>01</b>After-Sales</a>
+      <a href="#cockpit"><b>02</b>Performance</a>
+      <a href="#gebrauchtwagen"><b>03</b>Gebrauchtwagen</a>
+      <a href="#leads"><b>04</b>Leads</a>
+      <a href="#priorisierung">Priorisierung</a>
+      <a href="#empfehlung">Empfehlung</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Vorschlag für BCON · Vorbereitung zweites Gespräch</div>
+      <h1>Vier KI-Prototypen, <em>eine Autohausgruppe.</em></h1>
+      <p class="lede">Keine Dashboard-Mockups, sondern bedienbare Anwendungen: Der Geschäftsführer wählt eine Anfrage, löst eine KI-Analyse aus oder führt eine Handlung durch und sieht sofort, was sich verändert. Alle vier Prototypen arbeiten mit denselben synthetischen Daten einer fiktiven Händlergruppe mit acht Standorten.</p>
+      <div class="chips">
+        <span class="chip"><i></i>Interaktiv, kein Figma</span>
+        <span class="chip"><i></i>Echte KI-Verarbeitung</span>
+        <span class="chip"><i></i>Simulierte DMS-, CRM- und Marktschnittstellen</span>
+        <span class="chip"><i></i>Nachvollziehbare Ergebnisse</span>
+      </div>
+    </div>
+    <div class="group-card">
+      <div class="hd"><strong>Autohausgruppe Süd</strong><span class="eyebrow">Gemeinsamer Datensatz</span></div>
+      <div class="sites">
+        <div class="site"><b>München</b><span>11,4 Mio. €</span></div>
+        <div class="site flag"><b>Augsburg</b><span>7,2 Mio. € · auffällig</span></div>
+        <div class="site"><b>Ingolstadt</b><span>6,8 Mio. €</span></div>
+        <div class="site"><b>Rosenheim</b><span>5,9 Mio. €</span></div>
+        <div class="site"><b>Regensburg</b><span>5,6 Mio. €</span></div>
+        <div class="site flag"><b>Landshut</b><span>4,3 Mio. € · auffällig</span></div>
+        <div class="site flag"><b>Passau</b><span>3,8 Mio. € · auffällig</span></div>
+        <div class="site"><b>Erding</b><span>3,2 Mio. €</span></div>
+      </div>
+      <div class="ft"><span><b>48,2 Mio. €</b> Umsatz YTD</span><span><b>184</b> Gebrauchtwagen</span><span><b>12</b> Monate Kennzahlen</span><span>Fiktive Daten</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 After-Sales -->
+<section class="sec" id="aftersales">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div class="idx">01</div>
+      <div><h2>KI After-Sales Assistant</h2><p class="sub">Eingehende Serviceanfragen automatisch verstehen, bearbeiten und in bestehende Autohaussysteme überführen.</p></div>
+      <span class="tag">Sehr gut für Live-Prototyp</span>
+    </div>
+    <div class="cols">
+      <div class="narr">
+        <h3>Was der Nutzer live demonstriert</h3>
+        <ol>
+          <li>Eine neue E-Mail oder Serviceanfrage auswählen oder selbst eingeben.</li>
+          <li>Die KI extrahiert Fahrzeug, Kundenanliegen, gewünschtes Datum und erforderliche Aktionen.</li>
+          <li>Der Prototyp gleicht die Anfrage mit Kundendaten, Wartungshistorie und Werkstattkapazitäten ab.</li>
+          <li>Er schlägt passende Termine vor und generiert eine personalisierte Antwort.</li>
+          <li>Nach menschlicher Freigabe wird der Vorgang im simulierten DMS aktualisiert.</li>
+        </ol>
+        <div class="callout"><b>Überzeugender Demo-Moment</b>Eine Anfrage enthält gleichzeitig Inspektion, Warnleuchte und Terminwunsch. Die KI erkennt, dass eine gewöhnliche Terminbuchung nicht ausreicht, und bereitet die nächsten Schritte getrennt vor.</div>
+        <h3>Technischer Umfang</h3>
+        <p>15 bis 20 fiktive Kunden, mehrere Fahrzeuge, ein simulierter Werkstattkalender und ein E-Mail-Posteingang. Die KI verarbeitet echte Anfragen, die DMS-Schnittstelle wird zunächst simuliert.</p>
+        <div class="value"><b>BCON-Mehrwert</b>Ein konkretes Effizienzprodukt für Händlergruppen, das sich nach erfolgreicher Prüfung auf verschiedene Standorte ausrollen lässt.</div>
+      </div>
+
+      <div class="app" id="asApp">
+        <div class="app-bar"><span class="t">After-Sales AI Assistant</span><span class="s">Service-Center · Standort München</span><span class="live"><i></i>KI aktiv</span></div>
+        <div class="kpis">
+          <div class="kpi"><b class="num">24</b><span>Anfragen heute</span></div>
+          <div class="kpi" id="asK2"><b class="num">16</b><span>KI-vorbereitet</span></div>
+          <div class="kpi" id="asK3"><b class="num">5</b><span>Freigaben offen</span></div>
+        </div>
+        <div class="app-body">
+          <div class="pane">
+            <h4>Posteingang</h4>
+            <div class="list" id="asList"></div>
+          </div>
+          <div class="pane">
+            <h4>Anfrage</h4>
+            <p class="quote" id="asQuote"></p>
+            <button class="btn" id="asRun"><span class="sp"></span>KI-Auswertung starten</button>
+            <div id="asOut" hidden></div>
+          </div>
+        </div>
+        <div class="note">Konzeptionelle UI mit fiktiven Daten · Auswertung im Prototyp simuliert</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 Performance Cockpit -->
+<section class="sec" id="cockpit">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div class="idx">02</div>
+      <div><h2>KI Performance Cockpit für Händlergruppen</h2><p class="sub">Die wirtschaftliche Performance einer gesamten Autohausgruppe analysieren, Auffälligkeiten identifizieren und konkrete Maßnahmen vorschlagen.</p></div>
+      <span class="tag">Größtes Partnerschaftspotenzial</span>
+    </div>
+    <div class="cols">
+      <div class="narr">
+        <h3>Was der Nutzer live demonstriert</h3>
+        <ol>
+          <li>Die gesamte Händlergruppe mit acht Standorten öffnen.</li>
+          <li>Standorte nach Umsatz, Marge, Werkstattauslastung und weiteren Kennzahlen vergleichen.</li>
+          <li>Einen auffälligen Standort auswählen.</li>
+          <li>Auf „KI-Analyse“ klicken.</li>
+          <li>Die KI nennt mögliche Erklärungen und schlägt Prüf- und Optimierungsmaßnahmen vor.</li>
+        </ol>
+        <div class="callout"><b>KI-Chat für die Geschäftsführung</b>Antworten werden mit Kennzahlen und Zeiträumen belegt. Ursachen bleiben als Hypothesen gekennzeichnet, solange die Daten keine sichere Aussage zulassen.</div>
+        <h3>Technischer Umfang</h3>
+        <p>Synthetischer Datensatz mit acht Standorten, zwölf Monaten Kennzahlen und drei Geschäftsbereichen: Neuwagen, Gebrauchtwagen, After-Sales. Kennzahlen und Abweichungen werden deterministisch berechnet, die KI übernimmt Interpretation und Maßnahmenformulierung.</p>
+        <div class="value"><b>BCON-Mehrwert</b>Digitale Erweiterung einer bestehenden Beratungsleistung: BCON definiert Kennzahlen, Benchmarks und Maßnahmenmodelle, SH&amp;Partner entwickelt die Plattform.</div>
+      </div>
+
+      <div class="app" id="pcApp">
+        <div class="app-bar"><span class="t">Dealer Performance Intelligence</span><span class="s">Autohausgruppe Süd · 8 Standorte</span><span class="live"><i></i>Daten aktuell</span></div>
+        <div class="kpis">
+          <div class="kpi"><b class="num">48,2 Mio. €</b><span>Umsatz YTD</span></div>
+          <div class="kpi"><b class="num">5,8 %</b><span>Operative Marge</span></div>
+          <div class="kpi"><b class="num">3 von 8</b><span>Standorte auffällig</span></div>
+        </div>
+        <div class="pane">
+          <h4>Umsatz nach Standort · YTD in Mio. € <span style="font-weight:400;text-transform:none;letter-spacing:0">· Standort anklicken</span></h4>
+          <svg class="chart" id="pcChart" viewBox="0 0 560 262" role="img" aria-label="Umsatz nach Standort, Balkendiagramm"></svg>
+          <div class="legend"><span><i style="background:var(--bar)"></i>Umsatz YTD</span><span><i style="background:var(--bar-sel)"></i>Ausgewählt</span><span><span class="hyp">▲</span> auffällig (regelbasiert erkannt)</span></div>
+          <div class="actions">
+            <button class="btn" id="pcRun"><span class="sp"></span>KI-Analyse: <span id="pcSel">Augsburg</span></button>
+            <span class="status" id="pcStatus">Abweichung deterministisch erkannt, Interpretation durch KI</span>
+          </div>
+          <div id="pcOut" hidden></div>
+        </div>
+        <div class="chat">
+          <h4 style="font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px">KI-Chat für die Geschäftsführung</h4>
+          <div class="q" id="pcQ"></div>
+          <div class="bubble" id="pcA">Frage auswählen, die Antwort wird mit Kennzahlen und Zeiträumen belegt.</div>
+        </div>
+        <div class="note">Illustrative Zahlen · Konzeptionelle UI-Skizze</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 Gebrauchtwagen -->
+<section class="sec" id="gebrauchtwagen">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div class="idx">03</div>
+      <div><h2>KI Gebrauchtwagen-Bestandsoptimierung</h2><p class="sub">Gebrauchtwagenbestände wirtschaftlicher steuern, problematische Standzeiten erkennen und Preisentscheidungen datenbasiert unterstützen.</p></div>
+      <span class="tag">Starker wirtschaftlicher Fall</span>
+    </div>
+    <div class="cols">
+      <div class="narr">
+        <h3>Was der Nutzer live demonstriert</h3>
+        <ol>
+          <li>Den gesamten Gebrauchtwagenbestand der Händlergruppe öffnen.</li>
+          <li>Fahrzeuge nach Standzeit, gebundenem Kapital, Preisposition und Risikoklasse sortieren.</li>
+          <li>Ein Fahrzeug auswählen.</li>
+          <li>Die KI analysiert Fahrzeugdaten, simulierte Marktsituation und Nachfrageentwicklung.</li>
+          <li>Sie schlägt eine neue Preisposition oder eine alternative Vermarktungsmaßnahme vor.</li>
+        </ol>
+        <div class="callout"><b>Funktion „Bestand optimieren“</b>Der Nutzer wählt, ob die Gruppe eher Marge oder Bestandsumschlag priorisiert. Die empfohlene Maßnahmenliste verändert sich sofort.</div>
+        <h3>Technischer Umfang</h3>
+        <p>Testbestand von 150 bis 200 Fahrzeugen mit Modell, Kilometerstand, Ausstattung, Einkaufspreis, Angebotspreis, Standzeit und Nachfrageindikatoren. Im Prototyp arbeitet eine nachvollziehbare regelbasierte Preislogik, die KI erläutert die Empfehlung. Echte Preisoptimierung bräuchte belastbare Marktdaten und historische Verkaufsergebnisse.</p>
+        <div class="value"><b>BCON-Mehrwert</b>Sehr konkreter Bezug zu Working Capital, Standzeiten, Margen und Ertragskraft von Händlergruppen.</div>
+      </div>
+
+      <div class="app" id="ucApp">
+        <div class="app-bar"><span class="t">Used Car Intelligence</span><span class="s">Gesamter Gebrauchtwagenbestand · standortübergreifend</span><span class="live"><i></i>Markt simuliert</span></div>
+        <div class="kpis">
+          <div class="kpi"><b class="num">184</b><span>Fahrzeuge</span></div>
+          <div class="kpi"><b class="num">62 Tage</b><span>Ø Standzeit</span></div>
+          <div class="kpi"><b class="num">37</b><span>Fahrzeuge &gt; 90 Tage</span></div>
+        </div>
+        <div class="app-body">
+          <div class="pane">
+            <h4>Bestandsanalyse · Spalte anklicken zum Sortieren</h4>
+            <div class="tbl-wrap"><table class="tbl" id="ucTbl"><thead><tr>
+              <th data-k="model">Fahrzeug</th><th data-k="days" class="num">Standzeit</th><th data-k="capital" class="num">Kapital</th><th data-k="risk">Risiko</th>
+            </tr></thead><tbody></tbody></table></div>
+          </div>
+          <div class="pane">
+            <h4>KI-Preisanalyse · <span id="ucName"></span></h4>
+            <div id="ucOut"></div>
+          </div>
+        </div>
+        <div class="pane" style="border-top:1px solid var(--line)">
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+            <h4 style="margin:0">Bestand optimieren · Priorität</h4>
+            <div class="seg" id="ucSeg"><button class="on" data-m="marge">Marge</button><button data-m="umschlag">Bestandsumschlag</button></div>
+          </div>
+          <div class="measures" id="ucMeasures"></div>
+        </div>
+        <div class="note">Fiktive Fahrzeug-, Bestands- und Preisdaten · regelbasierte Preislogik</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 Leads -->
+<section class="sec" id="leads">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div class="idx">04</div>
+      <div><h2>KI Lead Management &amp; Sales Automation</h2><p class="sub">Vertriebsanfragen automatisiert qualifizieren, bearbeiten und strukturiert in das CRM-System überführen.</p></div>
+      <span class="tag">Sehr gut für interaktive Demo</span>
+    </div>
+    <div class="cols">
+      <div class="narr">
+        <h3>Was der Nutzer live demonstriert</h3>
+        <ol>
+          <li>Einen neuen Lead über simulierte E-Mail, Kontaktformular oder Fahrzeugplattform erhalten.</li>
+          <li>Die KI erkennt Kaufinteresse, Fahrzeugwunsch, Inzahlungnahme, Finanzierungsinteresse und fehlende Angaben.</li>
+          <li>Sie gleicht das Wunschfahrzeug mit dem simulierten Bestand ab.</li>
+          <li>Sie erstellt eine passende Antwort und schlägt einen Beratungstermin vor.</li>
+          <li>Nach Prüfung übergibt sie den Lead an den Verkäufer und dokumentiert den Vorgang im CRM.</li>
+        </ol>
+        <div class="callout"><b>Transparente Lead-Priorisierung</b>Bewertet nach Konkretheit der Anfrage, Fahrzeugverfügbarkeit und bisherigem Kontaktverlauf. Nie auf Basis sensibler persönlicher Merkmale.</div>
+        <h3>Technischer Umfang</h3>
+        <p>20 bis 30 fiktive Leads, ein simulierter Fahrzeugbestand und eine einfache CRM-Ansicht. In der Live-Demo kann der Nutzer eigene Anfragen in ein Eingabefeld kopieren und verarbeiten lassen.</p>
+        <div class="value"><b>BCON-Mehrwert</b>Direkte Erweiterung der Customer-Journey- und Sales-Excellence-Beratung durch eine produktive Automatisierung.</div>
+      </div>
+
+      <div class="app" id="ldApp">
+        <div class="app-bar"><span class="t">AI Sales Assistant</span><span class="s">Lead Management · Autohausgruppe Süd</span><span class="live"><i></i>KI aktiv</span></div>
+        <div class="kpis">
+          <div class="kpi"><b class="num">42</b><span>Neue Leads</span></div>
+          <div class="kpi" id="ldK2"><b class="num">27</b><span>KI-qualifiziert</span></div>
+          <div class="kpi" id="ldK3"><b class="num">8</b><span>Antworten prüfen</span></div>
+        </div>
+        <div class="app-body">
+          <div class="pane">
+            <h4>Lead-Inbox</h4>
+            <div class="list" id="ldList"></div>
+          </div>
+          <div class="pane">
+            <h4>Anfrage</h4>
+            <p class="quote" id="ldQuote"></p>
+            <button class="btn" id="ldRun"><span class="sp"></span>Lead qualifizieren</button>
+            <div id="ldOut" hidden></div>
+          </div>
+        </div>
+        <div class="note">Konzeptionelle UI-Skizze mit fiktiven Leads · Priorisierung nach transparenten Kriterien</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Priorisierung -->
+<section class="sec" id="priorisierung">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div class="idx" aria-hidden="true">↕</div>
+      <div><h2>Welche Prototypen zuerst?</h2><p class="sub">Die Reihenfolge hängt vom Ziel ab. Kriterium wählen, die Rangfolge ordnet sich neu.</p></div>
+    </div>
+    <div class="prio">
+      <div class="crit" id="prCrit"></div>
+      <div>
+        <div class="rank" id="prRank"></div>
+        <p class="foot">Qualitative Einschätzung, keine gemessenen Projektwerte. Mehr gefüllte Balken bedeuten bessere Eignung für das gewählte Kriterium.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Empfehlung -->
+<section class="sec" id="empfehlung">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div class="idx" aria-hidden="true">→</div>
+      <div><h2>Empfehlung zur Umsetzung für BCON</h2><p class="sub">Die vier Prototypen unter einer gemeinsamen Oberfläche präsentieren: Automotive AI Suite, Powered by SH&amp;Partner. Dieselbe fiktive Autohausgruppe, teilweise dieselben Datensätze.</p></div>
+    </div>
+    <div class="rec-grid">
+      <div>
+        <h3 class="eyebrow" style="font-family:var(--mono);font-weight:500;font-stretch:100%;margin-bottom:12px">Wie die Module zusammenwachsen</h3>
+        <svg class="flow" viewBox="0 0 560 300" role="img" aria-label="Datenfluss: Serviceanfragen und Leads beeinflussen Kennzahlen, die im Performance Cockpit sichtbar werden">
+          <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker></defs>
+          <rect class="box" x="10" y="20" width="160" height="64" rx="10"/>
+          <text class="lab" x="24" y="42">01 AFTER-SALES</text><text x="24" y="64" font-weight="600">Serviceanfragen</text>
+          <rect class="box" x="10" y="118" width="160" height="64" rx="10"/>
+          <text class="lab" x="24" y="140">04 LEADS</text><text x="24" y="162" font-weight="600">Lead-Bearbeitung</text>
+          <rect class="box" x="10" y="216" width="160" height="64" rx="10"/>
+          <text class="lab" x="24" y="238">03 GEBRAUCHTWAGEN</text><text x="24" y="260" font-weight="600">Preis &amp; Standzeit</text>
+          <rect class="box hub" x="230" y="100" width="150" height="100" rx="10"/>
+          <text class="lab" x="246" y="124">GEMEINSAME DATEN</text><text x="246" y="148" font-weight="600">Operative</text><text x="246" y="166" font-weight="600">Kennzahlen</text><text class="lab" x="246" y="188">8 STANDORTE · 12 MONATE</text>
+          <rect class="box" x="430" y="118" width="120" height="64" rx="10"/>
+          <text class="lab" x="444" y="140">02 COCKPIT</text><text x="444" y="162" font-weight="600">KI-Analyse</text>
+          <path class="arrow" d="M170 52 C205 52 205 130 230 130"/>
+          <path class="arrow" d="M170 150 L230 150"/>
+          <path class="arrow" d="M170 248 C205 248 205 170 230 170"/>
+          <path class="arrow" d="M380 150 L430 150"/>
+        </svg>
+        <p style="font-size:13px;color:var(--ink-2);margin-top:10px">Serviceanfragen und Leadbearbeitung verändern die operativen Kennzahlen, die wiederum im Performance Cockpit sichtbar werden. So wird deutlich, wie einzelne KI-Anwendungsfälle zu einer übergreifenden digitalen Lösung zusammenwachsen.</p>
+      </div>
+      <div>
+        <h3 class="eyebrow" style="font-family:var(--mono);font-weight:500;font-stretch:100%;margin-bottom:4px">Anforderungen für alle vier</h3>
+        <div class="req">
+          <div><span class="ic">◧</span><div><b>Interaktive Webanwendung</b><p>Kein Figma-Prototyp, sondern bedienbare Oberflächen mit funktionierenden Demo-Aktionen.</p></div></div>
+          <div><span class="ic">⊞</span><div><b>Realistische synthetische Daten</b><p>Plausible Fahrzeuge, Kunden, Standorte, Anfragen und wirtschaftliche Kennzahlen.</p></div></div>
+          <div><span class="ic">✦</span><div><b>Echte KI-Funktionalität</b><p>Anfrageverarbeitung, strukturierte Informationsextraktion und natürlichsprachliche Analysen funktionieren tatsächlich.</p></div></div>
+          <div><span class="ic">⇄</span><div><b>Simulierte Integrationen</b><p>DMS, CRM, E-Mail und Marktinformationen über Mock-Daten oder Test-Schnittstellen.</p></div></div>
+          <div><span class="ic">≡</span><div><b>Nachvollziehbare Resultate</b><p>Die KI erklärt, auf welcher Datenbasis ihre Vorschläge entstehen.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="closing">
+      <div>
+        <div class="eyebrow" style="color:color-mix(in srgb,var(--bg) 60%,transparent)">Zweites Gespräch</div>
+        <h3>Zwei Module vorführen, dann Herrn von Buzay selbst klicken lassen.</h3>
+        <p>Der After-Sales Assistant zeigt die unmittelbare technische Umsetzungsfähigkeit. Das Performance Cockpit zeigt, wie aus der Kooperation ein wiederverwendbares, strategisch relevantes Kundenangebot entsteht. Wenn Herr von Buzay im Prototyp einen eigenen Anwendungsfall auswählt und testet, wird aus einer theoretischen KI-Diskussion eine konkrete über Nutzen, Umsetzung und gemeinsame Kundenprojekte.</p>
+      </div>
+      <div class="demo">
+        <div><b>1 · After-Sales Assistant</b>Anfrage mit Inspektion, Warnleuchte und Terminwunsch live verarbeiten.</div>
+        <div><b>2 · Performance Cockpit</b>Augsburg auswählen, KI-Analyse auslösen, Maßnahmen im Chat nachfragen.</div>
+        <div><b>3 · Eigener Anwendungsfall</b>Herr von Buzay kopiert eine eigene Anfrage ins Eingabefeld.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <span>Automotive AI Suite · Konzeptvorschlag von SH&amp;Partner für BCON</span>
+  <span>Alle Daten fiktiv und illustrativ</span>
+</footer>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const busy=async(btn,ms)=>{btn.classList.add('busy');btn.disabled=true;await wait(ms);btn.classList.remove('busy');btn.disabled=false;};
+const bump=el=>{el.classList.add('bump');setTimeout(()=>el.classList.remove('bump'),900);};
+
+/* ---------- 01 After-Sales ---------- */
+const asReq=[
+ {who:'T. Brandl',when:'09:12',sub:'Inspektion + Warnleuchte',text:'Guten Tag, bei meinem BMW 320d ist die Inspektion fällig. Könnte ich kommenden Dienstag einen Termin bekommen? Außerdem leuchtet seit gestern die Motorkontrollleuchte.',
+  car:'BMW 320d (M-TB 4471) · 84.200 km · letzte Inspektion 03/2025',anliegen:['Inspektion fällig','Motorkontrollleuchte seit gestern'],prio:['sig','Erhöht · technische Prüfung erforderlich'],termin:'Dienstag gewünscht',aktionen:['Fehlerspeicher auslesen vor Inspektion einplanen','Werkstattkapazität Dienstag prüfen','Ersatzmobilität anbieten'],slots:['Di 08:30','Di 13:00','Mi 09:00'],
+  draft:'Guten Tag Herr Brandl,\nvielen Dank für Ihre Nachricht. Für Ihren BMW 320d haben wir am Dienstag um 08:30 Uhr einen Termin reserviert. Da die Motorkontrollleuchte leuchtet, lesen wir zuerst den Fehlerspeicher aus und besprechen mit Ihnen das weitere Vorgehen, bevor die Inspektion durchgeführt wird. Ein Ersatzfahrzeug halten wir für Sie bereit.'},
+ {who:'S. Keller',when:'08:47',sub:'Reifenwechsel',text:'Hallo, ich möchte gerne auf Winterreifen wechseln lassen. Die Räder sind bei Ihnen eingelagert. Geht ein Termin nächste Woche Freitag nachmittags?',
+  car:'Audi A4 Avant (M-SK 912) · 41.900 km · Räder eingelagert, Lagerplatz R-114',anliegen:['Saisonaler Radwechsel'],prio:['','Standard · Routinevorgang'],termin:'Freitag nachmittags',aktionen:['Räder aus Einlagerung bereitstellen','Termin direkt buchen'],slots:['Fr 14:00','Fr 15:30','Fr 16:30'],
+  draft:'Guten Tag Frau Keller,\ngerne wechseln wir die Räder Ihres Audi A4 Avant. Am Freitag um 14:00 Uhr ist ein Termin frei, die eingelagerten Winterräder stellen wir vorab bereit. Der Wechsel dauert etwa 45 Minuten.'},
+ {who:'M. Yilmaz',when:'gestern',sub:'Klimaanlage ohne Funktion',text:'Die Klimaanlage meines Mercedes kühlt nicht mehr. Können Sie das prüfen? Ich bin beruflich viel unterwegs, Montag oder Dienstag früh wäre ideal.',
+  car:'Mercedes C 200 (M-MY 77) · 118.400 km · Klimaservice 2023',anliegen:['Klimaanlage ohne Kühlleistung'],prio:['sig','Erhöht · Diagnose nötig, Vielfahrer'],termin:'Montag oder Dienstag früh',aktionen:['Klimadiagnose 1 h einplanen','Kostenrahmen in Antwort nennen','Ersatzmobilität anbieten'],slots:['Mo 07:30','Di 07:30','Di 10:00'],
+  draft:'Guten Tag Herr Yilmaz,\nwir prüfen die Klimaanlage Ihres Mercedes C 200 gerne am Montag um 07:30 Uhr. Die Diagnose dauert etwa eine Stunde, die Kosten liegen bei rund 89 €. Ein Ersatzfahrzeug organisieren wir für Sie.'}
+];
+let asI=0;
+function asRender(){
+  $('#asList').innerHTML=asReq.map((r,i)=>`<button class="item${i===asI?' on':''}" data-i="${i}"><div class="r"><b>${r.who}</b><span>${r.when}</span></div><small>${r.sub} · ${r.text}</small></button>`).join('');
+  $('#asQuote').textContent='„'+asReq[asI].text+'“';
+  $('#asOut').hidden=true;$('#asOut').innerHTML='';$('#asRun').hidden=false;
+}
+$('#asList').addEventListener('click',e=>{const b=e.target.closest('.item');if(!b)return;asI=+b.dataset.i;asRender();});
+$('#asRun').addEventListener('click',async()=>{
+  const r=asReq[asI];await busy($('#asRun'),900);$('#asRun').hidden=true;
+  const o=$('#asOut');o.hidden=false;
+  o.innerHTML=`<div class="reveal"><h4 style="font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:4px 0 10px">KI-Auswertung</h4>
+  <dl class="kv">
+    <div><dt>Fahrzeug</dt><dd>${r.car}</dd></div>
+    <div><dt>Anliegen</dt><dd>${r.anliegen.map(a=>`<span class="pill">${a}</span>`).join(' ')}</dd></div>
+    <div><dt>Priorität</dt><dd><span class="pill ${r.prio[0]}">${r.prio[1]}</span></dd></div>
+    <div><dt>Terminwunsch</dt><dd>${r.termin}</dd></div>
+    <div><dt>Nächste Aktionen</dt><dd>${r.aktionen.map(a=>'· '+a).join('<br>')}</dd></div>
+  </dl>
+  <dt class="eyebrow" style="margin-top:12px">Freie Werkstattslots (simuliert)</dt>
+  <div class="slots">${r.slots.map((s,i)=>`<span class="slot${i===0?' on':''}">${s}</span>`).join('')}</div>
+  <div class="draft">${r.draft}</div>
+  <div class="actions"><button class="btn" id="asOk">Freigeben &amp; ins DMS übernehmen</button><button class="btn ghost" id="asEdit">Antwort anpassen</button><span class="status" id="asSt"><span class="pill sig"><i></i>Menschliche Freigabe erforderlich</span></span></div></div>`;
+  o.querySelectorAll('.slot').forEach(s=>s.addEventListener('click',()=>{o.querySelectorAll('.slot').forEach(x=>x.classList.remove('on'));s.classList.add('on');}));
+  $('#asOk').addEventListener('click',async()=>{await busy($('#asOk'),700);$('#asOk').disabled=true;$('#asEdit').disabled=true;
+    $('#asSt').className='status done';$('#asSt').innerHTML='✓ Vorgang im DMS aktualisiert · Antwort versendet';
+    const k=$('#asK3 b');k.textContent=Math.max(0,+k.textContent-1);bump($('#asK3'));});
+  $('#asEdit').addEventListener('click',()=>{const d=o.querySelector('.draft');d.contentEditable='true';d.focus();d.style.outline='2px solid var(--accent)';});
+});
+asRender();
+
+/* ---------- 02 Performance Cockpit ---------- */
+const sites=[
+ {n:'München',v:11.4},{n:'Augsburg',v:7.2,flag:true},{n:'Ingolstadt',v:6.8},{n:'Rosenheim',v:5.9},
+ {n:'Regensburg',v:5.6},{n:'Landshut',v:4.3,flag:true},{n:'Passau',v:3.8,flag:true},{n:'Erding',v:3.2}
+];
+const analyses={
+ Augsburg:{h:'Werkstattauslastung −11 Prozentpunkte zum Vormonat',p:'Umsatz YTD 7,2 Mio. € liegt im Plan, After-Sales-Erlöse sind im September jedoch um 9 % gesunken. Gleichzeitig stiegen die Terminabsagen von 6 % auf 14 %.',hy:['Hypothese: Personalausfall in der Terminannahme (zwei Vakanzen seit August).','Hypothese: Rückläufige Garantiearbeiten nach Auslaufen einer Modellreihe.'],m:['Entwicklung der Terminabsagen je Wochentag prüfen','Mitarbeiterauslastung Werkstatt und Serviceannahme vergleichen','Offene Serviceaufträge älter als 14 Tage nachfassen']},
+ Landshut:{h:'Neuwagen-Marge auf 1,9 % gefallen',p:'Umsatz stabil bei 4,3 Mio. €, aber die Neuwagen-Marge liegt 2,4 Prozentpunkte unter dem Gruppendurchschnitt. Der Nachlass je Fahrzeug stieg in drei Monaten um 780 €.',hy:['Hypothese: Abverkauf von Lagerfahrzeugen des Vorjahresmodells.','Hypothese: Verkäuferwechsel mit abweichender Rabattpraxis.'],m:['Nachlassquote je Verkäufer auswerten','Lagerfahrzeuge nach Modelljahr und Standzeit prüfen','Rabattfreigaben über 8 % zentral genehmigen']},
+ Passau:{h:'Ø Standzeit Gebrauchtwagen 94 Tage',p:'Passau bindet mit 41 Gebrauchtwagen 1,1 Mio. € Kapital, davon 19 Fahrzeuge über 90 Tage. Die Preisposition liegt im Mittel 4 % über vergleichbaren Angeboten im Testdatensatz.',hy:['Hypothese: Zu späte erste Preisanpassung (im Mittel nach 58 Tagen).','Hypothese: Hoher Anteil schwer vermarktbarer Konfigurationen.'],m:['Preisanpassung ab Tag 30 regelbasiert vorschlagen','Fahrzeuge über 90 Tage an München und Ingolstadt umlagern','Nachfrageindikatoren je Modell wöchentlich prüfen']},
+ default:s=>({h:'Keine Auffälligkeit erkannt',p:`${s.n} liegt mit ${s.v.toFixed(1).replace('.',',')} Mio. € Umsatz YTD innerhalb der Bandbreite der Gruppe. Marge, Werkstattauslastung und Standzeiten bewegen sich im Zielkorridor.`,hy:[],m:['Standort als Benchmark für vergleichbare Betriebe nutzen','Kennzahlen weiterhin monatlich beobachten']})
+};
+let pcSel='Augsburg';
+function drawChart(){
+  const svg=$('#pcChart');const W=560,L=96,R=58,T=14,rowH=29,bar=20;const max=12;const inner=W-L-R;
+  let s='';
+  [0,3,6,9,12].forEach(g=>{const x=L+inner*g/max;s+=`<line class="grid" x1="${x}" y1="${T}" x2="${x}" y2="${T+rowH*sites.length}"/><text x="${x}" y="${T+rowH*sites.length+16}" text-anchor="middle" class="v">${g}</text>`;});
+  sites.forEach((d,i)=>{const y=T+i*rowH+(rowH-bar)/2;const w=inner*d.v/max;const cls='bar'+(d.n===pcSel?' sel':'');
+    s+=`<rect class="hit" x="0" y="${T+i*rowH}" width="${W}" height="${rowH}" data-n="${d.n}"><title>${d.n}: ${d.v.toFixed(1).replace('.',',')} Mio. €</title></rect>`;
+    s+=`<text x="${L-10}" y="${y+bar/2+4}" text-anchor="end">${d.n}</text>`;
+    s+=`<path class="${cls}" data-n="${d.n}" d="M${L} ${y}h${w-4}a4 4 0 0 1 4 4v${bar-8}a4 4 0 0 1 -4 4H${L}z"/>`;
+    s+=`<text class="v" x="${L+w+8}" y="${y+bar/2+4}">${d.v.toFixed(1).replace('.',',')}</text>`;
+    if(d.flag)s+=`<text class="flag" x="${L+w+36}" y="${y+bar/2+4}">▲</text>`;
+  });
+  svg.innerHTML=s;
+}
+$('#pcChart').addEventListener('click',e=>{const t=e.target.closest('[data-n]');if(!t)return;pcSel=t.dataset.n;$('#pcSel').textContent=pcSel;$('#pcOut').hidden=true;drawChart();
+  const f=sites.find(x=>x.n===pcSel).flag;$('#pcStatus').textContent=f?'Abweichung deterministisch erkannt, Interpretation durch KI':'Keine regelbasierte Auffälligkeit, KI-Analyse optional';});
+$('#pcRun').addEventListener('click',async()=>{
+  await busy($('#pcRun'),1000);const d=sites.find(x=>x.n===pcSel);const a=analyses[pcSel]||analyses.default(d);
+  const o=$('#pcOut');o.hidden=false;
+  o.innerHTML=`<div class="insight reveal"><div class="h"><b>AI Insight · ${pcSel}</b><span class="pill ${d.flag?'sig':'ok'}"><i></i>${d.flag?'Auffällig':'Im Korridor'}</span></div>
+  <p><strong>${a.h}.</strong> ${a.p}</p>
+  ${a.hy.length?`<div class="hyp" style="margin-bottom:4px">Mögliche Ursachen · als Hypothesen gekennzeichnet</div><ul>${a.hy.map(h=>`<li>${h}</li>`).join('')}</ul>`:''}
+  <div class="hyp" style="margin:10px 0 4px;color:var(--accent)">Empfohlene Prüfmaßnahmen</div><ul>${a.m.map(h=>`<li>${h}</li>`).join('')}</ul>
+  <span class="bubble src" style="display:block;background:none;padding:0;margin-top:8px">Datenbasis: Monatskennzahlen 10/2025 bis 09/2026, Bereiche Neuwagen, Gebrauchtwagen, After-Sales</span></div>`;
+});
+const pcQA=[
+ ['Warum entwickelt sich Augsburg schlechter als München?','Augsburg liegt beim Umsatz YTD mit 7,2 Mio. € im Plan, verliert aber seit Juli im After-Sales: Werkstattauslastung 71 % gegenüber 86 % in München, Terminabsagen 14 % gegenüber 5 %. Die Neuwagen- und Gebrauchtwagenbereiche zeigen keine signifikante Abweichung. Als Hypothese kommen die zwei Vakanzen in der Serviceannahme seit August in Frage.','Vergleich 07/2026 bis 09/2026 · Werkstattauslastung, Absagequote, Umsatz je Bereich'],
+ ['Welche Standorte haben die größten Auffälligkeiten im After-Sales?','Drei Standorte weichen ab: Augsburg (Auslastung −11 Prozentpunkte), Passau (Serviceumsatz je Fahrzeug 12 % unter Gruppenschnitt) und Erding (Durchlaufzeit je Auftrag +1,4 Tage). Alle übrigen Standorte liegen innerhalb einer Standardabweichung vom Gruppenmittel.','Monatswerte 09/2026 gegenüber Gruppenmittel 12 Monate'],
+ ['Wo könnten wir unsere Werkstattauslastung verbessern?','Das größte rechnerische Potenzial liegt in Augsburg (rund 190 freie Stunden pro Monat) und Rosenheim (120 Stunden). In beiden Fällen sind die Absagequoten erhöht, nicht die Nachfrage. Eine Erinnerungs- und Nachbesetzungslogik, wie sie der After-Sales Assistant vorbereitet, würde zuerst dort wirken.','Kapazität vs. gebuchte Stunden, 09/2026'],
+ ['Welche drei Maßnahmen für das nächste Managementmeeting?','1. Augsburg: Terminannahme nachbesetzen und Absagen tagesaktuell nachfassen. 2. Landshut: Rabattfreigaben über 8 % zentral genehmigen, Nachlass je Verkäufer auswerten. 3. Passau: Gebrauchtwagen über 90 Tage umlagern und Preisanpassung ab Tag 30 regelbasiert auslösen. Erwarteter Hebel: rund 0,4 Mio. € Ergebnis auf Jahresbasis, als Schätzung gekennzeichnet.','Abgeleitet aus den drei auffälligen Standorten, 12-Monats-Datensatz']
+];
+$('#pcQ').innerHTML=pcQA.map((q,i)=>`<button data-i="${i}">${q[0]}</button>`).join('');
+$('#pcQ').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;$('#pcQ').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  $('#pcA').textContent='KI analysiert …';await wait(700);const q=pcQA[+b.dataset.i];$('#pcA').innerHTML=`<div class="reveal">${q[1]}<span class="src">Beleg: ${q[2]}</span></div>`;});
+drawChart();
+
+/* ---------- 03 Gebrauchtwagen ---------- */
+const cars=[
+ {model:'BMW 320d Touring',site:'Passau',days:112,capital:21400,price:24900,ai:23900,risk:2,km:'68.400 km · EZ 2021',why:'Lange Standzeit, vergleichbare Fahrzeuge im Testdatensatz im Mittel 900 € günstiger, nur zwei Anfragen im letzten Monat.',alt:'Alternativ: Umlagerung nach München, dort 3,4-fache Nachfrage für dieses Modell.'},
+ {model:'Audi A4 Avant 40 TDI',site:'Augsburg',days:84,capital:26800,price:30900,ai:29900,risk:1,km:'52.100 km · EZ 2022',why:'Standzeit über Zielwert von 60 Tagen, Preis 3 % über Marktmedian, Nachfrage stabil.',alt:'Alternativ: Ausstattung „S line“ in der Anzeige hervorheben, Fotos erneuern.'},
+ {model:'VW Tiguan 2.0 TSI',site:'Ingolstadt',days:71,capital:23100,price:27400,ai:26900,risk:1,km:'44.800 km · EZ 2022',why:'Leicht erhöhte Standzeit, zwei Mitbewerber im Umkreis 30 km günstiger.',alt:'Alternativ: Garantieverlängerung statt Preisnachlass anbieten.'},
+ {model:'Mercedes C 200',site:'München',days:28,capital:29500,price:34900,ai:34900,risk:0,km:'31.200 km · EZ 2023',why:'Kurze Standzeit, Preis im Marktmedian, 11 Anfragen in 4 Wochen.',alt:'Keine Maßnahme nötig, Preis halten.'},
+ {model:'Skoda Octavia Combi',site:'Landshut',days:97,capital:16200,price:19400,ai:18500,risk:2,km:'89.700 km · EZ 2020',why:'Hohe Laufleistung, Standzeit 97 Tage, Nachfrageindex 0,4 gegenüber Modellmittel 1,0.',alt:'Alternativ: Abgabe an Großhandel prüfen, Kapitalbindung 16.200 €.'},
+ {model:'BMW X1 sDrive18i',site:'Rosenheim',days:45,capital:24700,price:28900,ai:28400,risk:0,km:'38.900 km · EZ 2023',why:'Standzeit im Zielkorridor, Preis 2 % über Marktmedian, gute Nachfrage.',alt:'Preis bei Tag 60 erneut prüfen.'}
+];
+const riskL=[['ok','Niedrig'],['warn','Mittel'],['crit','Hoch']];
+let ucSort='days',ucDir=-1,ucSel=0,ucMode='marge';
+const eur=n=>n.toLocaleString('de-DE')+' €';
+function ucRender(){
+  const rows=cars.map((c,i)=>({...c,i})).sort((a,b)=>{const k=ucSort;const va=a[k],vb=b[k];return (va>vb?1:va<vb?-1:0)*ucDir;});
+  $('#ucTbl tbody').innerHTML=rows.map(c=>`<tr data-i="${c.i}" class="${c.i===ucSel?'on':''}"><td><b>${c.model}</b><br><small style="color:var(--ink-3)">${c.site}</small></td><td class="num">${c.days} Tage</td><td class="num">${eur(c.capital)}</td><td><span class="pill ${riskL[c.risk][0]}"><i></i>${riskL[c.risk][1]}</span></td></tr>`).join('');
+  $('#ucTbl').querySelectorAll('th').forEach(th=>th.classList.toggle('on',th.dataset.k===ucSort));
+  const c=cars[ucSel];$('#ucName').textContent=c.model+' · '+c.site;
+  $('#ucOut').innerHTML=`<div class="reveal"><div style="font-size:12px;color:var(--ink-3)">${c.km} · Standzeit ${c.days} Tage · gebundenes Kapital ${eur(c.capital)}</div>
+  <div class="price"><div><b class="num">${eur(c.price)}</b><span>Aktueller Angebotspreis</span></div><div class="ai"><b class="num">${eur(c.ai)}</b><span>Illustrativer KI-Vorschlag${c.ai<c.price?' · '+eur(c.price-c.ai)+' weniger':' · halten'}</span></div></div>
+  <div style="font-size:13px;color:var(--ink-2)"><strong style="color:var(--ink)">Begründung:</strong> ${c.why}</div>
+  <div style="font-size:13px;color:var(--ink-2);margin-top:6px">${c.alt}</div>
+  <div style="margin-top:10px"><span class="pill">Regelbasierte Preislogik</span> <span class="pill">KI erläutert</span></div></div>`;
+  ucMeasures();
+}
+function ucMeasures(){
+  const m=ucMode==='marge'?[
+    ['Preis halten','Mercedes C 200, BMW X1: Nachfrage hoch, kein Nachlass','+0 €'],
+    ['Moderat anpassen','Audi A4 Avant, VW Tiguan: −500 bis −1.000 €, Marge bleibt positiv','−1.500 €'],
+    ['Umlagern statt senken','BMW 320d nach München: höhere Nachfrage, Preis bleibt','0 €'],
+    ['Großhandel prüfen','Skoda Octavia: nur wenn Verlust unter 900 € bleibt','ab Tag 120']
+  ]:[
+    ['Sofort senken','BMW 320d −1.000 €, Skoda Octavia −900 €: Ziel Verkauf in 21 Tagen','−1.900 €'],
+    ['Preisregel ab Tag 30','Alle Fahrzeuge: −2 % je 30 Tage automatisch vorschlagen','laufend'],
+    ['Großhandel','Skoda Octavia ab Tag 100 abgeben, Kapital 16.200 € freisetzen','sofort'],
+    ['Zukauf begrenzen','Keine Modelle mit Nachfrageindex unter 0,6 einkaufen','Einkauf']
+  ];
+  $('#ucMeasures').innerHTML=m.map((x,i)=>`<div class="reveal"><span class="n">0${i+1}</span><span><b>${x[0]}</b><br><span style="color:var(--ink-2);font-size:12px">${x[1]}</span></span><span class="d">${x[2]}</span></div>`).join('');
+}
+$('#ucTbl').addEventListener('click',e=>{const th=e.target.closest('th');if(th){if(ucSort===th.dataset.k)ucDir*=-1;else{ucSort=th.dataset.k;ucDir=th.dataset.k==='model'?1:-1;}ucRender();return;}
+  const tr=e.target.closest('tr[data-i]');if(tr){ucSel=+tr.dataset.i;ucRender();}});
+$('#ucSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ucMode=b.dataset.m;$('#ucSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));ucMeasures();});
+ucRender();
+
+/* ---------- 04 Leads ---------- */
+const leads=[
+ {who:'J. Hofmann',src:'mobile.de',when:'10:21',sub:'BMW X3',text:'Hallo, ich interessiere mich für Ihren BMW X3. Ist er noch verfügbar? Ich würde gerne meinen Audi A4 in Zahlung geben und eventuell finanzieren.',
+  q:[['Kaufinteresse','Konkret'],['Fahrzeugwunsch','BMW X3 xDrive20d, Inserat #48112'],['Inzahlungnahme','Ja · Audi A4, Baujahr und km fehlen'],['Finanzierung','Angefragt'],['Fehlende Angaben','Laufleistung A4, Wunschtermin']],stock:['ok','Verfügbar · Standort München, 2 Anfragen offen'],score:[['Konkretheit der Anfrage',90],['Fahrzeugverfügbarkeit',100],['Bisheriger Kontaktverlauf',40]],prio:88,seller:'A. Schmid, Verkauf München',
+  draft:'Guten Tag Herr Hofmann,\nder BMW X3 xDrive20d ist verfügbar und steht in München. Gerne bewerten wir Ihren Audi A4 für die Inzahlungnahme, dafür benötigen wir Erstzulassung und Kilometerstand. Für die Finanzierung bereiten wir ein Angebot vor. Passt Ihnen ein Beratungstermin am Donnerstag um 16:00 Uhr oder Samstag um 10:00 Uhr?'},
+ {who:'L. Weber',src:'Kontaktformular',when:'09:05',sub:'Tiguan Probefahrt',text:'Guten Morgen, ich möchte den VW Tiguan aus Ihrem Angebot gerne Probe fahren. Am Wochenende hätte ich Zeit.',
+  q:[['Kaufinteresse','Konkret · Probefahrt'],['Fahrzeugwunsch','VW Tiguan 2.0 TSI, Inserat #47990'],['Inzahlungnahme','Nicht erwähnt'],['Finanzierung','Nicht erwähnt'],['Fehlende Angaben','Telefonnummer']],stock:['ok','Verfügbar · Standort Ingolstadt'],score:[['Konkretheit der Anfrage',80],['Fahrzeugverfügbarkeit',100],['Bisheriger Kontaktverlauf',60]],prio:82,seller:'M. Brunner, Verkauf Ingolstadt',
+  draft:'Guten Morgen Frau Weber,\nder VW Tiguan steht in Ingolstadt für eine Probefahrt bereit. Am Samstag um 11:00 Uhr oder 14:00 Uhr haben wir Zeit. Bitte bringen Sie Ihren Führerschein mit, das Fahrzeug halten wir für Sie bereit.'},
+ {who:'R. Nowak',src:'E-Mail',when:'gestern',sub:'Allgemeine Anfrage',text:'Ich überlege, nächstes Jahr ein Elektroauto zu kaufen. Was haben Sie denn so im Angebot und was kostet das ungefähr?',
+  q:[['Kaufinteresse','Unverbindlich · Zeithorizont 2027'],['Fahrzeugwunsch','Elektrofahrzeug, Modell offen'],['Inzahlungnahme','Nicht erwähnt'],['Finanzierung','Nicht erwähnt'],['Fehlende Angaben','Budget, Modell, Nutzungsprofil']],stock:['','Bestand: 14 E-Fahrzeuge an 5 Standorten'],score:[['Konkretheit der Anfrage',25],['Fahrzeugverfügbarkeit',80],['Bisheriger Kontaktverlauf',20]],prio:38,seller:'Nurture-Strecke, kein Verkäufer zugewiesen',
+  draft:'Guten Tag Herr Nowak,\nvielen Dank für Ihr Interesse an einem Elektrofahrzeug. Damit wir Ihnen passende Modelle vorschlagen können: Wie viele Kilometer fahren Sie im Jahr, und haben Sie eine Lademöglichkeit zu Hause? Gerne senden wir Ihnen eine Übersicht unserer aktuellen Angebote zwischen 29.900 € und 54.900 €.'}
+];
+let ldI=0;
+function ldRender(){
+  $('#ldList').innerHTML=leads.map((l,i)=>`<button class="item${i===ldI?' on':''}" data-i="${i}"><div class="r"><b>${l.sub}</b><span>${l.src} · ${l.when}</span></div><small>${l.who} · ${l.text}</small></button>`).join('');
+  $('#ldQuote').textContent='„'+leads[ldI].text+'“';$('#ldOut').hidden=true;$('#ldOut').innerHTML='';$('#ldRun').hidden=false;
+}
+$('#ldList').addEventListener('click',e=>{const b=e.target.closest('.item');if(!b)return;ldI=+b.dataset.i;ldRender();});
+$('#ldRun').addEventListener('click',async()=>{
+  const l=leads[ldI];await busy($('#ldRun'),900);$('#ldRun').hidden=true;const o=$('#ldOut');o.hidden=false;
+  o.innerHTML=`<div class="reveal"><h4 style="font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:4px 0 10px">KI-Qualifizierung</h4>
+  <dl class="kv">${l.q.map(x=>`<div><dt>${x[0]}</dt><dd>${x[1]}</dd></div>`).join('')}<div><dt>Bestandsabgleich</dt><dd><span class="pill ${l.stock[0]}">${l.stock[0]?'<i></i>':''}${l.stock[1]}</span></dd></div></dl>
+  <div class="eyebrow" style="margin-top:12px">Lead-Priorität · <b class="num" style="color:var(--ink)">${l.prio}</b> / 100 · transparente Kriterien</div>
+  <div class="score">${l.score.map(s=>`<div><span>${s[0]}</span><span class="bar"><i style="width:0"></i></span><span class="pt num">${s[1]}</span></div>`).join('')}</div>
+  <div class="draft">${l.draft}</div>
+  <div class="actions"><button class="btn" id="ldOk">Prüfen &amp; an Verkäufer übergeben</button><span class="status" id="ldSt"><span class="pill sig"><i></i>CRM-Eintrag vorbereitet</span></span></div></div>`;
+  requestAnimationFrame(()=>o.querySelectorAll('.score .bar i').forEach((b,i)=>b.style.width=l.score[i][1]+'%'));
+  $('#ldOk').addEventListener('click',async()=>{await busy($('#ldOk'),700);$('#ldOk').disabled=true;$('#ldSt').className='status done';$('#ldSt').innerHTML='✓ Übergeben an '+l.seller+' · im CRM dokumentiert';
+    const k=$('#ldK3 b');k.textContent=Math.max(0,+k.textContent-1);bump($('#ldK3'));});
+});
+ldRender();
+
+/* ---------- Priorisierung ---------- */
+const protos=['After-Sales Assistant','Lead Management','Performance Cockpit','Gebrauchtwagen-Optimierung'];
+const crit=[
+ {n:'Schnell einen überzeugenden Prototyp zeigen',s:'Geringster Aufwand bis zur ersten Live-Demo',v:[4,3,2,1]},
+ {n:'Maximale Wirkung in der Präsentation',s:'Sichtbarer „Aha-Moment“ für die Geschäftsführung',v:[4,3,4,2]},
+ {n:'Hohe Passung zu BCON',s:'Anschluss an bestehende Beratungsleistungen',v:[3,3,4,3]},
+ {n:'Skalierbares gemeinsames Geschäftsmodell',s:'Wiederverwendbar über viele Händlergruppen',v:[3,2,4,3]}
+];
+let ci=0;
+function prRender(){
+  $('#prCrit').innerHTML=crit.map((c,i)=>`<button class="${i===ci?'on':''}" data-i="${i}"><b>${c.n}</b><span>${c.s}</span></button>`).join('');
+  const order=protos.map((p,i)=>({p,v:crit[ci].v[i],i})).sort((a,b)=>b.v-a.v||a.i-b.i);
+  $('#prRank').innerHTML=order.map((o,k)=>`<div class="reveal"><span class="pos">${k+1}</span><span class="nm">${o.p}</span><span class="bars">${[1,2,3,4].map(n=>`<i class="${n<=o.v?'f':''}"></i>`).join('')}</span></div>`).join('');
+}
+$('#prCrit').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ci=+b.dataset.i;prRender();});
+prRender();
+})();
+</script>
+</body>
+</html>
